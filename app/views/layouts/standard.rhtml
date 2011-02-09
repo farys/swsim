@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title><%= yield :title %> <%= @global_title %></title>
+  <%= stylesheet_link_tag 'standard' %>
+  <%#= include_tiny_mce_if_needed %>
+  <%= yield :head %>
+</head>
+<body>
+
+<div id="site">
+  <div id="logo">Rails_client
+    <div id="topMenu">
+      <%= render :partial => "layouts/top_menu" %>
+    </div>
+  </div>
+  <p id="flashNotice"><%= flash[:notice] %></p>
+  <p id="flashError"><%= flash[:error] %></p>
+  <p id="flashWarning"><%= flash[:warning] %></p>
+
+  <div id="content" style="float:none">
+    <%= yield %>
+  </div>
+  <div style="clear: both"> </div>
+
+</div>
+</body>
+</html>
+

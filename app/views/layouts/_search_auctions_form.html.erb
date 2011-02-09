@@ -1,0 +1,71 @@
+<% content_for :head do |head| %>
+  <%= javascript_include_tag 'jquery-1.4.2.min.js' %>
+  <script type="text/javascript">
+    function toggle(object, tagId){
+      $(object).toggleClass("selectedTagButton")
+      b = $('#tags_'+tagId);
+      b.attr('checked', !b.is(':checked'));
+    }
+    
+    function clearTags(){
+      $('.selectedTagButton').each(function(){
+        $(this).click();
+      });
+     }
+     
+    tags = [<%= tags.collect{|e| '['+e.id.to_s+', "'+e.name+'"]'}.join(',') %>];
+      
+    function searchForTags(text){
+      text = text.toLowerCase();
+
+      for(var i=0; i < tags.length; i++){
+        var tag = tags[i][1];
+        index = text.indexOf(tag, 0);
+        
+        if(index > -1){
+          
+         var button_tags = $('[name="show_tags"]'); 
+         if(!button_tags.is(':checked')){
+           button_tags.click();
+         }         
+          
+          if(!$('#button_tag_'+tags[i][0]).hasClass('selectedTagButton')){
+          $('#button_tag_'+tags[i][0]).click();
+          }
+          //text = text.replace(tag, '');
+          
+        }
+      }
+      
+      $('[name=query]').val(text);
+    }
+    
+  </script>
+  
+<% end %>
+
+<% selected_tags ||= Array.new %>
+<% search_in_description ||= false %>
+<% query ||= query %>
+<% show_tags ||= false %>
+<% form_tag result_auctions_path do |f| %>
+<div class="standardField" style="padding-left: 10px">
+  <div>
+  Wyrażenie: <%= text_field_tag :query, query, :onkeyup => 'searchForTags(this.value)' %> 
+  <%= check_box_tag :search_in_description, true, search_in_description %> <%= label_tag :search_in_description, 'Szukaj również w opisie'%>
+  &nbsp;&nbsp;&nbsp;<%= submit_tag 'Szukaj' %>
+   <%= check_box_tag :show_tags, true, show_tags, :onclick => '$("#tagsDiv").toggle()' %> <%= label_tag :show_tags, 'pokaż/ukryj tagi' %>
+  </div>
+  
+</div>
+  <div id="tagsDiv" class="standardField"<%= ' style="display: none"' unless show_tags %>>
+  Wybierz pasujące tagi (<a href="#" onclick="clearTags()">wyczyść</a>):<br /><br />
+  <% tags.each do |tag| %>
+  <% selected = selected_tags.include?(tag.id.to_s) %>
+  <%= check_box_tag 'tags['+tag.id.to_s+']', tag.name, selected, :style => 'display: none' %>
+    <% html = (selected)? 'selectedTagButton' : '' %>
+    <%= link_to tag.name, '#', :class => 'tagButton '+html, :id => 'button_tag_'+tag.id.to_s, :onclick => 'toggle(this,'+tag.id.to_s+');' %>
+  <% end %>
+  </div>
+
+<% end %>

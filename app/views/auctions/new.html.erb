@@ -1,0 +1,31 @@
+<% content_for :title, "Nowa aukcja" %>
+<h1>Nowa aukcja</h1>
+
+<div class="standardField" style="width:950px;padding:30px;margin: 10px auto">
+<% form_for @auction do |f| %>
+
+<%= render "layouts/error_messages", :target => @auction %>  
+
+<p>
+  Przynależność do kategorii<br />
+<%= select_tag "auction[category_id]", options_for_select(@categories_to_list) %>
+</p>
+<p>
+  Tytuł aukcji<br />
+<%= f.text_field :title %>
+</p>
+<p>
+  Opis aukcji<br />
+<%= f.text_area :description, :class => "mceEditor" %>
+</p>
+
+<p>
+  Czas trwania aukcji<br />
+<%= f.select :expired_after, options_for_select((1..15).to_a, @auction.expired_after.to_i) %> dni
+</p>
+
+<br />
+<%= f.submit "Publikuj" %>
+<% end %>
+</div>
+

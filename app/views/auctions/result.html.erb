@@ -1,0 +1,8 @@
+<% text = (@query.empty?)? '' : ' dla "'+@query+'"' %>
+<% content_for :title, 'Wynik wyszukiwania'+text %>
+<% text += ' <span>('+@tags.select{|tag| @selected_tags.include? tag.id.to_s}.collect{|tag| tag.name}.join(', ')+')</span>' if @selected_tags.size > 0 %>
+
+<div class="headField">Wynik wyszukiwania <%= text %><% unless @auctions.empty? %> <span>(<%= sprintf("%.5f s", @elapsed_time) %>)</span><% end %></div>
+
+<%= render :partial => 'layouts/search_auctions_form', :locals => {:tags => @tags, :selected_tags => @selected_tags, :search_in_description => @search_in_description, :query => @query, :show_tags => @show_tags} %>
+<%= render :partial => 'layouts/auctions_list', :locals => {:auctions => @auctions} %>

@@ -1,0 +1,44 @@
+<% content_for :title, 'Przechodzenie do kolejnego etapu' %>
+<h1 class="headField">Przechodzenie do kolejnego etapu</h1>
+
+<div class="standardField" style="width:900px;padding:30px;margin: 10px auto">
+<% form_tag :action => :update_stage do |f|%>
+
+    <%= label_tag :to_accept_ids, 'Która oferta ma przejść do kolejnego etapu?' %><br /><br />
+  <table>
+    <thead>
+    <tr class="headField">
+      <td>wybór</td>
+      <td>kwota</td>
+      <td>czas</td>
+      <td>wykonawca</td>
+      <td>etap</td>
+      <td>data</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% i = 0 %>
+      <% @auction.offers.latest.each do |offer| %>
+    <% i += 1 %>
+    <% html = case
+    when offer.status == Offer::STATUS_REJECTED: 'rejected'
+    when i%2 < 1: 'cycle'
+    end
+      %>
+        <tr<% unless html.nil? %> class="<%= html %>"<% end %>>
+          <td><% if [Offer::STATUS_NORMAL, Offer::STATUS_LATEST].include?(offer.status) %><%= check_box_tag 'to_accept_ids[]', offer.id %><% end %></td>
+          <td style="font-weight:bold"><%= offer.price %> zł</td>
+          <td><%= offer.hours %> godz.</td>
+          <td style="text-align: center">
+            <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" alt="<%= offer.offerer.name %>"/><% end %>
+          <%= offer.offerer.name %><% if offer.offerer_type == 'Team' %> (zespół)<% end %>
+          </td>
+          <td><%= offer.stage %></td>
+          <td><%= escape_time(offer.created_at) %></td>
+        </tr>
+<% end %>
+  </tbody>
+</table>
+<%= submit_tag "Wybieram" %>
+<% end %>
+</div>

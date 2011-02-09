@@ -1,0 +1,121 @@
+<% content_for :title, 'Panel użytkownika '+ @user.login %>
+<div class="headField">Wiadomości <span>(<%= link_to 'Nieprzeczytane' %>, <%= link_to 'Wysłane' %>, <%= link_to 'Odebrane' %>)</span></div>
+<% unless @user.received_messages.unread.empty? %>
+<table class="standardField" style="width: 900px">
+  <thead>
+    <tr>
+      <td>temat</td>
+      <td>od</td>
+      <td>otrzymano</td>
+      <td>opcje</td>
+    </tr>
+  </thead>
+  <tbody>
+<% @user.received_messages.unread.all.each do |msg| %>
+    <tr>
+      <td><%= link_to msg.topic, [@user, msg] %></td>
+      <td><%= msg.author.name %></td>
+      <td><%= escape_time(msg.created_at) %></td>
+      <td><%= link_to 'usuń', user_message_path(msg), :method => :delete %></td>
+    </tr>
+<% end %>
+    </tbody>
+</table>
+<% else %>
+brak
+<% end %>
+<div class="headField">Twoje aukcje <span>(ostatni miesiac)</span></div>
+<% unless @user.auctions.empty? %>
+<table class="standardField" style="width: 900px">
+  <thead>
+    <tr>
+      <td>nazwa</td>
+      <td>ilość ofert</td>
+      <td>etap</td>
+      <td>rozpoczęta</td>
+      <td>status</td>
+      <td>koniec</td>
+      <td>opcje</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% i = 0 %>
+  <% @user.auctions.each do |auction| %>
+    <% i+=1;html = case
+    when auction.status == Auction::STATUS_CANCELED: 'rejected'
+    when auction.status == Auction::STATUS_FINISHED: 'winner'
+    when i%2 < 1: 'cycle'
+    end
+      %>
+  <tr<% unless html.nil? %> class="<%=  html %>"<% end %>>
+    <td><%= link_to auction.title, auction %></td>
+    <td><%= auction.offers.latest.count %></td>
+    <td style="font-weight: bold"><%= auction.stage %></td>
+    <td><%= escape_time(auction.created_at, true) %></td>
+    <td><% html = case auction.status
+    when Auction::STATUS_STAGES: 'licytacja'
+    when Auction::STATUS_FINISHED: 'zakończona'
+    when Auction::STATUS_CANCELED: 'anulowana'
+    end
+    %>
+      <%= html %>
+    </td>
+    <td><% if auction.status == 'stages' %>
+      za <%= distance_of_time_in_words auction.expired.to_i, Time.now.to_i %>
+      <% else %>
+      <%= escape_time(auction.expired, true)%>
+      <% end %>
+    </td>
+    <td><% if auction.status == Auction::STATUS_STAGES %>
+          <%= link_to 'Anuluj aukcję', cancel_auction_path(auction), :confirm => 'Czy napewno chcesz anulować aukcję "' + auction.title + '"?' %><br />
+          <%= link_to 'Wybierz zwyciężcę', won_offer_auction_path(auction) %><br />
+          <%= link_to 'Przejdź do kolejnego etapu', stage_auction_path(auction) %>
+      <% elsif auction.status == Auction::STATUS_FINISHED %><% o = auction.won_offer %><%= o.price %>zł / <%= o.hours %>godz. (<%= o.offerer.name %>)
+      <% elsif auction.status == Auction::STATUS_CANCELED %>
+        Anulowano
+      <% end %>
+    </td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>
+<% else %>
+brak
+<% end %>
+<div class="headField">Złożone oferty <span>(ostatni miesiąc)</span></div>
+<% unless @user.sent_offers.empty? %>
+<table class="standardField" style="width: 900px">
+  <thead>
+    <tr>
+      <td>aukcja</td>
+      <td>wycena</td>
+      <td>etap</td>
+      <td>wystawiona</td>
+      <td>status</td>
+    </tr>
+  </thead>
+  <tbody>
+<% @user.sent_offers.all.each do |offer| %>
+    <tr>
+      <td><%= link_to offer.auction.title, offer.auction %></td>
+      <td><%= offer.price %>zł / <%= offer.hours %>godz.</td>
+      <td><%= offer.stage %></td>
+      <td><%= escape_time(offer.created_at) %></td>
+      <td>
+        <%= case
+      when offer.status == Offer::STATUS_LATEST:
+          (offer.stage == offer.auction.stage)? 'aktualna' : 'NIEaktualna' + link_to('przejdź do aukcji', offer.auction)
+      when offer.status == Offer::STATUS_REJECTED: 'odrzucona'
+      when offer.status == Offer::STATUS_WON:
+      'wygrana!'
+      end
+    %>
+      </td>
+    </tr>
+<% end %>
+    </tbody>
+</table>
+<% else %>
+brak
+<% end %>
+<h2 class="headField">Zaległe komentarze</h2>

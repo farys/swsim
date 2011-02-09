@@ -1,0 +1,109 @@
+<% content_for :head, javascript_include_tag('jquery-1.4.2.min.js') %>
+<% content_for :title, @auction.title %>
+<div class="headField">
+  <h1 style="display:inline;font-size:15px"><%=  @auction.title %></h1>
+  (<h2 style="font-size:10px;display: inline"><%=raw @auction.category.parent_links.collect{|l| link_to l.parent.name, l.parent}.join(" > ") %></h2>)
+</div>
+
+<table style="float:left; margin-left: 10px" class="standardField auctionInfo">
+  <tr><td class="tdTitle">Terminy</td>
+    <td>
+      <p>Utworzona: <%= escape_time(@auction.created_at) %></p>
+      <p>Do końca: <span style="font-weight:bold"><%= distance_of_time_in_words @auction.expired.to_i, Time.now.to_i %></span> (<%= escape_time(@auction.expired) %>)</p>
+    </td></tr>
+  <tr><td class="tdTitle">Zleceniodawca</td>
+    <td>
+      <p style="font-weight:bold"><%= @auction.owner.login %></p>
+      <% if @logged_user.id != @auction.owner.id %><p><%= link_to 'Wyślij wiadomość', new_user_message_path(@logged_user, :receiver_id => @auction.owner.id) %></p><% end %>
+    </td></tr>
+  <tr><td class="tdTitle">Informacje</td>
+    <td>
+      <p>Liczba ofert: <%= @auction.offers.latest.count %></p>
+      <p>Etap: <span style="font-weight:bold"><%= @auction.stage %></span></p>
+    </td></tr>
+<tr><td class="tdTitle">Administracja</td>
+    <td>
+      <p><%= link_to "Zgłoś nieprawidłowość", '#', :onclick => '$("#alertDiv").toggle()' %></p>
+      <div id="alertDiv" style="display: none">
+        <% alert_pre_text = 'Nieprawidłowość dotyczy aukcji o numerze '+@auction.id.to_s+' z następującym problemem' %>
+        <% form_for @alert do |f|%>
+        <p style="color: red"><%= alert_pre_text %>, w skrócie opisz go:</p>
+        <%= hidden_field_tag :pre_text, alert_pre_text+': ' %>
+        <%= f.hidden_field :author_id %>
+        <p><%= f.text_area :text %></p>
+        <p><%= f.submit 'Wyślij zgłoszenie' %></p>
+        <% end %>
+      </div>
+    </td></tr>
+</table>
+
+<% if @auction.allowed_to_offer?(@logged_user) %>
+<div class="standardField offerField">
+  <p class="headField">Licytacja</p>
+  <% form_for [@auction, @auction.offers.new] do |offer| %>
+    <%= offer.label :price, 'Kwota' %>: <%= offer.text_field :price, :style => 'width:30px' %> PLN<br /><br />
+    <%= offer.label :hours, 'Czas' %>: <%= offer.text_field :hours, :style => 'width:30px' %> godz<br /><br />
+    <%= offer.hidden_field :auction_id %>
+    <%= offer.submit 'Licytuj!', :style => 'display:block;margin: 0 auto', :confirm => "Potwierdź swoją licytację" %>
+  <% end %>
+</div>
+<% end %>
+<% if @auction.made_offer?(@logged_user) %>
+<p class="offerField standardField" style="padding: 5px;margin: 100px 40px 0 0">Twoja aktualna oferta została już przyjęta.</p>
+<% end %>
+<div style="clear: both"> </div>
+<div style="width:900px;margin: 20px auto; padding-bottom: 20px;background-color:white;color: black" class="standardField"><%= @auction.description %></div>
+
+<% if @auction.communications.size > 0 %>
+<p class="headField">Komunikaty</p>
+<% stage = 0 %>
+  <% @auction.communications.each do |msg| %>
+<% unless stage.eql?(msg.stage) %><p class="standardField">Etap <%= msg.stage %></p><% stage = msg.stage %><% end %>
+  <div style="width:900px;margin: 20px auto; padding-bottom: 20px;background-color:white;color: black" class="standardField"><div class="standardField" style="color: white">Nadano <%= escape_time(msg.created_at) %></div><%= msg.body %></div>
+  <%  end %>
+<% end %>
+
+<% if @auction.offers.latest.count > 0 %>
+<p class="headField">Oferty</p>
+ <table style="width:600px;margin: 0 auto" class="standardField offersList">
+  <thead>
+    <tr class="headField">
+      <td>kwota</td>
+      <td>czas</td>
+      <td>wykonawca</td>
+      <td>etap</td>
+      <td>data</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% i = 0 %>
+<% @auction.offers.latest.each do |offer| %>
+    <% i += 1 %>
+    <% html = case
+    when offer.status == Offer::STATUS_REJECTED
+      'rejected'
+    when offer.status == Offer::STATUS_WON
+      'winner'
+    when offer.offerer.eql?(@logged_user)
+      'selected'
+    when i%2 < 1
+      'cycle'
+    end
+      %>
+    
+        <tr<% unless html.nil? %> class="<%= html %>"<% end %>>
+          <td style="font-weight:bold"><%= offer.price %> zł</td>
+          <td><%= offer.hours %> godz.</td>
+          <td style="text-align: center">
+            <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
+          <%= offer.offerer.name %><% if offer.offerer_type == 'Team' %> (zespół)<% end %>
+          </td>
+          <td><%= offer.stage %></td>
+          <td><%= escape_time(offer.created_at) %></td>
+        </tr>
+<% end %>
+  </tbody>
+</table> 
+
+<% end %>
+

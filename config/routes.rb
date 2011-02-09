@@ -1,4 +1,44 @@
 Inz::Application.routes.draw do
+  resources :categories, :only => [:index, :show]
+
+  resources :auctions, :except => [:delete, :index, :edit, :update] do
+    
+    resources :offers, :only => [:new, :create]
+    resources :communications, :only => [:new, :create]
+    
+    member do
+      get :won_offer 
+      get :stage
+      put :update_won_offer
+      post :update_stage
+      get :cancel
+    end
+    
+    collection do
+      get :search
+      post :result
+    end
+  end
+  
+  resources :users, :destroy => :log_out do 
+    
+    member do
+      get :panel
+    end
+    
+    resources :messages, :except => [:edit, :update] do
+      member do
+        get :reply
+      end
+    end
+    
+  end
+    
+  resources :alerts, :only => [:create]
+  
+  root :to =>  "categories#index"
+
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -1,0 +1,15 @@
+<% content_for :title, "Strona główna" %>
+<h1 class="headField">Witamy!</h1>
+
+<div class="standardField">
+    <p class="headField">Kategorie</p>
+    <ul style="font-size: 20px;">
+
+    <% @menu_categories.each do |category| %>
+    <% category.links.each do |l| %>
+    <li style="margin-top: 20px;margin-left:<%=  l.level*50 %>px"><%= link_to l.category.name, l.category %></li>
+    <% end %>
+    <% end %>
+    </ul>
+
+  </div>

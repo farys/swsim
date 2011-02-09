@@ -1,0 +1,27 @@
+<% unless auctions.empty? %>
+<table class="standardField list">
+  <thead class="headField">
+    <tr>
+      <td>tytuł</td>
+      <td>ilość ofert</td>
+      <td>średnia wartość ofert</td>
+      <td>do końca</td>
+    </tr>
+  </thead>
+<tbody>
+  <% i = 0 %>
+<% auctions.each do |auction| %>
+  <tr<% if (i+=1)%2 < 1 %> class="cycle"<% end %>>
+    <td><%= link_to auction.title, auction %></td>
+    <td><%= auction.offers_count %></td>
+    <td><% if auction.offers_count > 0 %><%= ((auction.offers.average :price).to_i) %> zł<% else %>~<% end %></td>
+    <td><%= distance_of_time_in_words auction.expired.to_i, Time.now.to_i %></td>
+  </tr>
+<% end %>
+</tbody>
+</table>
+
+<%= will_paginate auctions %>
+<% else %>
+Aktualnie brak zleceń
+<% end %>

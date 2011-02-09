@@ -1,0 +1,15 @@
+<% content_for :title, "Nowy komunikat dla " + @auction.title %>
+<h1 class="headField">Nowy komunikar dla "<%=  @auction.title %>"</h1>
+
+<div class="standardField" style="width:900px;padding:30px;margin: 10px auto">
+<% form_for [@auction, @communication] do |f| %>
+
+<%= f.error_messages %>
+
+<p style="font-size: 13px">
+  <%= f.label :body, 'tresc komunikatu:' %>
+  <%= f.text_area :body %>
+</p>
+<%= f.submit "Publikuj" %>
+<% end %>
+</div>
