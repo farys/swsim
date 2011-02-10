@@ -2,11 +2,11 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   layout 'standard'
-  
+
   before_filter :init
   def init
-    @global_title = '- Rails_client'
-    @logged_user = User.find(1)#todo
+    @global_title = '- inz v0.1'
+    @logged_user = User.find(3)#todo
   end
   
 #todo

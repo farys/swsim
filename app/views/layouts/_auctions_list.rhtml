@@ -1,10 +1,19 @@
+<% content_for :head do -%>
+<%= javascript_include_tag 'jquery.rating.js' %>
+<%= stylesheet_link_tag 'rating_list' %>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".star").rating();
+	$(".star").rating('readOnly', true);
+});
+</script>
+<% end -%>
 <% unless auctions.empty? %>
-<table class="standardField list">
-  <thead class="headField">
+<table class="list">
+  <thead>
     <tr>
-      <td>tytuł</td>
-      <td>ilość ofert</td>
-      <td>średnia wartość ofert</td>
+      <td style="width:50%">tytuł</td>
+      <td>ofert</td>
       <td>do końca</td>
     </tr>
   </thead>
@@ -12,9 +21,8 @@
   <% i = 0 %>
 <% auctions.each do |auction| %>
   <tr<% if (i+=1)%2 < 1 %> class="cycle"<% end %>>
-    <td><%= link_to auction.title, auction %></td>
-    <td><%= auction.offers_count %></td>
-    <td><% if auction.offers_count > 0 %><%= ((auction.offers.average :price).to_i) %> zł<% else %>~<% end %></td>
+    <td><%= link_to auction.title, auction %><% unless auction.rating.nil? %> <div style="display: inline-block"><% for i in 1..15 do %><%= radio_button_tag("star#{auction.id}", i, i == auction.rating, :class => "star", :title => "ocena") %><% end %></div><% end %></td>
+    <td><%= auction.offers_count %><% if auction.offers_count > 0 %> <span style="font-size: 80%">(~<%= ((auction.offers.average :price).to_i) %> zł)</span><% end %></td>
     <td><%= distance_of_time_in_words auction.expired.to_i, Time.now.to_i %></td>
   </tr>
 <% end %>
@@ -23,5 +31,5 @@
 
 <%= will_paginate auctions %>
 <% else %>
-Aktualnie brak zleceń
+Brak zleceń
 <% end %>

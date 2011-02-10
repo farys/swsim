@@ -1,0 +1,9 @@
+#auction_title {
+  width: 500px;
+}
+#auction_description {
+  width: 900px
+}
+#auction_expired_after {
+  width: 20px;
+}

@@ -21,8 +21,10 @@
       <% @auction.offers.latest.each do |offer| %>
     <% i += 1 %>
     <% html = case
-    when offer.status == Offer::STATUS_REJECTED: 'rejected'
-    when i%2 < 1: 'cycle'
+    when offer.status == Offer::STATUS_REJECTED
+       'rejected'
+    when i%2 < 1
+       'cycle'
     end
       %>
         <tr<% unless html.nil? %> class="<%= html %>"<% end %>>

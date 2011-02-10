@@ -1,4 +1,13 @@
 GIT
+  remote: git://github.com/freelancing-god/thinking-sphinx.git
+  revision: c3abbd9e5e5e7f226058ec364abea02fc9faf74e
+  branch: rails3
+  specs:
+    thinking-sphinx (2.0.1)
+      activerecord (>= 3.0.3)
+      riddle (>= 1.2.1)
+
+GIT
   remote: git://github.com/mislav/will_paginate.git
   revision: b1a5beeec9f56ecbe3594fcdca76d92b6767ce50
   branch: rails3
@@ -46,7 +55,9 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    mysql (2.8.1)
     mysql (2.8.1-x86-mingw32)
+    mysql2 (0.2.6)
     mysql2 (0.2.6-x86-mingw32)
     polyglot (0.3.1)
     rack (1.2.1)
@@ -68,16 +79,19 @@ GEM
       rake (>= 0.8.7)
       thor (~> 0.14.4)
     rake (0.8.7)
+    riddle (1.2.2)
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
 
 PLATFORMS
+  ruby
   x86-mingw32
 
 DEPENDENCIES
   mysql
   mysql2
   rails (= 3.0.3)
+  thinking-sphinx!
   will_paginate!

@@ -1,226 +1,282 @@
+{
+padding: 0;
+margin: 0;
+}
+
 body {
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size:   13px;
-  line-height: 18px;
-  text-align: center;
-  margin: 5px auto;
-  background-color: #000;
-  color: white;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size:   13px;
+    line-height: 18px;
+    text-align: center;
+    padding: 5px;
+    background-color: #000;
+    color: white;
 }
-
 input {
-    
 }
-
 #site {
     position: relative;
-    width: 990px;
+    width: 100%;
     text-align: left;
-    margin: 0 auto;
-    padding: 0;
-}
 
+}
 #logo {
     height: 50px;
     font-size: 40px;
     font-weight: bold;
     color: white;
     padding:30px 0 0 60px;
-    background-color: #808080;
-    border-radius: 10px; -webkit-border-radius: 10px; -khtml-border-radius: 10px; -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    -moz-border-radius: 10px;
 }
-
 pre {
-  background-color: #eee;
-  padding: 10px;
-  font-size: 11px;
+    background-color: #eee;
+    padding: 10px;
+    font-size: 11px;
 }
-
-a { color: white; font-weight: bold; text-decoration: none }
-a:visited { color: white; }
-a:hover { color: silver; background-color:#000; text-decoration: underline }
+a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none
+}
+a:visited {
+    color: white;
+}
+a:hover {
+    color: silver;
+    background-color:#000;
+    text-decoration: underline
+}
 a.red {
-    color: red
+    color: red;
+}
+#topMenu {
+
+}
+#topMenu li {
+    margin-left: 30px;
 }
 .fieldWithErrors {
-  padding: 2px;
-  background-color: red;
-  display: inline-block;
+    padding: 2px;
+    background-color: red;
+    display: inline-block;
 }
-
 #errorExplanation {
-  width: 400px;
-  border: 2px solid red;
-  padding: 7px;
-  padding-bottom: 12px;
-  margin-bottom: 20px;
-  background-color: lightcoral;
-  border-radius: 10px; -webkit-border-radius: 10px; -khtml-border-radius: 10px; -moz-border-radius: 10px;
+    width: 400px;
+    border: 2px solid red;
+    padding: 7px;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    background-color: lightcoral;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
 }
-
 #errorExplanation h2 {
-  text-align: left;
-  font-weight: bold;
-  padding: 5px 5px 5px 15px;
-  font-size: 12px;
-  margin: -7px;
-  background-color: #c00;
-  color: white;
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: -7px;
+    background-color: #c00;
+    color: white;
 }
-
 #errorExplanation p {
-  color: white;
-  margin-bottom: 0;
-  padding: 5px;
+    color: white;
+    margin-bottom: 0;
+    padding: 5px;
 }
-
 #errorExplanation ul li {
-  font-size: 12px;
-  list-style: square;
+    font-size: 12px;
+    list-style: square;
 }
-
 #flashNotice {
-  border-radius: 10px; -webkit-border-radius: 10px; -khtml-border-radius: 10px; -moz-border-radius: 10px;
-  background-color: #555;
-  color: lime;
-  width: 300px;
-  font-size: 20px;
-  font-weight: bold;
-  margin: 10px auto;
-  text-align: center;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-color: #555;
+    color: lime;
+    width: 300px;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px auto;
+    text-align: center;
 }
-
 #flashError {
-  border-radius: 10px; -webkit-border-radius: 10px; -khtml-border-radius: 10px; -moz-border-radius: 10px;
-  background-color: #555;
-  color: red;
-  width: 300px;
-  font-size: 20px;
-  font-weight: bold;
-  margin: 10px auto;
-  text-align: center;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-color: #555;
+    color: red;
+    width: 300px;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px auto;
+    text-align: center;
 }
-
 .list {
-    margin: 20px auto;
-    width: 640px;
+    width:100%;
+    background-color: #454545;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
+    margin-top: 10px;
 }
-
+.list thead {
+    background: black;
+    text-align: center;
+    font-size: 80%;
+    font-weight: bold;
+}
 .list td {
     padding: 5px;
 }
-
+.list tr:nth-child(even) {
+	background-color: #666666;
+}
 h1, .headField {
     font-size: 15px;
     font-weight: bold;
     padding: 10px;
-    margin: 10px;
+    margin: 0;
     background-color: #808080;
-    border-radius: 10px; -webkit-border-radius: 10px; -khtml-border-radius: 10px; -moz-border-radius: 10px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
 }
-
 .headField span {
     font-size: 11px;
     font-weight: normal;
 }
-
-.standardField {
+.standardField, .communicationsTable td:last-child {
     border: 1px solid black;
     background-color: #555;
     margin: 10px auto;
-    border-radius: 10px; -webkit-border-radius: 10px; -khtml-border-radius: 10px; -moz-border-radius: 10px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
     padding: 5px;
 }
-
 .selected {
     background-color: black;
 }
-
 .rejected {
     background-color: lightcoral;
 }
-
 .winner {
     background-color: yellowgreen;
 }
-
 .cycle {
     background-color: #444;
 }
-
-#leftMenu{
+#leftMenu {
     margin-top:30px;
     float: left;
     width: 250px;
 
 }
-#rightContent {
-    text-align:left;
-    margin-left: 250px;
-    width: 740px;
-}
-
 #content {
     text-align:left;
-    width: 990px;
 }
 .pagination {
     margin-top: 10px;
-    padding-bottom: 10px; background-color: silver;
+    padding-bottom: 10px;
+    background-color: silver;
 }
-
 #topMenu {
     float: right;
     margin-right: 20px;
     font-size:13px;
     color: coral;
     font-weight: normal;
-    
+
 }
 #topMenu ul li {
     float: left;
     margin-left: 10px;
     list-style: none;
 }
-
 .tdTitle {
-    font-weight: bold
+    font-weight: bold;
+    padding-right: 20px;
 }
-
 .auctionInfo {
-    width: 600px;
+    width: 500px;
 }
-
-.round {
-    border-radius: 10px; -webkit-border-radius: 10px; -khtml-border-radius: 10px; -moz-border-radius: 10px;
+.communicationsTable {
+    width: 100%;
 }
-
+.communicationsTable td:first-child {
+    width: 20%;
+}
+.round, .cell {
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
 .offerField {
-    float: right;
-    margin: 70px 120px 0;
+    vertical-align: top;
+    width: 200px;
+    padding: 20px;
+    text-align: center;
 }
-
-.offersList td{
+.offersList td {
     vertical-align: middle;
 }
+a.tagButton {
 
-a.tagButton{
-
-  padding: 6px;
-  display: inline-block;
-  border-radius: 3px; -webkit-border-radius: 3px; -khtml-border-radius: 3px; -moz-border-radius: 3px;
-  background-color: #808080;
-  border-color: #DDDDDD;
-  margin: 5px;
+    padding: 6px;
+    display: inline-block;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    -moz-border-radius: 3px;
+    background-color: #808080;
+    border-color: #DDDDDD;
+    margin: 5px;
 }
-a.tagButton:hover{
-  background-color: black;
-  text-decoration: none;
-  color: white;
+a.tagButton:hover {
+    background-color: black;
+    text-decoration: none;
+    color: white;
 }
-
 a.selectedTagButton, a.selectedTagButton:hover {
-  background-color: yellowgreen;
-  color: black;
+    background-color: yellowgreen;
+    color: black;
 }
+.table {
+    display: table;
+    border-spacing: 10px;
+}
+.cell {
+    display: table-cell;
+    padding: 2px;
+    text-align: justify;
+    *float: left;
+}
+.cell h2 {
 
+}
+.shadow {
+    color: white;
+    text-shadow: 3px 3px 0.1em orange, -3px -3px 0.1em orange;
+}
+.categoryList li {
+   margin-top: 10px;
+   text-align: left;
+}
+.categoryList {
+   display: table-cell;
+}
+.communicationsTable tr:last-child {
+
+}

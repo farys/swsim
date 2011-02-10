@@ -2,7 +2,8 @@ Inz::Application.routes.draw do
   resources :categories, :only => [:index, :show]
 
   resources :auctions, :except => [:delete, :index, :edit, :update] do
-    
+  	
+    resources :ratings, :only => [:index, :create]
     resources :offers, :only => [:new, :create]
     resources :communications, :only => [:new, :create]
     
@@ -21,9 +22,10 @@ Inz::Application.routes.draw do
   end
   
   resources :users, :destroy => :log_out do 
-    
+
     member do
-      get :panel
+     get :panel
+    # match "/panel(/:action)", :controller => "panel", :defaults => {:action => "index"}, :as => "panel_user"
     end
     
     resources :messages, :except => [:edit, :update] do
@@ -31,14 +33,16 @@ Inz::Application.routes.draw do
         get :reply
       end
     end
-    
   end
+  
+  #match "/panel(/:action)", :controller => "panel", :defaults => {:action => "index"} do
+    
+  #end
     
   resources :alerts, :only => [:create]
   
   root :to =>  "categories#index"
 
-  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

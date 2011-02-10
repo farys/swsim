@@ -4,6 +4,7 @@ class CreateAuctions < ActiveRecord::Migration
       t.references :category, :null => false
       t.integer :stage, :default => 1, :null => false
       t.integer :status, :default => 0, :null => false
+      t.integer :budget_id, :null => false
       t.references :owner, :null => false
       t.references :won_offer
       t.string :title, :null => false
@@ -11,6 +12,7 @@ class CreateAuctions < ActiveRecord::Migration
       
       t.timestamp :expired, :null => false
       t.integer :offers_count, :default => 0
+      t.integer :visits, :default => 0, :null => false
       
       t.timestamps
     end

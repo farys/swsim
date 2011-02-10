@@ -6,9 +6,13 @@ gem 'rails', '3.0.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem 'mysql'
 gem 'mysql2'
+
 gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
 
-
+gem 'thinking-sphinx',
+  :git     => 'git://github.com/freelancing-god/thinking-sphinx.git',
+  :branch  => 'rails3',
+  :require => 'thinking_sphinx'
 # Use unicorn as the web server
 # gem 'unicorn'
 

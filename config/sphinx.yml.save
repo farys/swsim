@@ -1,0 +1,13 @@
+#Sphinx config file
+
+development:
+  port: 9312
+  #query_log_file: "RAILS_ROOT/log/searchd.query.log"
+  mem_limit: 256M #domyslnie pracuje przy uzyciu 64 MB, kopsnijmy mu troszke wiecej
+  max_matches: 200 #domyslnie wyszukuje pierwsze 1000 rekordow, niech nam tak nie szaleje
+"
+test:
+
+
+production:
+

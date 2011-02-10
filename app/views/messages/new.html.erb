@@ -2,11 +2,13 @@
 <h1>Nowa wiadomość do <%= @message.receiver.name %></h1>
 
 <div class="standardField" style="width:950px;padding:30px;margin: 10px auto">
+<p>Do: <%= @message.receiver.name %></p>
+<p>Od: <%= @message.author.name %></p>
 <% form_for [@logged_user, @message] do |f| %>
 <% unless @reply_message.nil? %><%= hidden_field_tag :reply_message_id, @reply_message.id %><% end %>
 <%= f.hidden_field :receiver_id %>
 <%= f.hidden_field :author_id %>
-<%= f.error_messages %>
+<%= render "layouts/error_messages", :target => @message %>  
 
 <p>
   <%= f.label :topic, 'Temat' %><br />

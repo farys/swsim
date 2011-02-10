@@ -6,7 +6,7 @@ class OffersController < ApplicationController
     @offer.offerer = @logged_user
     
     if @offer.save
-      flash[:notice] = "Oferta została złożona!"
+      flash[:notice] = "Oferta zostala zlozona!"
       redirect_to @offer.auction
     end
   end

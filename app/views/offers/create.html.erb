@@ -4,7 +4,7 @@
 <div class="standardField" style="width:400px;padding:30px;margin: 10px auto">
 <% form_for [@offer.auction, @offer] do |f| %>
 
-<%= f.error_messages %>
+<%= render "layouts/error_messages", :target => @offer %>
   <style type="text/css">
     input {
       width:30px

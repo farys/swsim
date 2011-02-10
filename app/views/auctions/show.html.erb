@@ -1,16 +1,49 @@
-<% content_for :head, javascript_include_tag('jquery-1.4.2.min.js') %>
+<% content_for :head do -%>
+<%= javascript_include_tag 'jquery.rating.js' %>
+<%= stylesheet_link_tag 'jquery.rating' %>
+	<script type="text/javascript">
+		rated = <%= @rated %>;
+
+		$(document).ready(function(){
+			$(".star").rating({
+				callback: function(value)
+				{
+					$.ajax({
+						type: "POST",
+						url: "<%= auction_ratings_url(@auction) %>",
+						data: "value="+value,
+						success: function(response){
+							if(response == "rated") alert("Głosowałeś już wcześniej");
+							if(response == "log_in") alert("Aby zagłosować musisz być zalogowany");
+							$(".star").rating('readOnly',true);
+						}
+					}); 
+				}
+			});
+			
+			$(".star").rating("select", '<%= @auction.rating || 0 %>', false);
+			
+			if(rated){
+				$(".star").rating('readOnly',true);
+			}
+		});
+	</script>
+<% end -%>
+
 <% content_for :title, @auction.title %>
 <div class="headField">
   <h1 style="display:inline;font-size:15px"><%=  @auction.title %></h1>
   (<h2 style="font-size:10px;display: inline"><%=raw @auction.category.parent_links.collect{|l| link_to l.parent.name, l.parent}.join(" > ") %></h2>)
 </div>
-
-<table style="float:left; margin-left: 10px" class="standardField auctionInfo">
+<h2>Informacje o aukcji</h2>
+<div class="table">
+<table style="float:left; margin-left: 10px" class="cell auctionInfo">
   <tr><td class="tdTitle">Terminy</td>
     <td>
       <p>Utworzona: <%= escape_time(@auction.created_at) %></p>
       <p>Do końca: <span style="font-weight:bold"><%= distance_of_time_in_words @auction.expired.to_i, Time.now.to_i %></span> (<%= escape_time(@auction.expired) %>)</p>
-    </td></tr>
+    </td>
+  </tr>
   <tr><td class="tdTitle">Zleceniodawca</td>
     <td>
       <p style="font-weight:bold"><%= @auction.owner.login %></p>
@@ -20,8 +53,12 @@
     <td>
       <p>Liczba ofert: <%= @auction.offers.latest.count %></p>
       <p>Etap: <span style="font-weight:bold"><%= @auction.stage %></span></p>
+      <p>Budżet: <span style="font-weight:bold"><%= Budget.find(@auction.budget_id).to_s %></span></p>
+      <% #@rating = AuctionRating.new :auction_id => @auction.id %>
+      <p>Ocena: <% form_for auction_ratings_path(@auction, @auction.rating_values.new) do |f| %><%= f.hidden_field :auction_id %><% for i in 1..15 %><%= radio_button :auction_rating, :value, i, :class => "star", :title => i.to_f/3 %><% end %><% end %></p>
     </td></tr>
-<tr><td class="tdTitle">Administracja</td>
+<!--
+  <tr><td class="tdTitle">Administracja</td>
     <td>
       <p><%= link_to "Zgłoś nieprawidłowość", '#', :onclick => '$("#alertDiv").toggle()' %></p>
       <div id="alertDiv" style="display: none">
@@ -35,36 +72,56 @@
         <% end %>
       </div>
     </td></tr>
+    -->
 </table>
 
 <% if @auction.allowed_to_offer?(@logged_user) %>
-<div class="standardField offerField">
-  <p class="headField">Licytacja</p>
+<div class="cell" style="vertical-align: middle">
+  <div class="standardField offerField">
+  <h2><a class="headField" href="#" onclick="$('#new_offer_div').slideToggle(400);return false">Złóż nową ofertę</a></h2>
+  <div id="new_offer_div" style="display: none">
   <% form_for [@auction, @auction.offers.new] do |offer| %>
-    <%= offer.label :price, 'Kwota' %>: <%= offer.text_field :price, :style => 'width:30px' %> PLN<br /><br />
-    <%= offer.label :hours, 'Czas' %>: <%= offer.text_field :hours, :style => 'width:30px' %> godz<br /><br />
+  <table style="margin: 10px auto">
+    <tr>
+      <td><%= offer.label :price, 'Kwota' %>:</td>
+      <td><%= offer.text_field :price, :style => 'width:30px' %> PLN</td>
+    </tr>
+    <tr>
+      <td style="padding-top: 20px"><%= offer.label :hours, 'Czas' %>:</td>
+      <td style="padding-top: 20px"><%= offer.text_field :hours, :style => 'width:30px' %> godz</td>
+    </tr>
     <%= offer.hidden_field :auction_id %>
+  </table>
     <%= offer.submit 'Licytuj!', :style => 'display:block;margin: 0 auto', :confirm => "Potwierdź swoją licytację" %>
   <% end %>
+  </div>
+  </div>
 </div>
 <% end %>
 <% if @auction.made_offer?(@logged_user) %>
-<p class="offerField standardField" style="padding: 5px;margin: 100px 40px 0 0">Twoja aktualna oferta została już przyjęta.</p>
+<div class="cell offeredInfoText">Twoja aktualna oferta została już przyjęta.</div>
 <% end %>
+</div>
 <div style="clear: both"> </div>
-<div style="width:900px;margin: 20px auto; padding-bottom: 20px;background-color:white;color: black" class="standardField"><%= @auction.description %></div>
+<h2>Opis zlecenia</h2>
+<div style="width:900px;margin: 20px auto; padding: 20px;background-color:#ddd;color: black" class="standardField"><%= @auction.description %></div>
 
 <% if @auction.communications.size > 0 %>
-<p class="headField">Komunikaty</p>
-<% stage = 0 %>
+<h2>Komunikaty</h2>
+  <table class="communicationsTable">
+    <tbody>
   <% @auction.communications.each do |msg| %>
-<% unless stage.eql?(msg.stage) %><p class="standardField">Etap <%= msg.stage %></p><% stage = msg.stage %><% end %>
-  <div style="width:900px;margin: 20px auto; padding-bottom: 20px;background-color:white;color: black" class="standardField"><div class="standardField" style="color: white">Nadano <%= escape_time(msg.created_at) %></div><%= msg.body %></div>
+      <tr>
+        <td>Etap <%= msg.stage %>, nadano <%= escape_time(msg.created_at) %></td>
+        <td><%= msg.body %></td>
+      </tr>
   <%  end %>
+  </tbody>
+  </table>
 <% end %>
 
 <% if @auction.offers.latest.count > 0 %>
-<p class="headField">Oferty</p>
+<h2 style="margin-top: 10px">Oferty</h2>
  <table style="width:600px;margin: 0 auto" class="standardField offersList">
   <thead>
     <tr class="headField">

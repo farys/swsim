@@ -10,9 +10,12 @@ class CreateTags < ActiveRecord::Migration
       t.references :auction
     end
     
+    add_index :auctions_tags, [:tag_id, :auction_id], :unique => true
+    
   end
 
   def self.down
+  	remove_index :auctions_tags, [:tag_id, :auction_id]
     drop_table :tags
     drop_table :auctions_tags
   end

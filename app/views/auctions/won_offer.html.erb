@@ -4,7 +4,7 @@
 <div class="standardField" style="width:900px;padding:30px;margin: 10px auto">
 <% form_for [:update_won_offer, @auction] do |f| %>
 
-<%= f.error_messages %>
+<%= render "layouts/error_messages", :target => @auction %>
 
   <%= f.label :won_offer_id, 'Która oferta zwycięża ?' %><br /><br />
   <table>
@@ -23,8 +23,10 @@
       <% @auction.offers.latest.each do |offer| %>
     <% i += 1 %>
     <% html = case
-    when offer.status == Offer::STATUS_REJECTED: 'rejected'
-    when i%2 < 1: 'cycle'
+    when offer.status == Offer::STATUS_REJECTED
+      'rejected'
+    when i%2 < 1
+      'cycle'
     end
       %>
         <tr<% unless html.nil? %> class="<%= html %>"<% end %>>
@@ -36,7 +38,7 @@
           <%= offer.offerer.name %><% if offer.offerer_type == 'Team' %> (zespół)<% end %>
           </td>
           <td><%= offer.stage %></td>
-          <td><%= escape_time(offer.created_at) %></td>
+          <td><%=raw escape_time(offer.created_at) %></td>
         </tr>
 <% end %>
   </tbody>

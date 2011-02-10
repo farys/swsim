@@ -1,31 +1,43 @@
 <% content_for :title, "Nowa aukcja" %>
+<% content_for :head, stylesheet_link_tag('form') %>
 <h1>Nowa aukcja</h1>
 
 <div class="standardField" style="width:950px;padding:30px;margin: 10px auto">
-<% form_for @auction do |f| %>
+  <% form_for @auction do |f| -%>
 
-<%= render "layouts/error_messages", :target => @auction %>  
+    <%= render "layouts/error_messages", :target => @auction %>  
 
-<p>
-  Przynależność do kategorii<br />
-<%= select_tag "auction[category_id]", options_for_select(@categories_to_list) %>
-</p>
-<p>
-  Tytuł aukcji<br />
-<%= f.text_field :title %>
-</p>
-<p>
-  Opis aukcji<br />
-<%= f.text_area :description, :class => "mceEditor" %>
-</p>
+  <p>Przynależność do kategorii<br /> 
+    <%= select_tag "auction[category_id]", options_for_select(@categories_to_list, @auction.category_id) %>
+  </p>
 
-<p>
-  Czas trwania aukcji<br />
-<%= f.select :expired_after, options_for_select((1..15).to_a, @auction.expired_after.to_i) %> dni
-</p>
+  <p>
+    Tytuł aukcji<br />
+    <%= f.text_field :title %>
+  </p>
+  
+  <p>
+    Opis zlecenia<br />
+    <%= f.text_area :description, :class => "mceEditor" %>
+  </p>
 
-<br />
-<%= f.submit "Publikuj" %>
-<% end %>
+  <p>
+    Określ budżet jaki ma być przeznaczony na to zlecenie :
+    <%= select("auction", "budget_id", Budget.all.collect {|p| [ p.to_s, p.id ] }, { :include_blank => 'wybierz przedział' }) %>
+  </p>
+ 
+  <p>
+    Czas trwania aukcji 
+    <%= f.text_field :expired_after, :size => 2 %> dni (1-14 dni)
+  </p>
+  
+  <h2>Tagi</h2>
+    <%= render :partial => "layouts/clickable_tags", :locals => {:tags => @tags, :show_tags => true, :selected_tags => []} %>
+    <p style="font-size: 85%">Wybranie niepasujących tagów może zaważyć na niekorzystnej ocenie aukcji.</p>
+  
+
+  <br />
+    <%= f.submit "Publikuj" %>
+  <% end -%>
 </div>
 

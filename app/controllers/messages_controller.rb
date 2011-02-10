@@ -1,9 +1,4 @@
 class MessagesController < ApplicationController
-  uses_tiny_mce :options => {
-    :theme => 'advanced',
-    :plugins => %w{ table fullscreen },
-    :width => '900px'
-  }
   
   def show
     @message = Message.find(
@@ -26,7 +21,7 @@ class MessagesController < ApplicationController
     if params.has_key?(:reply_message_id)
       @reply_message = @logged_user.received_messages.find(params[:reply_message_id])
       @message.topic = 'Re: '+@reply_message.topic
-      @message.body = '<br /><br />'+@reply_message.author.name+' napisał: <br />'+@reply_message.body
+      @message.body = '<br /><br />'+@reply_message.author.name+' napisal: <br />'+@reply_message.body
     end
     @message.receiver = @receiver
   end
@@ -41,7 +36,7 @@ class MessagesController < ApplicationController
         @msg.status = Message::REPLIED
         @msg.save
       end
-      flash[:notice] = 'Wiadomość została wysłana'
+      flash[:notice] = 'Wiadomosc zostala wyslana'
       redirect_to panel_user_path(@logged_user)
     else
       render :new

@@ -1,21 +1,20 @@
 <% content_for :title, @category.parent_links.collect{|l| l.parent.name }.join(' > ') %>
-
-<div id="leftMenu" class="standardField">
-    <p class="headField">Kategorie</p>
-    <ul>
-
-    <% @menu_categories.each do |category| %>
-    <% category.links.each do |l| %>
-    <li style="margin-left:<%=  l.level*20 %>px"><%= link_to l.category.name, l.category %></li>
-    <% end %>
+<h1><%=raw @category.parent_links.collect{|l| link_to l.parent.name, l.parent}.join(' > ') %></h1>
+<div class="table">
+<div class="cell">
+    <h2>Kategorie</h2>
+    <ul class="categoryList">
+      <% @menu_categories.each do |category| %>
+      <% category.links.each do |l| %>
+      <li style="margin-left:<%=  l.level*20 %>px"><%= link_to l.category.name, l.category %></li>
+      <% end %>
     <% end %>
     </ul>
+</div>
 
-  </div>
-
-<div id="rightContent" style="padding: 10px">
-<h1 style="margin: 10px"><%=raw @category.parent_links.collect{|l| link_to l.parent.name, l.parent}.join(' > ') %></h1>
+<div class="cell" style="width: 100%;padding: 0 20px 0 20px">
 
 <%= render :partial => '/layouts/auctions_list', :locals => {:auctions => @auctions} %>
 
+</div>
 </div>

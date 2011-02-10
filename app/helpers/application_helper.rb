@@ -4,4 +4,8 @@ module ApplicationHelper
     t = (time_new_line)? '<br />' : ''
     date.strftime('%a %d-%m-%Y' + t + ' %H:%M')
   end
+  
+  def escape_date(date = DateTime.now)
+    date.strftime('%d-%m-%Y')
+  end
 end

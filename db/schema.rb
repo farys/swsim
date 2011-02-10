@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100901071804) do
+ActiveRecord::Schema.define(:version => 20110207085708) do
 
   create_table "alerts", :force => true do |t|
     t.integer  "author_id",  :null => false
@@ -20,28 +20,44 @@ ActiveRecord::Schema.define(:version => 20100901071804) do
     t.datetime "updated_at"
   end
 
+  create_table "auction_ratings", :id => false, :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.integer  "auction_id", :null => false
+    t.float    "value",      :null => false
+    t.datetime "created_at"
+  end
+
+  add_index "auction_ratings", ["user_id", "auction_id"], :name => "index_auction_ratings_on_user_id_and_auction_id", :unique => true
+
   create_table "auctions", :force => true do |t|
-    t.integer  "category_id",                 :null => false
-    t.integer  "stage",        :default => 1, :null => false
-    t.integer  "status",       :default => 0, :null => false
-    t.integer  "owner_id",                    :null => false
+    t.integer  "category_id",                  :null => false
+    t.integer  "stage",         :default => 1, :null => false
+    t.integer  "status",        :default => 0, :null => false
+    t.integer  "budget_id",                    :null => false
+    t.integer  "owner_id",                     :null => false
     t.integer  "won_offer_id"
-    t.string   "title",                       :null => false
-    t.text     "description",                 :null => false
-    t.datetime "expired",                     :null => false
-    t.integer  "offers_count", :default => 0
+    t.string   "title",                        :null => false
+    t.text     "description",                  :null => false
+    t.datetime "expired",                      :null => false
+    t.integer  "offers_count",  :default => 0
+    t.integer  "visits",        :default => 0, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "ratings_sum",   :default => 0
+    t.integer  "ratings_count", :default => 0
   end
 
   create_table "auctions_tags", :id => false, :force => true do |t|
-    t.integer "tag_id",     :null => false
-    t.integer "auction_id", :null => false
+    t.integer "tag_id"
+    t.integer "auction_id"
   end
 
+  add_index "auctions_tags", ["tag_id", "auction_id"], :name => "index_auctions_tags_on_tag_id_and_auction_id", :unique => true
+
   create_table "categories", :force => true do |t|
-    t.string   "name",       :null => false
+    t.string   "name",                          :null => false
     t.integer  "parent_id"
+    t.integer  "auctions_count", :default => 0, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
