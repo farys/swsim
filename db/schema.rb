@@ -30,17 +30,17 @@ ActiveRecord::Schema.define(:version => 20110207085708) do
   add_index "auction_ratings", ["user_id", "auction_id"], :name => "index_auction_ratings_on_user_id_and_auction_id", :unique => true
 
   create_table "auctions", :force => true do |t|
-    t.integer  "category_id",                  :null => false
-    t.integer  "stage",         :default => 1, :null => false
-    t.integer  "status",        :default => 0, :null => false
-    t.integer  "budget_id",                    :null => false
-    t.integer  "owner_id",                     :null => false
+    t.integer  "category_id",                      :null => false
+    t.boolean  "private",       :default => false, :null => false
+    t.integer  "status",        :default => 0,     :null => false
+    t.integer  "budget_id",                        :null => false
+    t.integer  "owner_id",                         :null => false
     t.integer  "won_offer_id"
-    t.string   "title",                        :null => false
-    t.text     "description",                  :null => false
-    t.datetime "expired",                      :null => false
+    t.string   "title",                            :null => false
+    t.text     "description",                      :null => false
+    t.datetime "expired",                          :null => false
     t.integer  "offers_count",  :default => 0
-    t.integer  "visits",        :default => 0, :null => false
+    t.integer  "visits",        :default => 0,     :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "ratings_sum",   :default => 0
@@ -97,13 +97,13 @@ ActiveRecord::Schema.define(:version => 20110207085708) do
 
   create_table "communications", :force => true do |t|
     t.integer  "auction_id", :null => false
-    t.integer  "stage",      :null => false
     t.text     "body",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "messages", :force => true do |t|
+    t.integer  "owner_id",                   :null => false
     t.integer  "author_id",                  :null => false
     t.integer  "receiver_id",                :null => false
     t.integer  "status",      :default => 2, :null => false

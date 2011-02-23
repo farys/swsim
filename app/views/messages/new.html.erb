@@ -1,13 +1,14 @@
-<% content_for :title, "Nowa wiadomość do " + @message.receiver.name %>
-<h1>Nowa wiadomość do <%= @message.receiver.name %></h1>
+<% content_for :title, "Nowa wiadomość do " + @receiver.to_s %>
+<h1>Nowa wiadomość do <%= @receiver %></h1>
 
 <div class="standardField" style="width:950px;padding:30px;margin: 10px auto">
-<p>Do: <%= @message.receiver.name %></p>
-<p>Od: <%= @message.author.name %></p>
-<% form_for [@logged_user, @message] do |f| %>
-<% unless @reply_message.nil? %><%= hidden_field_tag :reply_message_id, @reply_message.id %><% end %>
+<p>Do: <%= @receiver %></p>
+<p>Od: <%= @logged_user %></p>
+<% form_for [@receiver, @message] do |f| %>
+
+<% unless @old_message.nil? %><%= hidden_field_tag :reply_message_id, @old_message.id %><% end %>
+
 <%= f.hidden_field :receiver_id %>
-<%= f.hidden_field :author_id %>
 <%= render "layouts/error_messages", :target => @message %>  
 
 <p>

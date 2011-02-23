@@ -3,6 +3,7 @@ class CreateAlerts < ActiveRecord::Migration
     create_table :alerts do |t|
       t.references :author, :null => false
       t.references :reader
+      t.references :model, :polymorphic => true
       t.text :text, :length => 500
 
       t.timestamps

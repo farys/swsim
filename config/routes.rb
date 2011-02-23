@@ -1,19 +1,12 @@
 Inz::Application.routes.draw do
+
+  #DEFAULT
   resources :categories, :only => [:index, :show]
 
-  resources :auctions, :except => [:delete, :index, :edit, :update] do
-  	
+  resources :auctions, :only => [:show] do
+    
     resources :ratings, :only => [:index, :create]
     resources :offers, :only => [:new, :create]
-    resources :communications, :only => [:new, :create]
-    
-    member do
-      get :won_offer 
-      get :stage
-      put :update_won_offer
-      post :update_stage
-      get :cancel
-    end
     
     collection do
       get :search
@@ -21,23 +14,34 @@ Inz::Application.routes.draw do
     end
   end
   
-  resources :users, :destroy => :log_out do 
-
-    member do
-     get :panel
-    # match "/panel(/:action)", :controller => "panel", :defaults => {:action => "index"}, :as => "panel_user"
+  resources :users do
+    resources :messages, :only => [:new, :create]
+  end
+  
+  # PANEL
+  namespace :panel do
+    
+    resources :auctions, :except => [:show] do
+      resources :communications, :only => [:new, :create]
+      resources :offers, :only => [:destroy]
     end
     
-    resources :messages, :except => [:edit, :update] do
+    resources :offers, :only => [:index] do
+      member do
+        post :to_reject
+      end
+    end
+    
+    resources :messages, :only => [:index, :show, :destroy] do
       member do
         get :reply
       end
+      
+      collection do
+        get :sent
+      end
     end
   end
-  
-  #match "/panel(/:action)", :controller => "panel", :defaults => {:action => "index"} do
-    
-  #end
     
   resources :alerts, :only => [:create]
   

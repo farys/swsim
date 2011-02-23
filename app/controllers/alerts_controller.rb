@@ -1,6 +1,5 @@
 class AlertsController < ApplicationController
   def create
-    params[:alert][:text] = params[:pre_text] + params[:alert][:text]
     @alert = Alert.new params[:alert]
     
     if @alert.save

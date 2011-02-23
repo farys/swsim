@@ -1,0 +1,41 @@
+<div class="headField">Twoje <%= @title %> oferty
+  <span>
+    (<%= raw link_to 'wszystkie', panel_offers_path %>,
+  <%= raw link_to 'biorące udział', panel_offers_path(:status => Offer::STATUS_NORMAL) %>,
+  <%= raw link_to 'odrzucone', panel_offers_path(:status => Offer::STATUS_REJECTED) %>,
+  <%= raw link_to 'wygrane', panel_offers_path(:status => Offer::STATUS_WON) %>)</span>
+</div>
+<% unless @offers.empty? %>
+<table class="list">
+  <thead>
+    <tr>
+      <td style="width:40%">aukcja</td>
+      <td>wycena</td>
+      <td>wystawiona</td>
+      <td>status</td>
+    </tr>
+  </thead>
+  <tbody>
+<% @offers.each do |offer| %>
+    <tr>
+      <td><%= link_to offer.auction.title, offer.auction %></td>
+      <td><%= offer.price %>zł / <%= offer.hours %>godz.</td>
+      <td><%=raw escape_time(offer.created_at) %></td>
+      <td>
+        <%= case offer.status
+      when Offer::STATUS_NORMAL
+        'wystawiona'
+      when Offer::STATUS_REJECTED
+         'odrzucona'
+      when Offer::STATUS_WON
+        'wygrana!'
+      end
+    %>
+      </td>
+    </tr>
+<% end %>
+    </tbody>
+</table>
+<% else %>
+brak
+<% end %>

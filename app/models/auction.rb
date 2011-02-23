@@ -1,17 +1,11 @@
 class Auction < ActiveRecord::Base
-  STATUS_STAGES = 0
+  STATUS_ONLINE = 0
   STATUS_CANCELED = 1
   STATUS_FINISHED = 2
-  PUBLIC_AUCTIONS_CONDITIONS = 'status = '+Auction::STATUS_STAGES.to_s+' AND stage = 1'
-  
-  #is_indexed :fields => [:title, :description, :expired],  
-  #:concatenate => [{:association_name => :tags, :field => :id, :as => :tags_ids, :association_sql => 'LEFT OUTER JOIN auctions_tags ON (auctions_tags.auction_id=auctions.id) LEFT OUTER JOIN tags ON (tags.id=auctions_tags.tag_id)'}],
-  #:conditions => Auction::PUBLIC_AUCTIONS,
-  #:delta => {:field => 'expired'}
   
   belongs_to :category, :counter_cache => true
   belongs_to :owner, :class_name => 'User'
-  belongs_to :won_offer, :class_name => 'Offer', :include => [:offerer]
+  belongs_to :won_offer, :class_name => 'Offer', :include => [:offerer] #has_one_and_belongs_to?
   has_many :offers, :dependent => :destroy
   has_many :communications, :dependent => :delete_all, :order => 'id DESC'
   has_and_belongs_to_many :tags
@@ -24,67 +18,69 @@ class Auction < ActiveRecord::Base
     indexes :expired
     indexes tags(:id), :as => :tags_ids
     
-    where Auction::PUBLIC_AUCTIONS_CONDITIONS
+    where 'status = '+Auction::STATUS_ONLINE.to_s+' AND private = 0'
   end
 
-  validates_presence_of :title
-  validates_presence_of :description
-  validates_inclusion_of :status, :in => [0, 1, 2]
+  validates :title, :presence => true
+  validates :description, :presence => true
+  validates_inclusion_of :status, :in => [Auction::STATUS_ONLINE, Auction::STATUS_CANCELED, Auction::STATUS_FINISHED]
   validates_inclusion_of :budget_id, :in => Budget.ids
   validates_associated :category, :owner
   
-  scope :has_tags, lambda {|tags| {:conditions => ['id in (SELECT auction_id FROM auctions_tags WHERE tag_id in (?))', tags.join(',')]}}
+  scope :has_tags, lambda { |tags| {:conditions => ['id in (SELECT auction_id FROM auctions_tags WHERE tag_id in (?))', tags.join(',')]}}
+  scope :with_status, lambda { |status| where(:status => status)}
+  scope :online, lambda { where(:status => Auction::STATUS_ONLINE)}
+  scope :public, lambda { where(:private => false)}
+  scope :in_categories, lambda {|categories_ids| where(:category_id => categories_ids)}
+  
+  before_validation :init_auction_row, :on => :create
+  before_update :won_offer_choosed, :if => ->{ self.won_offer_id_changed? }
+  before_update :status_changed, :if => ->{ self.status_changed? }
   
   #create form
   attr_accessor :expired_after
   validates_inclusion_of :expired_after, :in => (1..14).to_a.collect{|d| d.to_s}, :on => :create
   
-  before_validation :init_auction_row, :on => :create
-  def init_auction_row
-    self.expired = DateTime.now + self.expired_after.to_i.days
-    self.status = Auction::STATUS_STAGES
-  end
-
-  before_update :won_offer_choosed, :if => ->{ self.won_offer_id_changed? }
-  def won_offer_choosed
-    if self.won_offer_id_changed?
-      self.status = Auction::STATUS_FINISHED 
-      self.offers.latest.stay_on [self.won_offer_id]
-    end
+  def to_s
+    self.title
   end
   
-  before_update :status_changed, :if => ->{ self.status_changed? }
+  def init_auction_row
+    self.expired = DateTime.now + self.expired_after.to_i.days
+    self.status = Auction::STATUS_ONLINE
+  end
+
+  def won_offer_choosed
+    self.status = Auction::STATUS_FINISHED 
+  end
+  
   def status_changed
     self.category.decrement! :auctions_count
     self.expired = DateTime.now
   end
 
   def self.from_category(category, page = 1, per_page = 15, order = 'expired ASC')
-    paginate(
-      :page => page,
-      :order => order,
-      :per_page => per_page,
-      :conditions => ['category_id in (?) AND '+Auction::PUBLIC_AUCTIONS_CONDITIONS, category.links.collect {|l| l.category_id}],
-      :include => :offers
-      )
+    self.in_categories(category.links.collect {|l| l.category_id})
+    .online.public.order(order).includes([:offers])
+    .paginate(:page => page, :per_page => per_page)
   end
 
-  #czy oferent moze zlozyc oferte
+  #czy uzytkownik moze zlozyc oferte
   def allowed_to_offer? user
     return false if self.owner.eql?(user)
 
     #todo dwa razy .count czy raz .all?
-    offers = self.offers.latest.select {|offer| offer.offerer.eql?(user)}
+    offers = self.offers.select {|offer| offer.offerer.eql?(user)}
 
     #niepotrzebne ale w wiekszosci przypadkow zakonczy sprawdzanie przed czasem
-    return true if self.stage == 1 && offers.empty?
-    return false if self.stage > 1 && offers.empty?
+    return true if is_public? && offers.empty?
 
-    offers.each do |offer|
-      return false if offer.stage == self.stage || offer.status == Offer::STATUS_REJECTED
-    end
-
-    true
+    #jesli zaproszony do aukcji
+    false
+  end
+  
+  def rate user, value
+    self.rating_values.create :value => value, :user => user
   end
   
   #oblicza srednia ocene aukcji, jesli aukcja nie zostala jeszcze oceniona to metoda zwroci nil
@@ -93,28 +89,40 @@ class Auction < ActiveRecord::Base
   	return nil
   end
 
-  #czy oferent jest uprawniony do ogladania aukcji
-  def allowed_to_see? offerer
-    self.offers.latest.each{|offer| return true if offer.offerer.eql?(offerer) && offer.rejected == 0}
+  def rated_by? user
+    if self.rating_values.where("user_id=?", user.id).exists?
+      true
+    else
+      false
+    end
+  end
+  
+  #czy uzytkownik jest wlascicielem aukcji
+  def is_owner? user
+    self.owner.eql?(user)
+  end
+  
+  #czy aukcja jest publiczna
+  def is_public?
+    private == false
+  end
+  
+  #czy uzytkownik jest uprawniony do ogladania aukcji
+  def is_allowed_to_see? user
+    return true if is_public? || self.is_owner?(user)
+    return false if (not is_public?) && user.eql?(nil)
+
+    #sprawdzanie czy uzytkownik bierze udział w licytacji jesli jest wyzszy etap aukcji
+    self.offers.latest.each{|offer| return true if offer.offerer.eql?(user) && offer.rejected == 0}
     false
   end
 
   #czy oferent złożył już oferte na aktualnym etapie
   def made_offer? offerer
-      not self.offers.latest.select {|offer| offer.offerer.eql?(offerer) && offer.stage == self.stage}.empty?
+      not self.offers.select {|offer| offer.offerer.eql?(offerer)}.empty?
   end  
-
-##
-# Przenosi aukcje do nastepnego etapu , zmiany zostaja zapisane, zwraca true/false
-# offers_ids id ofert ktore przechodza do kolejnego etapu
-##
-  def to_next_stage offers_ids
-    self.offers.latest.stay_on(offers_ids)
-    self.stage += 1
-    self.save
-  end
   
-  def self.searchBySphinx(query = '', search_in_description = false, tags_ids = [], budgets_ids = [], page = 1, per_page = 15)
+  def self.search_by_sphinx(query = '', search_in_description = false, tags_ids = [], budgets_ids = [], page = 1, per_page = 15)
 
     unless search_in_description || query.length == 0
       query = '@title ' + query
@@ -139,7 +147,7 @@ class Auction < ActiveRecord::Base
     #  :sort_mode => 'relevance',
     #}
     #Ultrasphinx::Search.new(options).run
-    Rails.logger.info "ZAPYTANIE: "+query
+    #Rails.logger.info "ZAPYTANIE: "+query
 
     Auction.search query, 
       :field_weights => {:tags_ids => 3, :title => 2, :description => 1},

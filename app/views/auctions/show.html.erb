@@ -47,12 +47,12 @@
   <tr><td class="tdTitle">Zleceniodawca</td>
     <td>
       <p style="font-weight:bold"><%= @auction.owner.login %></p>
-      <% if @logged_user.id != @auction.owner.id %><p><%= link_to 'Wyślij wiadomość', new_user_message_path(@logged_user, :receiver_id => @auction.owner.id) %></p><% end %>
+      <% if (not @logged_user.nil?) && @logged_user.id != @auction.owner.id %><p><%= link_to 'Wyślij wiadomość', new_user_message_path(@auction.owner) %></p><% end %>
     </td></tr>
   <tr><td class="tdTitle">Informacje</td>
     <td>
-      <p>Liczba ofert: <%= @auction.offers.latest.count %></p>
-      <p>Etap: <span style="font-weight:bold"><%= @auction.stage %></span></p>
+      <p>Liczba ofert: <%= @auction.offers.count %></p>
+      <p>Typ aukcji: <span style="font-weight:bold">aukcja <% if @auction.is_public? %>publiczna<% else %>prywatna<% end %></span></p>
       <p>Budżet: <span style="font-weight:bold"><%= Budget.find(@auction.budget_id).to_s %></span></p>
       <% #@rating = AuctionRating.new :auction_id => @auction.id %>
       <p>Ocena: <% form_for auction_ratings_path(@auction, @auction.rating_values.new) do |f| %><%= f.hidden_field :auction_id %><% for i in 1..15 %><%= radio_button :auction_rating, :value, i, :class => "star", :title => i.to_f/3 %><% end %><% end %></p>
@@ -104,7 +104,7 @@
 </div>
 <div style="clear: both"> </div>
 <h2>Opis zlecenia</h2>
-<div style="width:900px;margin: 20px auto; padding: 20px;background-color:#ddd;color: black" class="standardField"><%= @auction.description %></div>
+<div style="padding: 20px;border:0;text-align: left" class="standardField"><%= @auction.description %></div>
 
 <% if @auction.communications.size > 0 %>
 <h2>Komunikaty</h2>
@@ -112,7 +112,7 @@
     <tbody>
   <% @auction.communications.each do |msg| %>
       <tr>
-        <td>Etap <%= msg.stage %>, nadano <%= escape_time(msg.created_at) %></td>
+        <td>nadano <%= escape_time(msg.created_at) %></td>
         <td><%= msg.body %></td>
       </tr>
   <%  end %>
@@ -120,7 +120,7 @@
   </table>
 <% end %>
 
-<% if @auction.offers.latest.count > 0 %>
+<% if @auction.offers.count > 0 %>
 <h2 style="margin-top: 10px">Oferty</h2>
  <table style="width:600px;margin: 0 auto" class="standardField offersList">
   <thead>
@@ -128,13 +128,12 @@
       <td>kwota</td>
       <td>czas</td>
       <td>wykonawca</td>
-      <td>etap</td>
       <td>data</td>
     </tr>
   </thead>
   <tbody>
     <% i = 0 %>
-<% @auction.offers.latest.each do |offer| %>
+<% @auction.offers.each do |offer| %>
     <% i += 1 %>
     <% html = case
     when offer.status == Offer::STATUS_REJECTED
@@ -153,9 +152,8 @@
           <td><%= offer.hours %> godz.</td>
           <td style="text-align: center">
             <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
-          <%= offer.offerer.name %><% if offer.offerer_type == 'Team' %> (zespół)<% end %>
+          <%= offer.offerer %>
           </td>
-          <td><%= offer.stage %></td>
           <td><%= escape_time(offer.created_at) %></td>
         </tr>
 <% end %>

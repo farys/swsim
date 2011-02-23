@@ -2,7 +2,7 @@ class CreateAuctions < ActiveRecord::Migration
   def self.up
     create_table :auctions do |t|
       t.references :category, :null => false
-      t.integer :stage, :default => 1, :null => false
+      t.boolean :private, :default => 0, :null => false
       t.integer :status, :default => 0, :null => false
       t.integer :budget_id, :null => false
       t.references :owner, :null => false

@@ -1,10 +1,15 @@
 <ul>
   <li><%= link_to 'Strona główna', categories_path %></li>
   <li><%= link_to 'Szukaj', search_auctions_path %>
-  <li><%= link_to 'Nowa aukcja', new_auction_path %></li>
+  <li><%= link_to 'Nowa aukcja', new_panel_auction_path %></li>
   <li><%= link_to 'Regulamin', '/' %></li>
-  <% unless @logged_user.nil? %>
-    <li><%= link_to 'Panel użytkownika', panel_user_path(@logged_user) %></li>
-    <li><%= link_to 'Wyloguj się(' + @logged_user.name + ')' %></li>
-  <% end %>
 </ul>
+<% unless @logged_user.nil? %>
+<ul class="panelUl">
+  <li>Panel:</li>
+  <li><%= link_to 'Aukcje', panel_auctions_path %></li>
+  <li><%= link_to 'Prywatne wiadomości', panel_messages_path %></li>
+  <li><%= link_to 'Oferty', panel_offers_path %></li>
+  <li><%= link_to 'Wyloguj się(' + @logged_user.to_s + ')' %></li>
+</ul>
+<% end %>

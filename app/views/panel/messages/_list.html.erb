@@ -1,0 +1,38 @@
+<% unless @messages.empty? %>
+<table class="standardField" style="width: 100%">
+  <thead>
+    <tr>
+      <td>temat</td>
+      <td>status</td>
+      <td>od</td>
+      <td>do</td>
+      <td>otrzymano</td>
+      <td>opcje</td>
+    </tr>
+  </thead>
+    <tbody>
+    <% @messages.each do |msg| %>
+    <tr>
+      <td><%= link_to msg.topic, panel_message_path(msg) %></td>
+      <td><%= raw case(msg.status)
+      when Message::STATUS_UNREAD
+        "<span style='font-weight:bold'>Nieprzeczytano</span>"
+      when Message::STATUS_REPLIED
+        "Odpowiedziano"
+      when Message::STATUS_READ
+        "Przeczytano"
+        end
+      %>
+      </td>
+      <td><%= msg.author %></td>
+      <td><%= msg.receiver %></td>
+      <td><%= raw escape_time(msg.created_at) %></td>
+      <td><%= link_to 'usuń', panel_message_path(msg), :method => :delete %></td>
+    </tr>
+    <% end %>
+    </tbody>
+</table>
+<%= will_paginate %>
+<% else %>
+brak wiadomości
+<% end %>

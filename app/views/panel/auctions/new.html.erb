@@ -2,14 +2,10 @@
 <% content_for :head, stylesheet_link_tag('form') %>
 <h1>Nowa aukcja</h1>
 
-<div class="standardField" style="width:950px;padding:30px;margin: 10px auto">
-  <% form_for @auction do |f| -%>
+<div class="standardField" style="width:950px;padding:0 30px 30px 30px;margin: 10px auto">
+  <% form_for [:panel, @auction] do |f| -%>
 
     <%= render "layouts/error_messages", :target => @auction %>  
-
-  <p>Przynależność do kategorii<br /> 
-    <%= select_tag "auction[category_id]", options_for_select(@categories_to_list, @auction.category_id) %>
-  </p>
 
   <p>
     Tytuł aukcji<br />
@@ -19,6 +15,10 @@
   <p>
     Opis zlecenia<br />
     <%= f.text_area :description, :class => "mceEditor" %>
+  </p>
+
+  <p>Przynależność do kategorii: 
+    <%= select_tag "auction[category_id]", options_for_select(@categories_to_list, @auction.category_id) %>
   </p>
 
   <p>
@@ -35,8 +35,22 @@
     <%= render :partial => "layouts/clickable_tags", :locals => {:tags => @tags, :show_tags => true, :selected_tags => []} %>
     <p style="font-size: 85%">Wybranie niepasujących tagów może zaważyć na niekorzystnej ocenie aukcji.</p>
   
+    <h2>Typ aukcji</h2>
+    Charakter aukcji:
+    <%= f.check_box :private, :onclick => "$('#stageDiv').children().toggle()" %><%= f.label :private, "Aukcja prywatna" %>
+    
+    
+    <div id="stageDiv" style="margin-top: 20px;margin-bottom: 20px">
+      <div id="publicDiv">
+        Wszyscy mogą wziąść udział w licytacji.
+      </div>
+      <div id="privateDiv" style="display: none">
+        Wybierz teraz użytkowników którzy mają zostać zaproszeni do licytacji.
+        <% #TODO %>
+      </div>
+    </div>
 
-  <br />
+  
     <%= f.submit "Publikuj" %>
   <% end -%>
 </div>

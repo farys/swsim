@@ -1,13 +1,12 @@
 class OffersController < ApplicationController
-
+  before_filter :login_required
+  
   def create
-    #todo
-    @offer = Offer.new params[:offer]
-    @offer.offerer = @logged_user
+    @offer = @logged_user.sent_offers.new params[:offer]
     
     if @offer.save
       flash[:notice] = "Oferta zostala zlozona!"
-      redirect_to @offer.auction
+      redirect_to auction_path(@offer.auction_id)
     end
   end
 end

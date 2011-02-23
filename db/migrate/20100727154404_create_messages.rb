@@ -1,6 +1,7 @@
 class CreateMessages < ActiveRecord::Migration
   def self.up
     create_table :messages do |t|
+      t.references :owner, :null => false
       t.references :author, :null => false
       t.references :receiver, :null => false
       t.integer :status, :null => false, :default => 2

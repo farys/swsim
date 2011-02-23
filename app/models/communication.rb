@@ -1,7 +1,7 @@
+#TODO zmienic na lepsza nazwe
 class Communication < ActiveRecord::Base
   belongs_to :auction
-
-  validates_numericality_of :stage, :only_integer => true
+  
   validates_length_of :body, :within => 10..5000
   validates_associated :auction
 

@@ -1,17 +1,15 @@
 #encoding: UTF-8
 class RatingsController < ApplicationController
+  before_filter :login_required
+  
   def create
-  	if @logged_user.nil?
-  		render :text => 'log_in'
-  		return
-  	end
-  	if AuctionRating.where("user_id="+@logged_user.id.to_s+" AND auction_id="+params[:auction_id]).exists?
+    @auction = Auction.find(params[:auction_id])
+  	if @auction.rated_by?(@logged_user)
   		render :text => 'rated'
   		return
   	end
-    unless @logged_user.nil?
-    	@logged_user.rated_values.create :value => params[:value], :auction_id => params[:auction_id]
-    	render :text => 'ok'
-	end
+    
+    @auction.rate(@logged_user, params[:value])
+    render :text => 'ok'
   end
 end

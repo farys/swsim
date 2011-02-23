@@ -4,13 +4,25 @@ class ApplicationController < ActionController::Base
   layout 'standard'
 
   before_filter :init
-  def init
-    @global_title = '- inz v0.1'
-    @logged_user = User.find(3)#todo
-  end
-  
+
 #todo
   private
+  def init
+    @global_title = '- inz v0.1'
+    @logged_user = User.find(2)#todo
+  end
+  
+  def login_required
+    if @logged_user.nil?
+      redirect_to :controller => :users, :action => :login
+    end
+    
+#    if params.has_key?(:user_id) && (not @logged_user.id.eql?(params[:user_id]))
+#      redirect_to panel_user_path(@logged_user)
+#    end
+  end
+  
+  #TODO cos z tym zrobic 
   def logging_procedure
     if session[:logged_user].nil?
       redirect_to :controller => :panel, :action => :login
