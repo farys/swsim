@@ -15,6 +15,10 @@ gem 'thinking-sphinx',
   :require => 'thinking_sphinx'
 
 gem "jquery-rails"
+
+group :development do
+  gem 'faker' #generowanie testowych danych
+end
 # Use unicorn as the web server
 # gem 'unicorn'
 

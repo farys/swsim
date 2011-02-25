@@ -6,12 +6,14 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
+#TODO przeniest tworzenie testowych danych do pliku /lib/tasks/sample_data.rake !
+
 # Users
+
   farysUser = User.create(:login => "farys", :password => 'farys')
   stefanUser = User.create(:login => 'stefan', :password => 'stefan')
   User.create(:login => 'quake', :password => 'quake')
   User.create(:login => 'abraham', :password => 'abraham')
-  
   Tag.create([
     {:name => "zaawansowane"},
     {:name => "portal web 2.0"},
