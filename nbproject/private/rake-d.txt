@@ -16,6 +16,7 @@ db\:migrate\:redo=
 db\:migrate\:reset=
 db\:migrate\:status=Display status of migrations
 db\:migrate\:up=
+db\:populate=Fill database with sample data
 db\:reset=
 db\:rollback=Rolls the schema back to the previous version (specify steps w/ STEP=n).
 db\:schema\:dump=Create a db/schema.rb file that can be portably used against any DB supported by AR
