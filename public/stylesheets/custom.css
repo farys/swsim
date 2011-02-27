@@ -1,90 +1,144 @@
 .container {
-  width: 710px;
+    background: #f2f2f2;
+    border-right: 2px solid silver;
+    border-left: 2px solid silver;
+    border-bottom: 2px solid silver;
 }
 
 body {
-  background: #289a06;
+    background: #c3e1a8;/*#289a06;/* <- w komentarzu nasz oryginalny zielony ustawiony na naszym spotkaniu*/
 }
 
-header {
-  padding-top: 20px;
-}
-
-header img {
-  padding: 1em;
-  background: #fff;
+section, article, footer, header{
+    display: block;
+    clear:both;
+    font-size: 120%;
+    padding-left: 10px;
+    margin: 0;
 }
 
 section {
-  clear:both;
-  margin-top: 1em;
-  font-size: 120%;
-  padding: 20px;
-  background: #f2f2f2;
+    padding: 0;
 }
 
-section h1 {
-  font-size: 170%;
-  color: #289a06;
-  font-weight: bold;
-  
+header a#logo {
+    font-size: 200%;
 }
 
-section h2 {
-  font-size: 130%;
+header img {
+    padding: 1em;
+    background: #fff;
+}
+
+header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+nav {
+    float: right;
+}
+
+article h1 {
+    font-size: 170%;
+    /*    color: #289a06;
+        font-weight: bold;*/
+    margin-left: 5px;
+}
+
+article h2 {
+    font-size: 130%;
 }
 
 /* Links */
 
 a {
-  color: #044BA9;
-  text-decoration: none;
-  font-weight: bold;
+    color: #044BA9;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 a:hover {
-  color: #044BA9;
-  text-decoration: underline;
+    color: #044BA9;
+    text-decoration: underline;
 }
 
-/* Navigation */
-
-nav {
-  float: right;
-  background-color: #f2f2f2;
-  padding: 0 0.7em;
-  white-space: nowrap;
+#mega-menu-1 li a, .round {
+    -moz-border-radius:    5px;
+    -webkit-border-radius: 5px;
+    border-radius:         5px;
 }
 
-nav ul {
-  margin: 0;
-  padding: 0;
+/* Errors */
+
+.field_with_errors {
+    padding:0;
+    background-color: red;
+    display: inline-block;
+    margin: 1px;
 }
 
-nav ul li {
-  list-style-type: none;
-  display: inline-block;
-  padding: 0.2em 0;
+.field_with_errors input, .field_with_errors textarea, .field_with_errors select {
+    padding:0;
+    margin:2px;
 }
 
-nav ul li a {
-  color: #044BA9;
-  padding: 0 5px;
-  font-weight: bold;
+.clickable {
+    font-weight: bold;
+    padding: 6px;
+    display: inline-block;
+    background-color: #dcdcdc;
+    border-color: #DDDDDD;
+    margin: 2px;
+}
+.clickable:hover {
+    background-color: black;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+.clickable.checked, .clickable.checked:hover {
+    background-color: yellowgreen;
+    color: black;
 }
 
-nav ul li a:visited {
-  color: #044BA9;
-  font-weight: bold;
+table.list {
+    width: 1218px;
 }
 
-nav ul li a:hover {
-  color: #044BA9;
-  text-decoration: underline;
+table.list thead {
+    font-size: 85%;
+    background-color: white;
 }
 
-.round {
-  -moz-border-radius:    10px;
-  -webkit-border-radius: 10px;
-  border-radius:         10px;
+table tr:nth-child(even) {
+    background:#E5ECF9;
+}
+
+.auctionDescription {
+    background-color: white;
+    padding: 20px;
+    border:0;
+    text-align: left;
+    margin-right: 10px;
+}
+
+.statistics span {
+    font-weight: bold;
+}
+
+.notice, .warning, .error, .success, .list, fieldset {
+    margin-right: 10px;
+}
+
+.offerField input[type=text] {
+    width: 100px;
+    text-align: right;
+}
+
+.auctionInfo.tdTitle {
+    width: 100px;
+}
+
+.offersList td {
+    vertical-align: middle;
 }

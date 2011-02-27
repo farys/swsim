@@ -1,0 +1,19 @@
+<% form_tag result_auctions_path do |f| %>
+  <div class="prepend-3 append-bottom">
+
+    Wyrażenie: <%= text_field_tag :query, @query, :onkeyup => 'searchForTags(this.value)' %>
+    <%= check_box_tag :search_in_description, true, search_in_description %> <%= label_tag :search_in_description, 'Szukaj również w opisie'%>
+    <%= check_box_tag :show_tags, true, show_tags, :onclick => '$("#advanced").toggle("fast")' %> <%= label_tag :show_tags, 'wyświetl zaawansowane' %>
+
+    <%= submit_tag 'Szukaj' %>
+  </div>
+  <div id="advanced" <%if show_tags == false %>style="display:none"<% end %> class="prepend-2 append-2 prepend-top">
+    <fieldset>
+      <legend>Budżet</legend>
+      <%= raw Budget.all.collect{|b| '<label>' + check_box_tag("budgets_ids[#{b.id}]", b.id, @budgets_ids.include?(b.id.to_s)) + b.to_s + '</label>'}.join(' ') %>
+    </fieldset>
+    <div class="prepend-top">
+      <%= render :partial => 'layouts/clickable_tags', :locals => {:groups => groups, :selected_tag_ids => selected_tag_ids} %>
+    </div>
+  </div>
+<% end %>

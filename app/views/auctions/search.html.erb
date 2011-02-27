@@ -1,4 +1,3 @@
-<% content_for :title, 'Wyszukiwarka aukcji' %>
-<h1>Wyszukiwarka aukcji</h1>
+<% content_for :title, "Wyszukaj zlecenie!" %>
 
-<%= render :partial => 'layouts/search_auctions_form', :locals => {:tags => @tags} %>
+<%= render :partial => "search_form", :locals => {:groups => @groups, :selected_tag_ids => {}, :search_in_description => false, :show_tags => true} %>

@@ -1,57 +1,46 @@
 <% content_for :title, "Nowa aukcja" %>
-<% content_for :head, stylesheet_link_tag('form') %>
-<h1>Nowa aukcja</h1>
-
-<div class="standardField" style="width:950px;padding:0 30px 30px 30px;margin: 10px auto">
+<div class="prepend-1 append-1">
   <% form_for [:panel, @auction] do |f| -%>
 
-    <%= render "layouts/error_messages", :target => @auction %>  
+    <%= render "layouts/error_messages", :target => @auction %>
 
-  <p>
-    Tytuł aukcji<br />
-    <%= f.text_field :title %>
-  </p>
-  
-  <p>
-    Opis zlecenia<br />
-    <%= f.text_area :description, :class => "mceEditor" %>
-  </p>
+    <p>
+      <%= f.label :title, "Tytuł aukcji" %><br />
+      <%= f.text_field :title, :class => "title span-22" %>
+    </p>
 
-  <p>Przynależność do kategorii: 
-    <%= select_tag "auction[category_id]", options_for_select(@categories_to_list, @auction.category_id) %>
-  </p>
+    <p>
+      <%= f.label :description, "Opis zlecenia" %><br />
+      <%= f.text_area :description, :class => "mceEditor span-22" %>
+    </p>
 
-  <p>
-    Określ budżet jaki ma być przeznaczony na to zlecenie :
-    <%= select("auction", "budget_id", Budget.all.collect {|p| [ p.to_s, p.id ] }, { :include_blank => 'wybierz przedział' }) %>
-  </p>
- 
-  <p>
-    Czas trwania aukcji 
-    <%= f.text_field :expired_after, :size => 2 %> dni (1-14 dni)
-  </p>
-  
-  <h2>Tagi</h2>
-    <%= render :partial => "layouts/clickable_tags", :locals => {:tags => @tags, :show_tags => true, :selected_tags => []} %>
-    <p style="font-size: 85%">Wybranie niepasujących tagów może zaważyć na niekorzystnej ocenie aukcji.</p>
-  
+    <p>
+      <%= f.label :budget_id, "Określ budżet jaki ma być przeznaczony na to zlecenie :" %>
+      <%= select("auction", "budget_id", Budget.all.collect {|p| [ p.to_s, p.id ] }, { :include_blank => 'wybierz przedział' }) %>
+    </p>
+
+    <p>
+      <%= f.label :expired_after, "Czas trwania aukcji" %>
+      <%= f.text_field :expired_after, :size => 2 %> dni (1-14 dni)
+    </p>
+
     <h2>Typ aukcji</h2>
-    Charakter aukcji:
+    <%= f.label :private, "Charakter aukcji:" %>
     <%= f.check_box :private, :onclick => "$('#stageDiv').children().toggle()" %><%= f.label :private, "Aukcja prywatna" %>
-    
-    
+
     <div id="stageDiv" style="margin-top: 20px;margin-bottom: 20px">
       <div id="publicDiv">
-        Wszyscy mogą wziąść udział w licytacji.
+        <h2>Tagi</h2>
+        <%= render :partial => "layouts/clickable_tags", :locals => {:groups => @groups, :selected_tag_ids => @auction.tag_ids} %>
+        <p style="font-size: 85%">Wybranie niepasujących tagów może zaważyć na niekorzystnej ocenie aukcji.</p>
       </div>
       <div id="privateDiv" style="display: none">
         Wybierz teraz użytkowników którzy mają zostać zaproszeni do licytacji.
-        <% #TODO %>
+        <% #TODO dopisac szukanie uzytkownikow %>
       </div>
     </div>
 
-  
+
     <%= f.submit "Publikuj" %>
   <% end -%>
 </div>
-

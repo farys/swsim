@@ -1,27 +1,12 @@
-<% content_for :head do -%>
-<script type="text/javascript">
-    function toggle(object, tagId){
-      $(object).toggleClass("selectedTagButton")
-      b = $('#tags_'+tagId);
-      b.attr('checked', !b.is(':checked'));
-      
-      return !true;
-    }
-    function clearTags(){
-      $('.selectedTagButton').each(function(){
-        $(this).click();
-      });
-      return !true;
-     }
-     </script>
-<% end -%>
-
-<div id="tagsDiv" class="standardField">
-  Wybierz pasujące tagi (<a href="#" onclick="return clearTags()">wyczyść</a>):<br /><br />
-  <% tags.each do |tag| %>
-  <% selected = selected_tags.include?(tag.id.to_s) %>
-  <%= check_box_tag 'tags['+tag.id.to_s+']', tag.name, selected, :style => 'display: none' %>
-    <% html = (selected)? 'selectedTagButton' : '' %>
-    <%= link_to tag.name, '#', :class => 'tagButton '+html, :id => 'button_tag_'+tag.id.to_s, :onclick => 'return toggle(this,'+tag.id.to_s+');' %>
+  <% groups.each do |g| %>
+    <fieldset data-sizable="true">
+      <legend><%= g.name %></legend>
+      <% g.tags.each do |tag| %>
+        <%= check_box_tag "tag_ids[#{tag.id}]", tag.id, selected_tag_ids.include?(tag.id), "data-clickable" => true %><%= label_tag "tag_ids[#{tag.id}]", tag.name, :class => "round" %>
+      <% end %>
+    </fieldset>
   <% end %>
-</div>
+  <%= javascript_tag do %>
+    clickableLabel();
+    sizableFieldset();
+  <% end %>

@@ -1,10 +1,3 @@
 <% content_for :title, @title + " Wiadomości" %>
-<div class="headField"><%= @title %> Wiadomości 
-  <span>(
-<%= link_to 'Odebrane', panel_messages_path %>, 
-<%= link_to 'Wysłane', sent_panel_messages_path %>
-) 
-  </span>
-</div>
 
 <%= render :partial => "list", :locals => {:messages => @messages} %>

@@ -1,18 +1,12 @@
-<% content_for :title, "Nowy komunikat dla " + @auction.to_s %>
-<h1 class="headField">Nowy komunikar dla "<%= @auction %>"</h1>
+<% content_for :title, "Nowy komunikat dla aukcji \"#{@auction.to_s}\"" %>
+<div class="prepend-1 append-1">
+  <% form_for [:panel, @auction, @communication] do |f| %>
 
-<div class="standardField" style="width:900px;padding:30px;margin: 10px auto">
-  <p style="font-size: 13px">
-    Aukcja: <%= @auction %>
-  </p>
-<% form_for [:panel, @auction, @communication] do |f| %>
-
-<%= render "layouts/error_messages", :target => @communication %>  
-
-<p style="font-size: 13px">
-  <%= f.label :body, 'tresc komunikatu:' %><br />
-  <%= f.text_area :body %>
-</p>
-<%= f.submit "Publikuj" %>
-<% end %>
+    <%= render "layouts/error_messages", :target => @communication %>
+    <p>
+      <%= f.label :body, 'tresc komunikatu:' %><br />
+      <%= f.text_area :body %>
+    </p>
+    <%= f.submit "Publikuj" %>
+  <% end %>
 </div>

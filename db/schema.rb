@@ -15,6 +15,8 @@ ActiveRecord::Schema.define(:version => 20110207085708) do
   create_table "alerts", :force => true do |t|
     t.integer  "author_id",  :null => false
     t.integer  "reader_id"
+    t.integer  "model_id"
+    t.string   "model_type"
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -30,7 +32,6 @@ ActiveRecord::Schema.define(:version => 20110207085708) do
   add_index "auction_ratings", ["user_id", "auction_id"], :name => "index_auction_ratings_on_user_id_and_auction_id", :unique => true
 
   create_table "auctions", :force => true do |t|
-    t.integer  "category_id",                      :null => false
     t.boolean  "private",       :default => false, :null => false
     t.integer  "status",        :default => 0,     :null => false
     t.integer  "budget_id",                        :null => false
@@ -53,20 +54,6 @@ ActiveRecord::Schema.define(:version => 20110207085708) do
   end
 
   add_index "auctions_tags", ["tag_id", "auction_id"], :name => "index_auctions_tags_on_tag_id_and_auction_id", :unique => true
-
-  create_table "categories", :force => true do |t|
-    t.string   "name",                          :null => false
-    t.integer  "parent_id"
-    t.integer  "auctions_count", :default => 0, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "categories_links", :id => false, :force => true do |t|
-    t.integer "parent_id",   :null => false
-    t.integer "category_id", :null => false
-    t.integer "level",       :null => false
-  end
 
   create_table "comment_keywords", :force => true do |t|
     t.integer  "destination", :null => false
@@ -102,6 +89,17 @@ ActiveRecord::Schema.define(:version => 20110207085708) do
     t.datetime "updated_at"
   end
 
+  create_table "groups", :force => true do |t|
+    t.string "name", :null => false
+  end
+
+  create_table "groups_tags", :id => false, :force => true do |t|
+    t.integer "tag_id"
+    t.integer "group_id"
+  end
+
+  add_index "groups_tags", ["group_id", "tag_id"], :name => "index_groups_tags_on_group_id_and_tag_id", :unique => true
+
   create_table "messages", :force => true do |t|
     t.integer  "owner_id",                   :null => false
     t.integer  "author_id",                  :null => false
@@ -114,13 +112,11 @@ ActiveRecord::Schema.define(:version => 20110207085708) do
   end
 
   create_table "offers", :force => true do |t|
-    t.integer  "auction_id",                                                 :null => false
-    t.integer  "offerer_id",                                                 :null => false
-    t.string   "offerer_type",                                               :null => false
-    t.integer  "stage",                                                      :null => false
-    t.integer  "status",                                      :default => 2, :null => false
-    t.decimal  "price",        :precision => 10, :scale => 0,                :null => false
-    t.integer  "hours",                                                      :null => false
+    t.integer  "auction_id",                                :null => false
+    t.integer  "offerer_id",                                :null => false
+    t.integer  "status",                                    :null => false
+    t.decimal  "price",      :precision => 10, :scale => 0, :null => false
+    t.integer  "hours",                                     :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -133,9 +129,7 @@ ActiveRecord::Schema.define(:version => 20110207085708) do
   end
 
   create_table "tags", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "name"
   end
 
   create_table "teams", :force => true do |t|

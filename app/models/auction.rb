@@ -2,10 +2,9 @@ class Auction < ActiveRecord::Base
   STATUS_ONLINE = 0
   STATUS_CANCELED = 1
   STATUS_FINISHED = 2
-  
-  belongs_to :category, :counter_cache => true
+
   belongs_to :owner, :class_name => 'User'
-  belongs_to :won_offer, :class_name => 'Offer', :include => [:offerer] #has_one_and_belongs_to?
+  belongs_to :won_offer, :class_name => 'Offer', :include => [:offerer] #has_and_belongs_to?
   has_many :offers, :dependent => :destroy
   has_many :communications, :dependent => :delete_all, :order => 'id DESC'
   has_and_belongs_to_many :tags
@@ -25,13 +24,12 @@ class Auction < ActiveRecord::Base
   validates :description, :presence => true
   validates_inclusion_of :status, :in => [Auction::STATUS_ONLINE, Auction::STATUS_CANCELED, Auction::STATUS_FINISHED]
   validates_inclusion_of :budget_id, :in => Budget.ids
-  validates_associated :category, :owner
+  validates_associated :tags, :owner
   
   scope :has_tags, lambda { |tags| {:conditions => ['id in (SELECT auction_id FROM auctions_tags WHERE tag_id in (?))', tags.join(',')]}}
   scope :with_status, lambda { |status| where(:status => status)}
   scope :online, lambda { where(:status => Auction::STATUS_ONLINE)}
-  scope :public, lambda { where(:private => false)}
-  scope :in_categories, lambda {|categories_ids| where(:category_id => categories_ids)}
+  scope :public_auctions, lambda { where(:private => false)}
   
   before_validation :init_auction_row, :on => :create
   before_update :won_offer_choosed, :if => ->{ self.won_offer_id_changed? }
@@ -55,14 +53,7 @@ class Auction < ActiveRecord::Base
   end
   
   def status_changed
-    self.category.decrement! :auctions_count
     self.expired = DateTime.now
-  end
-
-  def self.from_category(category, page = 1, per_page = 15, order = 'expired ASC')
-    self.in_categories(category.links.collect {|l| l.category_id})
-    .online.public.order(order).includes([:offers])
-    .paginate(:page => page, :per_page => per_page)
   end
 
   #czy uzytkownik moze zlozyc oferte
@@ -137,17 +128,6 @@ class Auction < ActiveRecord::Base
       #options.merge! :weights => {:tag_list => 2}
       query += ' @budget_id '+budgets_ids.join(' | ')+''
     end
-    
-    #options = {
-     # :query => query,
-    #  :class_names => :Auction,
-    #  :page => page,
-    #  :per_page => 15,
-    #  :weights => {:tag_list => 3, :title => 2, :description => 1},
-    #  :sort_mode => 'relevance',
-    #}
-    #Ultrasphinx::Search.new(options).run
-    #Rails.logger.info "ZAPYTANIE: "+query
 
     Auction.search query, 
       :field_weights => {:tags_ids => 3, :title => 2, :description => 1},
@@ -158,4 +138,9 @@ class Auction < ActiveRecord::Base
       :order => "@rank DESC"
   end
   
+  def new_offer params
+    self.offers.new params do |o|
+      o.status = Offer::STATUS_NORMAL
+    end
+  end
 end

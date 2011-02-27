@@ -1,17 +1,9 @@
-<% text = (@query.empty?)? '' : ' dla "'+@query+'"' 
- content_for :title, 'Wynik wyszukiwania'+text 
- tags_text = ' <span>('+@tags.select{|tag| @selected_tags.include? tag.id.to_s}.collect{|tag| tag.name}.join(', ')+')</span>' if @selected_tags.size > 0 
- budgets_text = @budgets_ids.collect { |b|
-   Budget.find(b.to_i).to_s
- }.join(', ')
+<% text = (@query.empty?)? '' : " dla \"#{@query}\"" 
+content_for :title, 'Wynik wyszukiwania'+text 
+budgets_text = @budgets_ids.collect { |b|
+  Budget.find(b.to_i).to_s
+}.join(', ')
 %>
-<div class="headField">Wynik wyszukiwania <%= text %>
-  <%= raw tags_text %>
-  <%= raw ' <span>(' + budgets_text + ')</span>' unless budgets_text.empty? %>
-  <% unless @auctions.empty? %> 
-  <span>(<%= sprintf("%.5f s", @elapsed_time) %>)</span>
-  <% end %>
-</div>
 
-<%= render :partial => 'layouts/search_auctions_form', :locals => {:tags => @tags, :selected_tags => @selected_tags, :search_in_description => @search_in_description, :query => @query, :show_tags => @show_tags} %>
-<%= render :partial => 'layouts/auctions_list', :locals => {:auctions => @auctions} %>
+<%= render :partial => 'search_form', :locals => {:groups => @groups, :selected_tag_ids => @selected_tag_ids, :search_in_description => @search_in_description, :query => @query, :show_tags => @show_tags} %>
+<%= render :partial => 'list', :locals => {:auctions => @auctions} %>

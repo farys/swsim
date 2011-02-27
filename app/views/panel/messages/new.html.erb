@@ -1,0 +1,25 @@
+<% content_for :title, "Nowa wiadomość" %>
+<div class="prepend-1 append-1">
+<% form_for [:panel, @message] do |f| %>
+
+  <% unless @old_message.nil? %><%= hidden_field_tag :reply_message_id, @old_message.id %><% end %>
+  <%= render "layouts/error_messages", :target => @message %>
+
+  <p>
+    <%= f.label :receiver_login, "Odbiorca" %><br />
+    <%= f.text_field :receiver_login %>
+  </p>
+
+  <p>
+    <%= f.label :topic, 'Temat' %><br />
+    <%= f.text_field :topic, :class => "title span-22" %>
+  </p>
+  <p>
+    <%= f.label :topic, 'Treść wiadomości' %><br />
+    <%= f.text_area :body, :class => "mceEditor span-22" %>
+  </p>
+
+  <br />
+  <%= f.submit "Wyślij" %>
+<% end %>
+</div>

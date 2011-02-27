@@ -1,5 +1,5 @@
 <% unless @messages.empty? %>
-<table class="standardField" style="width: 100%">
+<table class="list">
   <thead>
     <tr>
       <td>temat</td>
@@ -27,12 +27,17 @@
       <td><%= msg.author %></td>
       <td><%= msg.receiver %></td>
       <td><%= raw escape_time(msg.created_at) %></td>
-      <td><%= link_to 'usuń', panel_message_path(msg), :method => :delete %></td>
+      <td>
+        <% if @status.eql?("received") %>
+          <%= link_to 'odpisz', reply_panel_message_path(msg) %><br/>
+        <%  end %>
+        <%= link_to 'usuń', panel_message_path(msg), :method => :delete %>
+      </td>
     </tr>
     <% end %>
     </tbody>
 </table>
 <%= will_paginate %>
 <% else %>
-brak wiadomości
+<section class="notice">Nie znaleziono żadnych wiadomości.</section>
 <% end %>

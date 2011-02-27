@@ -1,14 +1,36 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Inz</title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
-  <%= csrf_meta_tag %>
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title><%= yield :title %> <%= @global_title %></title>
+    <%= render 'layouts/stylesheets' %>
+    <%= javascript_include_tag :defaults %>
+    <%= javascript_include_tag "jquery.hoverIntent.minified", "jquery.dcmegamenu" %>
+    <%= csrf_meta_tag %>
+    <%= yield :head %>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <%= link_to "zlecenia IT", "/", :id => "logo", :class => "prepend-1" %>
+        <nav class="append-1">
+          <%= render :partial => "layouts/top_menu" %>
+        </nav>
+      </header>
 
-<%= yield %>
+      <% flash.each_key do |key| %>
+        <section style="margin-left: 10px" class="<%= key.to_s %>"><%= flash[key] %></section>
+      <% end %>
 
-</body>
+      <article>
+        <h1 class="span-22 box last"><%= yield :title %></h1>
+        <%= yield %>
+        <div style="clear: both"> </div>
+      </article>
+
+      <footer>
+        <%= debug(params) if Rails.env.development? %>
+      </footer>
+    </div>
+  </body>
 </html>

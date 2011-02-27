@@ -1,16 +1,58 @@
-<ul>
-  <li><%= link_to 'Strona główna', categories_path %></li>
+<ul id="mega-menu-1" class="mega-menu">
   <li><%= link_to 'Szukaj', search_auctions_path %></li>
   <li><%= link_to 'Nowa aukcja', new_panel_auction_path %></li>
-  <li><%= link_to 'Regulamin', '/' %></li>
+  <li><%= link_to 'Regulamin', '#' %></li>
+  <% unless @logged_user.nil? %>
+    <li><%= link_to 'Aukcje', panel_auctions_path %>
+      <ul>
+        <li><p>przeglądaj</p>
+          <ul>
+            <li><%= link_to 'aktualnie trwające', panel_auctions_path %></li>
+            <li><%= raw link_to 'anulowane', panel_auctions_path(:status => Auction::STATUS_CANCELED) %></li>
+            <li><%= raw link_to 'zakończone', panel_auctions_path(:status => Auction::STATUS_FINISHED) %></li>
+          </ul>
+        </li>
+        <li><p>opcje</p>
+          <ul>
+            <li><%= link_to 'nowa aukcja', new_panel_auction_path %></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><%= link_to 'Prywatne wiadomości', panel_messages_path %>
+      <ul>
+        <li><p>foldery</p>
+          <ul>
+            <li><%= link_to 'odebrane', panel_messages_path %></li>
+            <li><%= link_to 'wysłane', sent_panel_messages_path %></li>
+          </ul>
+        </li>
+        <li><p>opcje</p>
+          <ul>
+            <li><%= link_to 'nowa wiadomość', new_panel_message_path %></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><%= link_to 'Oferty', panel_offers_path %>
+      <ul>
+        <li><p>przeglądaj</p>
+          <ul>
+            <li><%= raw link_to 'biorące udział', panel_offers_path(:status => Offer::STATUS_NORMAL) %></li>
+            <li><%= raw link_to 'odrzucone', panel_offers_path(:status => Offer::STATUS_REJECTED) %></li>
+            <li><%= raw link_to 'wygrane', panel_offers_path(:status => Offer::STATUS_WON) %></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><%= link_to 'Projekty', '#' %>
+    </li>
+    <li><%= link_to 'Wyloguj się(' + @logged_user.to_s + ')', '#' %></li>
+  <% end %>
 </ul>
-<% unless @logged_user.nil? %>
-<ul class="panelUl">
-  <li>Panel:</li>
-  <li><%= link_to 'Aukcje', panel_auctions_path %></li>
-  <li><%= link_to 'Prywatne wiadomości', panel_messages_path %></li>
-  <li><%= link_to 'Oferty', panel_offers_path %></li>
-  <li><%= link_to 'Projekty', '#' %></li>
-  <li><%= link_to 'Wyloguj się(' + @logged_user.to_s + ')' %></li>
-</ul>
+<%= javascript_tag do %>
+  $("#mega-menu-1").dcMegaMenu({
+  rowItems: '3',
+  speed: 'fast'
+  });
 <% end %>

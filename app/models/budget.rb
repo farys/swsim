@@ -26,7 +26,7 @@ class Budget
   end
   
   @@budgets = [
-    BudgetRecord.new(0, "0 - 500"),
-    BudgetRecord.new(1, "500 - 1000")
+    BudgetRecord.new(1, "0 - 500"),
+    BudgetRecord.new(2, "500 - 1000")
     ]
 end

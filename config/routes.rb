@@ -1,51 +1,43 @@
 Inz::Application.routes.draw do
 
   #DEFAULT
-  resources :categories, :only => [:index, :show]
-
-  resources :auctions, :only => [:show] do
-    
+  resources :auctions, :only => [:index, :show] do
     resources :ratings, :only => [:index, :create]
-    resources :offers, :only => [:new, :create]
-    
-    collection do
-      get :search
-      post :result
-    end
+    post :result, :on => :collection
+    get :search, :on => :collection
   end
   
-  resources :users do
-    resources :messages, :only => [:new, :create]
-  end
-  
+  resources :users
+
   # PANEL
   namespace :panel do
     
     resources :auctions, :except => [:show] do
       resources :communications, :only => [:new, :create]
-      resources :offers, :only => [:destroy]
+      get :offers, :on => :member # offers#index dla wlasnych ofert zarezerwowane
+      resources :offers, :only => [:destroy, :new, :create] do
+        #get :to_reject, :on => :member
+      end
+      #resources :alerts, :only => [:index, :show] do
+      #  member do
+      #    get :reject_offer
+      #  end
+      #end
     end
     
     resources :offers, :only => [:index] do
-      member do
-        post :to_reject
-      end
+      post :to_reject, :on => :member
     end
     
-    resources :messages, :only => [:index, :show, :destroy] do
-      member do
-        get :reply
-      end
-      
-      collection do
-        get :sent
-      end
+    resources :messages, :except => [:edit, :update] do
+      get :reply, :on => :member
+      get :sent, :on => :collection
     end
   end
     
   resources :alerts, :only => [:create]
   
-  root :to =>  "categories#index"
+  root :to =>  "auctions#index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -1,20 +1,23 @@
 <% content_for :title, @message.topic %>
-<div class="headField">
-  <h1><%= @message.topic %></h1>
-</div>
-<div class="standardField" style="width: 300px;padding: 10px">
-  <p>Od: <%= link_to @message.author, @message.author %>, 
-    <%= escape_time(@message.created_at) %></p>
+
+  <p>
+    Do: <%= link_to @message.receiver, @message.receiver %>
+  </p>
+  <p>
+    Od: <%= link_to @message.author, @message.author %>
+  </p>
+  <p>
+    Wysłano: <%= escape_time(@message.created_at) %>
+  </p>
   <p>Opcje: <br />
     <% if @message.receiver_id.eql?(@logged_user.id) %>
-      <%= link_to 'Odpisz', reply_user_message_path(@logged_user, @message, :reply_message_id => @message.id) %>,
-      <% end %>
-    <%= link_to 'Usuń wiadomość', [@logged_user, @message], :method => :delete, :confirm => 'Czy na pewno?' %>
+      <%= link_to 'Odpisz', reply_panel_message_path(@message) %>,
+    <% end %>
+    <%= link_to 'Usuń wiadomość', panel_message_path(@message), :method => :delete, :confirm => 'Czy na pewno?' %>
   </p>
-</div>
 
 <div class="standardField">
-  <%= @message.body %>
+  <%=   @message.body %>
 </div>
 
 
