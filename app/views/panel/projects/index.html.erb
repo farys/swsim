@@ -1,0 +1,10 @@
+<% content_for :title, @title %>
+<% if @projects.empty? %>
+  <div class="notice">Obecnie nie uczestniczysz w żadnych projektach</div>
+<% else %>
+	<ul>
+    <% @projects.each do |proj| %>
+      <li><%= proj.name %></li>
+    <% end %>
+  </ul>
+<% end %>

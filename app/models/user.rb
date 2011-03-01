@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :received_comments, :class_name => 'Comment', :foreign_key => :receiver_id
   has_many :sent_offers, :class_name => 'Offer', :foreign_key => :offerer_id
   has_many :rated_values, :class_name => 'AuctionRating', :dependent => :delete_all
+  has_many :projects, :foreign_key => :owner_id
   
   def to_s
     self.login

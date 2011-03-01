@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  owner_id: 1
+  leader_id: 1
+  deadline: 2011-03-01
+  status: 1
+
+two:
+  name: MyString
+  owner_id: 1
+  leader_id: 1
+  deadline: 2011-03-01
+  status: 1

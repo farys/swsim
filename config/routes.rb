@@ -33,6 +33,8 @@ Inz::Application.routes.draw do
       get :reply, :on => :member
       get :sent, :on => :collection
     end
+    
+    resources :projects
   end
     
   resources :alerts, :only => [:create]

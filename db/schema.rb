@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110207085708) do
+ActiveRecord::Schema.define(:version => 20110301175201) do
 
   create_table "alerts", :force => true do |t|
     t.integer  "author_id",  :null => false
@@ -117,6 +117,16 @@ ActiveRecord::Schema.define(:version => 20110207085708) do
     t.integer  "status",                                    :null => false
     t.decimal  "price",      :precision => 10, :scale => 0, :null => false
     t.integer  "hours",                                     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "projects", :force => true do |t|
+    t.string   "name"
+    t.integer  "owner_id"
+    t.integer  "leader_id"
+    t.date     "deadline"
+    t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
