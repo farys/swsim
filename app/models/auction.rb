@@ -1,5 +1,5 @@
 class Auction < ActiveRecord::Base
-  STATUS_ONLINE = 0
+  STATUS_ACTIVE = 0
   STATUS_CANCELED = 1
   STATUS_FINISHED = 2
 
@@ -17,18 +17,18 @@ class Auction < ActiveRecord::Base
     indexes :expired
     indexes tags(:id), :as => :tags_ids
     
-    where 'status = '+Auction::STATUS_ONLINE.to_s+' AND private = 0'
+    where 'status = '+Auction::STATUS_ACTIVE.to_s+' AND private = 0'
   end
 
   validates :title, :presence => true
   validates :description, :presence => true
-  validates_inclusion_of :status, :in => [Auction::STATUS_ONLINE, Auction::STATUS_CANCELED, Auction::STATUS_FINISHED]
+  validates_inclusion_of :status, :in => [Auction::STATUS_ACTIVE, Auction::STATUS_CANCELED, Auction::STATUS_FINISHED]
   validates_inclusion_of :budget_id, :in => Budget.ids
   validates_associated :tags, :owner
   
   scope :has_tags, lambda { |tags| {:conditions => ['id in (SELECT auction_id FROM auctions_tags WHERE tag_id in (?))', tags.join(',')]}}
   scope :with_status, lambda { |status| where(:status => status)}
-  scope :online, lambda { where(:status => Auction::STATUS_ONLINE)}
+  scope :online, lambda { where(:status => Auction::STATUS_ACTIVE)}
   scope :public_auctions, lambda { where(:private => false)}
   
   before_validation :init_auction_row, :on => :create
@@ -45,15 +45,30 @@ class Auction < ActiveRecord::Base
   
   def init_auction_row
     self.expired = DateTime.now + self.expired_after.to_i.days
-    self.status = Auction::STATUS_ONLINE
+    self.status = Auction::STATUS_ACTIVE
   end
 
   def won_offer_choosed
-    self.status = Auction::STATUS_FINISHED 
+    unless self.offers.find(self.won_offer_id)
+      self.errors.add("won_offer_id", "Wybrana oferta nie nalezy do ofert uczestniczacych w licytacji")
+    else
+      self.status = Auction::STATUS_FINISHED
+    end
   end
   
   def status_changed
     self.expired = DateTime.now
+  end
+
+  #ustawia status aukcji na anulowano
+  def cancel!
+    self.status = STATUS_CANCELED
+    self.save
+  end
+
+  def set_won_offer! offer_id
+    self.won_offer_id = offer_id
+    self.save
   end
 
   #czy uzytkownik moze zlozyc oferte
@@ -110,7 +125,7 @@ class Auction < ActiveRecord::Base
 
   #czy oferent złożył już oferte na aktualnym etapie
   def made_offer? offerer
-      not self.offers.select {|offer| offer.offerer.eql?(offerer)}.empty?
+    not self.offers.select {|offer| offer.offerer.eql?(offerer)}.empty?
   end  
   
   def self.search_by_sphinx(query = '', search_in_description = false, tags_ids = [], budgets_ids = [], page = 1, per_page = 15)
@@ -140,7 +155,26 @@ class Auction < ActiveRecord::Base
   
   def new_offer params
     self.offers.new params do |o|
-      o.status = Offer::STATUS_NORMAL
+      o.status = Offer::STATUS_ACTIVE
     end
+  end
+
+  #wyszukiwanie aukcji dla admina
+  def self.admin_search(query = "", selected_date = nil, status = Array.new, page = 1)
+    criteria = self.includes(:owner).order("id DESC")
+
+    unless query.empty?
+      criteria = criteria.where("auctions.title like ? OR auctions.id=?", "%#{query}%", query)
+    end
+
+    unless selected_date.nil?
+      criteria = criteria.where("DATE(auctions.created_at)=?", selected_date)
+    end
+
+    unless status.empty?
+      criteria = criteria.where(:status => status)
+    end
+
+    criteria.paginate(:per_page => 15, :page => page)
   end
 end

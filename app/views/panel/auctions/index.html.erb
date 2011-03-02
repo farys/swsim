@@ -1,6 +1,6 @@
 <%
 title = case @status
-when Auction::STATUS_ONLINE
+when Auction::STATUS_ACTIVE
   "aktualne"
 when Auction::STATUS_FINISHED
   "zakończone"
@@ -11,60 +11,64 @@ end
 <% content_for :title, "Twoje #{title} aukcje" %>
 
 <% unless @auctions.empty? %>
-<table class="list">
-  <thead>
-    <tr>
-      <td>nazwa</td>
-      <td>wyświetleń</td>
-      <td>ilość ofert</td>
-      <td>typ</td>
-      <td>rozpoczęta</td>
-      <td>status</td>
-      <td>koniec</td>
-      <td>opcje</td>
-    </tr>
-  </thead>
-  <tbody>
-  <% @auctions.each do |auction| %>
-  <tr>
-    <td><%= link_to auction.title, auction %></td>
-    <td><%= auction.visits %></td>
-    <td><%= auction.offers.count %></td>
-    <td style="font-weight: bold"><% if auction.is_public? %>publiczna<% else %>prywatna<% end %></td>
-    <td><%=raw escape_time(auction.created_at) %></td>
-    <td>
-    <% html = case auction.status
-    when Auction::STATUS_ONLINE
-      'licytacja'
-    when Auction::STATUS_FINISHED
-      'zakończona'
-    when Auction::STATUS_CANCELED
-      'anulowana'
-    end
-    %>
-      <%= html %>
-    </td>
-    <td><% if auction.status == 'stages' %>
-      za <%= distance_of_time_in_words auction.expired.to_i, Time.now.to_i %>
-      <% else %>
-      <%=raw escape_time(auction.expired)%>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>nazwa</td>
+        <td>wyświetleń</td>
+        <td>ilość ofert</td>
+        <td>typ</td>
+        <td>rozpoczęta</td>
+        <td>status</td>
+        <td>koniec</td>
+        <td>opcje</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @auctions.each do |auction| %>
+        <tr>
+          <td><%= link_to auction.title, auction %></td>
+          <td><%= auction.visits %></td>
+          <td><%= auction.offers.count %></td>
+          <td style="font-weight: bold"><% if auction.is_public? %>publiczna<% else %>prywatna<% end %></td>
+          <td><%=raw escape_time(auction.created_at) %></td>
+          <td>
+            <% html = case auction.status
+            when Auction::STATUS_ACTIVE
+              'licytacja'
+            when Auction::STATUS_FINISHED
+              'zakończona'
+            when Auction::STATUS_CANCELED
+              'anulowana'
+            end
+          %>
+            <%= html %>
+          </td>
+          <td><% if auction.status == 'stages' %>
+              za <%= distance_of_time_in_words auction.expired.to_i, Time.now.to_i %>
+            <% else %>
+              <%=raw escape_time(auction.expired)%>
+            <% end %>
+          </td>
+          <td><% if auction.status == Auction::STATUS_ACTIVE %>
+              <%= link_to 'Anuluj aukcję', panel_auction_path(auction), :method => :delete, :confirm => "Czy napewno chcesz anulować aukcję #{auction.title}?" %><br />
+              <%= link_to 'Nadaj komunikat', new_panel_auction_communication_path(auction) %><br />
+              <% if auction.offers.count > 0 %>
+                <%= link_to 'Przeglądaj oferty', offers_panel_auction_path(auction) %><br />
+              <% end %>
+            <% elsif auction.status == Auction::STATUS_FINISHED %>
+              <% o = auction.won_offer %><%= o.price %>zł / <%= o.days %>dni (<%= link_to o.offerer, user_path(o.offerer) %>)<br />
+            <% elsif auction.status == Auction::STATUS_CANCELED %>
+            <% end %>
+            <% if [Auction::STATUS_CANCELED, Auction::STATUS_FINISHED].include?(auction.status) %>
+              <%= link_to 'Wystaw ponownie', new_panel_auction_path(:from_id => auction.id) %><br />
+            <% end %>
+          </td>
+        </tr>
       <% end %>
-    </td>
-    <td><% if auction.status == Auction::STATUS_ONLINE %>
-       <%= link_to 'Anuluj aukcję', panel_auction_path(auction), :method => :delete, :confirm => "Czy napewno chcesz anulować aukcję #{auction.title}?" %><br />
-       <%= link_to 'Nadaj komunikat', new_panel_auction_communication_path(auction) %><br />   
-      <% if auction.offers.count > 0 %>
-          <%= link_to 'Przeglądaj oferty', offers_panel_auction_path(auction) %><br />
-      <% end %>
-      <% elsif auction.status == Auction::STATUS_FINISHED %><% o = auction.won_offer %><%= o.price %>zł / <%= o.hours %>godz. (<%= o.offerer.name %>)
-      <% elsif auction.status == Auction::STATUS_CANCELED %>
-      <% end %>
-    </td>
-  </tr>
-  <% end %>
-  </tbody>
-</table>
-<%= will_paginate %>
+    </tbody>
+  </table>
+  <%= will_paginate %>
 <% else %>
-<div class="notice">Nie znaleziono żadnych aukcji.</div>
+  <div class="notice">Nie znaleziono żadnych aukcji.</div>
 <% end %>

@@ -1,7 +1,7 @@
 class Panel::OffersController < Panel::ApplicationController
 
   def index
-    @status = (params[:status] || Offer::STATUS_NORMAL).to_i
+    @status = (params[:status] || Offer::STATUS_ACTIVE).to_i
 
     @offers = @logged_user.sent_offers.with_status(@status)
   end

@@ -13,11 +13,7 @@ section, article, footer, header{
     display: block;
     clear:both;
     font-size: 120%;
-    padding-left: 10px;
     margin: 0;
-}
-
-section {
     padding: 0;
 }
 
@@ -40,9 +36,8 @@ nav {
 
 article h1 {
     font-size: 170%;
-    /*    color: #289a06;
-        font-weight: bold;*/
-    margin-left: 5px;
+    /*    color: #289a06;*/
+    margin-bottom: 1em !important;
 }
 
 article h2 {
@@ -101,9 +96,18 @@ a:hover {
     color: black;
 }
 
-table.list {
-    width: 1218px;
-}
+.bold {font-weight: bold}
+.rejected {background-color: #fecdc1}
+.winner {background-color: #c8e18a}
+
+.center {text-align: center}
+.right {text-align: right}
+.left {text-align: left}
+
+.top-1 {margin-top: 20px}
+.top-2 {margin-top: 50px}
+.top-3 {margin-top: 100px}
+.top-4 {margin-top: 200px}
 
 table.list thead {
     font-size: 85%;
@@ -114,29 +118,17 @@ table tr:nth-child(even) {
     background:#E5ECF9;
 }
 
-.auctionDescription {
-    background-color: white;
-    padding: 20px;
-    border:0;
-    text-align: left;
-    margin-right: 10px;
-}
-
 .statistics span {
     font-weight: bold;
 }
 
-.notice, .warning, .error, .success, .list, fieldset {
-    margin-right: 10px;
+.offerField {
+    margin-top: 100px;
 }
 
 .offerField input[type=text] {
     width: 100px;
     text-align: right;
-}
-
-.auctionInfo.tdTitle {
-    width: 100px;
 }
 
 .offersList td {

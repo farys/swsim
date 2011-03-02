@@ -1,0 +1,17 @@
+<%# tagi sa wysylane za pomoca parametru  tag_ids, ktory po stronie kontrolera jest hashem {'id' => 'id'} %>
+<% groups.each do |g| %>
+<div class="span-<%= fieldset_width %><%= cycle("", " last")  %>">
+  <fieldset data-sizable="true">
+    <legend><%= g.name %></legend>
+    <% g.tags.each do |tag| %>
+      <%  checked = selected_tag_ids.include?(tag.id) %>
+      <%= check_box_tag "tag_ids[#{tag.id}]", tag.id, checked, "data-clickable" => true %><%= label_tag "tag_ids[#{tag.id}]", tag.name, :class => "round" %>
+    <% end %>
+  </fieldset>
+</div>
+<% end %>
+<div class="clear"></div>
+<%= javascript_tag do %>
+  clickableLabel();
+  sizableFieldset();
+<% end %>

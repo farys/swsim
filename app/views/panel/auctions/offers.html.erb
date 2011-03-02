@@ -30,9 +30,9 @@
     end
       %>
         <tr<% unless html.nil? %> class="<%= html %>"<% end %>>
-          <td><% if [Offer::STATUS_NORMAL].include?(offer.status) %><%= radio_button :auction, :won_offer_id, offer.id %><% end %></td>
+          <td><% if [Offer::STATUS_ACTIVE].include?(offer.status) %><%= radio_button :auction, :won_offer_id, offer.id %><% end %></td>
           <td style="font-weight:bold"><%= offer.price %> zł</td>
-          <td><%= offer.hours %> godz.</td>
+          <td><%= offer.days %> dni</td>
           <td style="text-align: center">
             <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
           <%= offer.offerer %>

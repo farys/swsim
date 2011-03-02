@@ -1,5 +1,5 @@
 <% title = case @status
-when Offer::STATUS_NORMAL
+when Offer::STATUS_ACTIVE
   "biorące udział w aukcji"
 when Offer::STATUS_REJECTED
   "odrzucone"
@@ -25,11 +25,11 @@ end
       <% @offers.each do |offer| %>
         <tr>
           <td><%= link_to offer.auction.title, offer.auction %></td>
-          <td><%= offer.price %>zł / <%= offer.hours %>godz.</td>
+          <td><%= offer.price %>zł / <%= offer.days %>dni</td>
           <td><%=raw escape_time(offer.created_at) %></td>
           <td>
             <%= case offer.status
-            when Offer::STATUS_NORMAL
+            when Offer::STATUS_ACTIVE
               'wystawiona'
             when Offer::STATUS_REJECTED
               'odrzucona'

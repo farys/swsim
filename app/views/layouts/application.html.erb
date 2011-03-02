@@ -14,21 +14,28 @@
       <header>
         <%= link_to "zlecenia IT", "/", :id => "logo", :class => "prepend-1" %>
         <nav class="append-1">
-          <%= render :partial => "layouts/top_menu" %>
+          <% top_menu = case params[:controller].include?("admin")
+          when true
+            "layouts/top_menu/admin"
+          else
+            "layouts/top_menu/default"
+          end
+        %>
+          <%= render :partial => top_menu %>
         </nav>
       </header>
 
       <% flash.each_key do |key| %>
-        <section style="margin-left: 10px" class="<%= key.to_s %>"><%= flash[key] %></section>
+      <section class="prepend-1 append-1"><div class="<%= key.to_s %>"><%= flash[key] %></div></section>
       <% end %>
 
-      <article>
-        <h1 class="span-22 box last"><%= yield :title %></h1>
+      <article class="span-22 prepend-1 append-1">
+        <h1 class="box bottom"><%= yield :title %></h1>
         <%= yield %>
-        <div style="clear: both"> </div>
+        <div class="clear"> </div>
       </article>
 
-      <footer>
+      <footer class="prepend-1 append-1">
         <%= debug(params) if Rails.env.development? %>
       </footer>
     </div>

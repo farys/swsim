@@ -3,12 +3,17 @@ class Panel::AuctionsController < Panel::ApplicationController
   before_filter :new_auction_and_form_data, :only => [:new, :create]
   
   def index
-    @status = params[:status].to_i || Auction::STATUS_ONLINE
+    @status = params[:status].to_i || Auction::STATUS_ACTIVE
     
     @auctions = @logged_user.auctions.with_status(@status).paginate :per_page => 15, :page => params[:page]
   end
   
   def new
+    unless params[:from_id].nil?
+      @old_auction = @logged_user.auctions.find(params[:from_id])
+      @auction = @old_auction.clone
+      @auction.tag_ids = @old_auction.tag_ids
+    end
     @auction.expired_after = 14
   end
 
@@ -26,9 +31,7 @@ class Panel::AuctionsController < Panel::ApplicationController
   end
 
   def update
-    attr = {:won_offer_id => params[:auction][:won_offer_id]}
-
-    if @auction.update_attributes(attr)
+    if @auction.set_won_offer!(params[:auction][:won_offer_id])
       flash[:notice] = 'Zwycieska oferta zostala wyznaczona'
       redirect_to auction_path(@auction)
     else
@@ -37,8 +40,7 @@ class Panel::AuctionsController < Panel::ApplicationController
   end
 
   def destroy
-    @auction.status = Auction::STATUS_CANCELED
-    if @auction.save
+    if @auction.cancel!
       flash[:notice] = 'Aukcja zostala anulowana'
     else
       flash[:error] = 'Anulowanie aukcji nie powiodlo sie!'
@@ -50,7 +52,7 @@ class Panel::AuctionsController < Panel::ApplicationController
   def new_auction_and_form_data
     @auction = @logged_user.auctions.new(params[:auction])
     @auction.tag_ids = params[:tag_ids].values unless params[:tag_ids].nil?
-    @groups = Group.includes(:tags).all
+    @groups = Group.all
   end
 
   def load_auction

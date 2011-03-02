@@ -3,4 +3,6 @@ class Group < ActiveRecord::Base
 
   validates_presence_of :name
   validates_associated :tags
+
+  default_scope includes(:tags)
 end

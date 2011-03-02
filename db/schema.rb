@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(:version => 20110301175201) do
     t.integer  "offerer_id",                                :null => false
     t.integer  "status",                                    :null => false
     t.decimal  "price",      :precision => 10, :scale => 0, :null => false
-    t.integer  "hours",                                     :null => false
+    t.integer  "days",                                      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

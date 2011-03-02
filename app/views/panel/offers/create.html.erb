@@ -1,0 +1,26 @@
+<% content_for :title, "Nowa oferta dla " + @offer.auction.title %>
+
+<div class="prepend-1 span-20 append-1">
+  <% form_for [:panel, @offer.auction, @offer] do |f| %>
+
+    <%= render "layouts/error_messages", :target => @offer %>
+    <style type="text/css">
+      input {
+        width:30px
+      }
+    </style>
+
+    <p>
+      <%= f.label :price, 'Kwota' %>
+      <%= f.text_field :price %> PLN
+    </p>
+    <p>
+      <%= f.label :days, 'Czas wykonania usługi' %>
+      <%= f.text_field :days %> dni
+    </p>
+
+    <br />
+    <%= f.hidden_field :auction_id %>
+    <%= f.submit "Złóż ofertę" %>
+  <% end %>
+</div>

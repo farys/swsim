@@ -1,0 +1,85 @@
+<% content_for :head do -%>
+  <%= javascript_include_tag 'jquery.rating.js' %>
+  <%= stylesheet_link_tag 'jquery.rating' %>
+  <script type="text/javascript">
+    rated = <%= @rated || true %>;
+
+    $(document).ready(function(){
+      $(".star").rating({
+        callback: function(value)
+        {
+          $.ajax({
+            type: "POST",
+            url: "<%= auction_ratings_url(@auction) %>",
+            data: "value="+value,
+            success: function(response){
+              if(response == "rated") alert("Głosowałeś już wcześniej");
+              if(response == "log_in") alert("Aby zagłosować musisz być zalogowany");
+              $(".star").rating('readOnly',true);
+            }
+          });
+        }
+      });
+
+      $(".star").rating("select", '<%= @auction.rating || 0 %>', false);
+
+      if(rated){
+        $(".star").rating('readOnly',true);
+      }
+    });
+  </script>
+<% end -%>
+
+<table class="auctionInfo">
+      <tr>
+        <td class="span-3">Terminy</td>
+        <td>
+          <p>Utworzona: <%= escape_time(@auction.created_at) %></p>
+          <p>Do końca:
+            <span class="bold">
+              <%= distance_of_time_in_words @auction.expired.to_i, Time.now.to_i %>
+            </span> (<%= escape_time(@auction.expired) %>)</p>
+        </td>
+      </tr>
+      <tr>
+        <td>Zleceniodawca</td>
+        <td>
+          <p style="font-weight:bold"><%= @auction.owner.login %></p>
+          <% unless @auction.is_owner?(@logged_user) %>
+            <p>
+              <%= link_to 'Wyślij wiadomość', new_panel_message_path(:receiver_login => @auction.owner.login) %>
+            </p>
+          <% end %>
+        </td></tr>
+      <tr>
+        <td>Informacje</td>
+        <td>
+          <p>Typ aukcji:
+            <span style="font-weight:bold">
+              aukcja <% if @auction.is_public? %>publiczna<% else %>prywatna<% end %></span>
+          </p>
+          <p>Budżet:
+            <span style="font-weight:bold">
+              <%= Budget.find(@auction.budget_id).to_s %>
+            </span>
+          </p>
+          <% unless @tags.empty? %>
+            <p>Skojarzona z:
+              <% tags = @tags.collect do |tag| %>
+                <% link_to tag, search_auctions_path("tag_ids" => tag.id) %>
+              <% end %>
+              <%= raw tags.join(", ") %>
+            </p>
+          <% end %>
+
+          <p>
+            Ocena:
+            <% form_for auction_ratings_path(@auction, @auction.rating_values.new) do |f| %>
+              <%= f.hidden_field :auction_id %>
+              <% for i in 1..15 %>
+                <%= radio_button :auction_rating, :value, i, :class => "star inline", :title => i.to_f/3 %>
+              <% end %>
+            <% end %>
+          </p>
+        </td></tr>
+    </table>

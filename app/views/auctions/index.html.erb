@@ -1,20 +1,23 @@
 <% content_for :title, "Witamy!" %>
-
-  <div class="span-11 box">
-    Jeśli szukasz specjaliste lub pracujesz w branży IT, to dobrze trafiles. 
-    Pozwól iż wyjaśnimy Ci na czym polega fenomen tego portalu!
-    Otóz, za pośrednictwem tego portalu bedziesz w stanie znalezc wykonawce bądź zleceniodawce,
-    wyróżnic swoje aukcje, zbudowac portfolio, dołączyc do profesjonalnych zespołów.
-    To nie wszystko. Jak tylko zostanie wybrana zwycieska oferta,
-    zostanie udostepniony modul projektu umozliwiajacy prace przy pomocy roznych metod rozwojowych projektu (np. SCRUM).
-    Tak wiec ten serwis to nie tylko raj dla zleceniodawcow ale i dla wykonawcow.
-    Bo wiemy iż efektywnosc to podstawa.
-    Tak więc, skończ czytac i zapierdalaj do roboty z takim uśmiechem --> :D
+<div class="span-22">
+  <div class="span-11">
+    <p class="box">
+      Jeśli szukasz specjaliste lub pracujesz w branży IT, to dobrze trafiles.
+      Pozwól iż wyjaśnimy Ci na czym polega fenomen tego portalu!
+      Otóz, za pośrednictwem tego portalu bedziesz w stanie znalezc wykonawce bądź zleceniodawce,
+      wyróżnic swoje aukcje, zbudowac portfolio, dołączyc do profesjonalnych zespołów.
+      To nie wszystko. Jak tylko zostanie wybrana zwycieska oferta,
+      zostanie udostepniony modul projektu umozliwiajacy prace przy pomocy roznych metod rozwojowych projektu (np. SCRUM).
+      Tak wiec ten serwis to nie tylko raj dla zleceniodawcow ale i dla wykonawcow.
+      Bo wiemy iż efektywnosc to podstawa.
+      Tak więc, skończ czytac i zapierdalaj do roboty z takim uśmiechem --> :D
+    </p>
   </div>
-  <div class="span-12 last" style="margin-bottom: 18px"><%= image_tag "/images/class.gif" %></div>
-
-<div class="span-5 box statistics">
-    <h2 class="prepend-1">Statystyki</h2>
+  <%= image_tag "/images/class.gif", :class => "span-11 last"%>
+</div>
+<div class="span-6 statistics">
+  <h2>Statystyki</h2>
+  <div class="box">
     <p>
       Trwających aukcji: <span><%= 160234+Auction.count %></span>
     </p>
@@ -30,19 +33,20 @@
     </p>
     <div class="prepend-top">Dane aktualizowane raz na godzine</div>
   </div>
-<div class="span-17 box last">
-  <h2 class="prepend-1">Najnowsze zlecenia</h2>
+</div>
+<div class="span-16 last">
+  <h2>Najnowsze zlecenia</h2>
 
-  <div class="span-9">
-    <% @auctions.shift(@auctions.length/2).each do |auction| %>
-    <%= link_to auction, auction_path(auction) %><br />
-  <% end %>
-  </div>
-  <div class="span-8 last">
-     <% @auctions.each do |auction| %>
-    <%= link_to auction, auction_path(auction) %><br />
-  <% end %>
-  </div>
+  <div class="span-8"><div class="box">
+      <% @auctions.shift(@auctions.length/2).each do |auction| %>
+        <%= link_to auction, auction_path(auction) %><br />
+      <% end %>
+    </div></div>
+  <div class="span-8 last"><div class="box">
+      <% @auctions.each do |auction| %>
+        <%= link_to auction, auction_path(auction) %><br />
+      <% end %>
+    </div></div>
 
   <% if @auctions.empty? %><div class="notice">Narazie nie ma żadnych opublikowanych aukcji.</div><% end %>
 </div>

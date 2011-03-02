@@ -1,0 +1,86 @@
+<% content_for :title, @auction.title %>
+
+<div class="span-22 last">
+  <div class="span-11 prepend-1">
+    <%= render :partial => "/shared/auction/info_table" %>
+  </div>
+  <div class="span-6 last prepend-2 append-2 top-3">
+    <div class="box center">
+      <%= link_to "Edytuj aukcję", edit_admin_auction_path(@auction) %>
+      <div class="top-1">
+        <%= link_to "Anuluj aukcję", admin_auction_path(@auction), :method => :delete, :confirm => "Potwierdź anulowanie aukcji" %>
+      </div>
+    </div>
+  </div>
+  <div style="clear: both"> </div>
+  <h2 class="box">Opis zlecenia</h2>
+  <section class="prepend-1 append-1 auctionDescription"><%= @auction.description %></section>
+
+  <% if @auction.communications.size > 0 %>
+    <h2 class="box">Komunikaty</h2>
+    <table class="communicationsTable">
+      <tbody>
+        <% @auction.communications.each do |msg| %>
+          <tr>
+            <td>nadano <%= escape_time(msg.created_at) %></td>
+            <td><%= msg.body %></td>
+          </tr>
+        <%  end %>
+      </tbody>
+    </table>
+  <% end %>
+
+  <% unless @offers.empty? %>
+    <h2 class="box top-1">Oferty</h2>
+    <div class="prepend-5 append-5">
+      <table class="list">
+        <thead>
+          <tr>
+            <td>wycena</td>
+            <td colspan="2">wykonawca</td>
+            <td>data</td>
+            <td>opcje</td>
+          </tr>
+        </thead>
+        <tbody>
+          <% i = 0 %>
+          <% @auction.offers.each do |offer| %>
+            <% i += 1 %>
+            <% html = case
+            when offer.status == Offer::STATUS_REJECTED
+              'rejected'
+            when offer.status == Offer::STATUS_WON
+              'winner'
+            when offer.offerer.eql?(@logged_user)
+              'highlight'
+            end
+          %>
+
+            <tr<% unless html.nil? %> class="<%= html %>"<% end %>>
+              <td>
+                <%= offer.price %> zł / <%= offer.days %> dni
+              </td>
+              <td style="text-align: right">
+                <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
+              </td>
+              <td>
+                <%= offer.offerer %>
+              </td>
+              <td>
+                <%= escape_time(offer.created_at) %>
+              </td>
+              <td>
+                <% case offer.status %>
+                <% when Offer::STATUS_ACTIVE %>
+                  <%= link_to "odrzuć ofertę", admin_auction_offer_path(@auction, offer), :method => :delete, :confirm => "Potwierdź odrzucenie oferty" %>
+                <% when Offer::STATUS_REJECTED %>
+                  <%= link_to "przywróć ofertę", recovery_admin_auction_offer_path(@auction, offer) %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

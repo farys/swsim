@@ -5,7 +5,7 @@ class CreateOffers < ActiveRecord::Migration
       t.references :offerer, :null => false
       t.integer :status, :null => false
       t.decimal :price, :null => false
-      t.integer :hours, :null => false
+      t.integer :days, :null => false
 
       t.timestamps
     end

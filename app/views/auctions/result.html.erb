@@ -1,9 +1,19 @@
-<% text = (@query.empty?)? '' : " dla \"#{@query}\"" 
-content_for :title, 'Wynik wyszukiwania'+text 
+<% text = (@query.empty?)? '' : " dla \"#{@query}\""
 budgets_text = @budgets_ids.collect { |b|
   Budget.find(b.to_i).to_s
 }.join(', ')
+content_for :title, 'Wynik wyszukiwania'+text+budgets_text
+
 %>
 
-<%= render :partial => 'search_form', :locals => {:groups => @groups, :selected_tag_ids => @selected_tag_ids, :search_in_description => @search_in_description, :query => @query, :show_tags => @show_tags} %>
+<%= render :partial => 'search_form',
+  :locals => {
+  :groups => @groups,
+  :selected_tag_ids => @selected_tag_ids,
+  :search_in_description => @search_in_description,
+  :query => @query,
+  :show_tags => @show_tags,
+  :fieldset_width => 11
+}
+%>
 <%= render :partial => 'list', :locals => {:auctions => @auctions} %>

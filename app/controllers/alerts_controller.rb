@@ -4,7 +4,7 @@ class AlertsController < ApplicationController
     
     if @alert.save
       redirect_to :back
-      flash[:notice] = 'Zgłoszenie zostało przyjęte!'
+      flash[:notice] = 'Zgloszenie zostalo przyjete!'
     end
   end
 end

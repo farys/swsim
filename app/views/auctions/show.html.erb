@@ -1,110 +1,42 @@
-<% content_for :head do -%>
-  <%= javascript_include_tag 'jquery.rating.js' %>
-  <%= stylesheet_link_tag 'jquery.rating' %>
-  <script type="text/javascript">
-    rated = <%= @rated %>;
-
-    $(document).ready(function(){
-    $(".star").rating({
-    callback: function(value)
-    {
-    $.ajax({
-    type: "POST",
-    url: "<%= auction_ratings_url(@auction) %>",
-    data: "value="+value,
-    success: function(response){
-    if(response == "rated") alert("Głosowałeś już wcześniej");
-    if(response == "log_in") alert("Aby zagłosować musisz być zalogowany");
-    $(".star").rating('readOnly',true);
-    }
-    });
-    }
-    });
-
-    $(".star").rating("select", '<%= @auction.rating || 0 %>', false);
-
-    if(rated){
-    $(".star").rating('readOnly',true);
-    }
-    });
-  </script>
-<% end -%>
-
 <% content_for :title, @auction.title %>
 
-<div class="span-23 last">
-  <div class="span-13 prepend-1">
-    <table class="auctionInfo">
-      <tr><td class="tdTitle">Terminy</td>
-        <td>
-          <p>Utworzona: <%= escape_time(@auction.created_at) %></p>
-          <p>Do końca: <span style="font-weight:bold"><%= distance_of_time_in_words @auction.expired.to_i, Time.now.to_i %></span> (<%= escape_time(@auction.expired) %>)</p>
-        </td>
-      </tr>
-      <tr><td class="tdTitle">Zleceniodawca</td>
-        <td>
-          <p style="font-weight:bold"><%= @auction.owner.login %></p>
-          <% unless @auction.is_owner?(@logged_user) %><p><%= link_to 'Wyślij wiadomość', new_panel_message_path(:receiver_login => @auction.owner.login) %></p><% end %>
-        </td></tr>
-      <tr><td class="tdTitle">Informacje</td>
-        <td>
-          <p>Liczba ofert: <%= @auction.offers.count %></p>
-          <p>Typ aukcji: <span style="font-weight:bold">aukcja <% if @auction.is_public? %>publiczna<% else %>prywatna<% end %></span></p>
-          <p>Budżet: <span style="font-weight:bold"><%= Budget.find(@auction.budget_id).to_s %></span></p>
-
-          <p>Ocena: <% form_for auction_ratings_path(@auction, @auction.rating_values.new) do |f| %><%= f.hidden_field :auction_id %><% for i in 1..15 %><%= radio_button :auction_rating, :value, i, :class => "star", :title => i.to_f/3 %><% end %><% end %></p>
-        </td></tr>
-
-      <tr><td class="tdTitle">Administracja</td>
-        <td>
-          <p><%= link_to "Zgłoś nieprawidłowość", '#', :onclick => '$("#alertDiv").toggle()' %></p>
-          <div id="alertDiv" style="display: none">
-            <% alert_pre_text = 'Nieprawidłowość dotyczy aukcji o numerze '+@auction.id.to_s+' z następującym problemem' %>
-            <% form_for @alert do |f|%>
-              <p style="color: red"><%= alert_pre_text %>, w skrócie opisz go:</p>
-              <%= hidden_field_tag :pre_text, alert_pre_text+': ' %>
-              <%= f.hidden_field :author_id %>
-              <p><%= f.text_area :text %></p>
-              <p><%= f.submit 'Wyślij zgłoszenie' %></p>
-            <% end %>
-          </div>
-        </td></tr>
-
-    </table>
+<div class="span-22 last">
+  <div class="span-11 prepend-1">
+    <%= render :partial => "/shared/auction/info_table" %>
   </div>
-  
-    <div class="span-9 last">
-      <% if @auction.allowed_to_offer?(@logged_user) %>
-      <div class="notice prepend-2 last offerField">
+
+  <div class="span-6 last prepend-2 append-1">
+    <% if @auction.allowed_to_offer?(@logged_user) %>
+      <div class="notice last offerField">
         <h2>Złóż ofertę</h2>
         <% form_for [:panel, @auction, @auction.offers.new] do |offer| %>
-          <table style="margin: 10px auto">
+          <table>
             <tr>
               <td><%= offer.label :price, 'Kwota' %>:</td>
               <td><%= offer.text_field :price, :class => "title" %> PLN</td>
             </tr>
             <tr>
-              <td style="padding-top: 10px"><%= offer.label :hours, 'Czas' %>:</td>
-              <td style="padding-top: 10px"><%= offer.text_field :hours, :class => "title" %> godz</td>
+              <td style="padding-top: 10px"><%= offer.label :days, 'Czas' %>:</td>
+              <td style="padding-top: 10px"><%= offer.text_field :days, :class => "title" %> dni</td>
             </tr>
           </table>
-
-          <%= offer.submit 'Licytuj!', :style => 'margin: 0 auto', :confirm => "Potwierdź swoją licytację" %>
-
+          <div class="prepend-2">
+            <%= offer.submit 'Licytuj!', :confirm => "Potwierdź swoją licytację" %>
+          </div>
         <% end %>
       </div>
     <% end %>
     <% if @auction.made_offer?(@logged_user) %>
-      <div class="span-9 last notice">Twoja oferta została już przyjęta.</div>
+      <div class="notice last offerField center">Twoja oferta została już przyjęta.</div>
+    <% end %>
   </div>
-  <% end %>
 </div>
 <div style="clear: both"> </div>
-<h2>Opis zlecenia</h2>
-<section class="auctionDescription"><%= @auction.description %></section>
+<h2 class="box">Opis zlecenia</h2>
+<section class="prepend-1 append-1 auctionDescription"><%= @auction.description %></section>
 
 <% if @auction.communications.size > 0 %>
-  <h2>Komunikaty</h2>
+  <h2 class="box">Komunikaty</h2>
   <table class="communicationsTable">
     <tbody>
       <% @auction.communications.each do |msg| %>
@@ -118,41 +50,52 @@
 <% end %>
 
 <% unless @offers.empty? %>
-  <h2 style="margin-top: 10px">Oferty</h2>
-  <table style="margin: 0 auto" class="list">
-    <thead>
-      <tr>
-        <td colspan="2">wykonawca</td>
-        <td>data</td>
-      </tr>
-    </thead>
-    <tbody>
-      <% i = 0 %>
-      <% @auction.offers.each do |offer| %>
-        <% i += 1 %>
-        <% html = case
-        when offer.status == Offer::STATUS_REJECTED
-          'rejected'
-        when offer.status == Offer::STATUS_WON
-          'winner'
-        when offer.offerer.eql?(@logged_user)
-          'selected'
-        when i%2 < 1
-          'cycle'
-        end
-      %>
-
-        <tr<% unless html.nil? %> class="<%= html %>"<% end %>>
-          <td style="text-align: right">
-            <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
-          </td>
-          <td>
-            <%= offer.offerer %>
-          </td>
-          <td><%= escape_time(offer.created_at) %></td>
+  <h2 class="box top-1">Oferty</h2>
+  <div class="prepend-5 append-5">
+    <table class="list">
+      <thead>
+        <tr>
+          <td colspan="2">wykonawca</td>
+          <td>data</td>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
+      </thead>
+      <tbody>
+        <% i = 0 %>
+        <% @auction.offers.each do |offer| %>
+          <% i += 1 %>
+          <% html = case
+          when offer.status == Offer::STATUS_REJECTED
+            'rejected'
+          when offer.status == Offer::STATUS_WON
+            'winner'
+          end
+        %>
 
+          <tr<% unless html.nil? %> class="<%= html %>"<% end %>>
+            <td style="text-align: right">
+              <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
+            </td>
+            <td class="<%= 'bold' if offer.offerer.eql?(@logged_user)%>">
+              <%= offer.offerer %>
+            </td>
+            <td><%= escape_time(offer.created_at) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+<div class="prepend-17 right">
+  <%= link_to "Zgłoś nieprawidłowość", '#', :onclick => '$("#alertDiv").toggle("fast"); return false' %>
+</div>
+<%#TODO %>
+<div id="alertDiv" class="hide prepend-5 append-5 append-bottom">
+  <% alert_pre_text = 'Nieprawidłowość dotyczy aukcji o numerze '+@auction.id.to_s+' z następującym problemem' %>
+  <% form_for @alert do |f|%>
+    <p style="color: red"><%= alert_pre_text %>, w skrócie opisz go:</p>
+    <%= hidden_field_tag :pre_text, alert_pre_text+': ' %>
+    <%= f.hidden_field :author_id %>
+    <p><%= f.text_area :text, :class => "span-8 last" %></p>
+    <p><%= f.submit 'Wyślij zgłoszenie' %></p>
+  <% end %>
+</div>

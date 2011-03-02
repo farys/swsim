@@ -14,6 +14,7 @@
         </li>
         <li><p>opcje</p>
           <ul>
+            <li><%= link_to 'wyszukaj aukcję', search_auctions_path %></li>
             <li><%= link_to 'nowa aukcja', new_panel_auction_path %></li>
           </ul>
         </li>
@@ -38,7 +39,7 @@
       <ul>
         <li><p>przeglądaj</p>
           <ul>
-            <li><%= raw link_to 'biorące udział', panel_offers_path(:status => Offer::STATUS_NORMAL) %></li>
+            <li><%= raw link_to 'biorące udział', panel_offers_path(:status => Offer::STATUS_ACTIVE) %></li>
             <li><%= raw link_to 'odrzucone', panel_offers_path(:status => Offer::STATUS_REJECTED) %></li>
             <li><%= raw link_to 'wygrane', panel_offers_path(:status => Offer::STATUS_WON) %></li>
           </ul>

@@ -4,7 +4,6 @@ gem 'rails', '3.0.3'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-gem 'mysql'
 gem 'mysql2'
 
 gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
@@ -19,6 +18,7 @@ gem "jquery-rails"
 group :development do
   gem 'faker' #generowanie testowych danych
 end
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

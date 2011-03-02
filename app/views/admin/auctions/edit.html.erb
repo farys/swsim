@@ -1,0 +1,30 @@
+<% content_for :title, "Edycja aukcji numer #{@auction.id}" %>
+<div class="prepend-1 append-1">
+  <% form_for [:admin, @auction] do |f| -%>
+
+    <%= render "layouts/error_messages", :target => @auction %>
+
+    <p>
+      <%= f.label :created_at, "Rozpoczęta: " %>
+      <%= @auction.created_at %>
+    </p>
+    <p>
+      <%= f.label :expired, "Zakończenie aukcji w " %>
+      <%= datetime_select :auction, :expired %>
+    </p>
+    <p>
+      <%= f.label :expired, "Status aukcji: " %>
+      <% options = [
+        ["aktywna", Auction::STATUS_ACTIVE],
+        ["anulowana", Auction::STATUS_CANCELED],
+        ["zakończona", Auction::STATUS_FINISHED]
+      ]
+    %>
+      <%= select :auction, :status, options_for_select(options, @auction.status) %>
+    </p>
+
+    <%= render :partial => "shared/auction/form_fields", :locals => {:f => f} %>
+
+    <%= f.submit "Publikuj" %>
+  <% end -%>
+</div>

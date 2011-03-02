@@ -3,7 +3,7 @@ Inz::Application.routes.draw do
   #DEFAULT
   resources :auctions, :only => [:index, :show] do
     resources :ratings, :only => [:index, :create]
-    post :result, :on => :collection
+    get :result, :on => :collection
     get :search, :on => :collection
   end
   
@@ -35,6 +35,16 @@ Inz::Application.routes.draw do
     end
     
     resources :projects
+  end
+
+  namespace :admin do
+    resources :auctions do
+      get :result, :on => :collection
+      resources :offers, :only => [:destroy] do
+        get :recovery, :on => :member
+      end
+    end
+    
   end
     
   resources :alerts, :only => [:create]
