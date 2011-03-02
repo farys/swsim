@@ -19,7 +19,7 @@ def make_users
 end
 
 def make_projects
-  Project.create!(:name => 'uber projekt', :owner_id => 2, :leader_id => 1, :deadline => Date.current+14.days, :status => 2 )
-  Project.create!(:name => 'wymiatacze', :owner_id => 1, :leader_id => 3, :deadline => Date.current+14.days, :status => 2 )
-  Project.create!(:name => 'uber diablo', :owner_id => 2, :leader_id => 5, :deadline => Date.current+14.days, :status => 2 )
+  Project.create!(:name => 'uber projekt', :owner_id => 2, :leader_id => 1, :deadline => Date.current+14.days, :status => 0 )
+  Project.create!(:name => 'wymiatacze', :owner_id => 1, :leader_id => 3, :deadline => Date.current+14.days, :status => 1 )
+  Project.create!(:name => 'uber diablo', :owner_id => 4, :leader_id => 5, :deadline => Date.current+14.days, :status => 2 )
 end

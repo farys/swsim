@@ -2,9 +2,25 @@
 <% if @projects.empty? %>
   <div class="notice">Obecnie nie uczestniczysz w żadnych projektach</div>
 <% else %>
-	<ul>
-    <% @projects.each do |proj| %>
-      <li><%= proj.name %></li>
-    <% end %>
-  </ul>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>Nazwa</td>
+        <td>Rola</td>
+        <td>Termin</td>
+        <td>Status</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @projects.each do |proj| %>
+        <tr>
+          <td><%= proj.name %></td>
+          <td>todo ;]</td>
+          <td><%= proj.deadline %></td>
+          <td><%= proj.string_status %></td>
+        </tr>>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate %>
 <% end %>

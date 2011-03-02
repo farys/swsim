@@ -1,3 +1,4 @@
+#encoding: utf-8 
 class Project < ActiveRecord::Base
   STATUS_ACTIVE = 0
   STATUS_CANCELED = 1
@@ -13,4 +14,14 @@ class Project < ActiveRecord::Base
 	validates :status, :presence => true,
 	                   :inclusion => { :in => [Project::STATUS_ACTIVE, Project::STATUS_CANCELED, Project::STATUS_FINISHED] }
 	
+	def string_status
+	  case self.status
+	  when STATUS_ACTIVE
+	    'Aktywny'
+	  when STATUS_CANCELED
+	    'Anulowany'
+	  when STATUS_FINISHED
+	    'Zakończony'
+	  end
+	end
 end
