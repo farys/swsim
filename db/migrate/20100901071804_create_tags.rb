@@ -1,7 +1,9 @@
 class CreateTags < ActiveRecord::Migration
   def self.up
     create_table :tags do |t|
+      t.integer :status
       t.string :name
+      t.integer :auction_count, :default => 0
     end
     
     create_table :auctions_tags, :id => false do |t|

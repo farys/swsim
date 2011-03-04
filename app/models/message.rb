@@ -31,6 +31,18 @@ class Message < ActiveRecord::Base
     self.receiver = user
   end
 
+  def replied!
+    self.update_attribute(:status, STATUS_REPLIED)
+  end
+  
+  def read!
+    self.update_attribute(:status, STATUS_READ)
+  end
+  
+  def delete!
+    self.update_attribute(:status, STATUS_DELETED)
+  end
+
   def send_to_receiver
     return false unless self.save
 

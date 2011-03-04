@@ -1,2 +1,45 @@
 <% content_for :title, "Aukcje użytkowników" %>
 <%= render :partial => "search_form" %>
+
+<% unless @auctions.empty? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>nazwa</td>
+        <td>właściciel</td>
+        <td>typ</td>
+        <td>rozpoczęta</td>
+        <td>koniec</td>
+        <td>status</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @auctions.each do |auction| %>
+        <% status = case auction.status
+        when Auction::STATUS_ACTIVE
+          'aktywna'
+        when Auction::STATUS_FINISHED
+          'zakończona'
+        when Auction::STATUS_CANCELED
+          'anulowana'
+        end
+      %>
+        <tr>
+          <td><%= link_to auction.title, edit_admin_auction_path(auction) %></td>
+          <td><%= link_to auction.owner, user_path(auction.owner) %></td>
+          <td style="font-weight: bold"><% if auction.is_public? %>publiczna<% else %>prywatna<% end %></td>
+          <td><%= escape_date(auction.created_at) %></td>
+          <td>
+            after <%= distance_of_time_in_words auction.expired.to_i, Time.now.to_i %>
+          </td>
+          <td>
+            <%= status %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate %>
+<% else %>
+  <div class="clear notice">Nie znaleziono żadnych aukcji.</div>
+<% end %>

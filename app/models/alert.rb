@@ -1,10 +1,25 @@
 class Alert < ActiveRecord::Base
+  STATUS_UNREAD = 0
+  STATUS_READ = 1
+  
   belongs_to :author, :class_name => "User"
   belongs_to :reader, :class_name => "User"
   belongs_to :model, :polymorphic => true
 
+  validates :topic, :presence => true
   validates :text, :presence => true
   validates_associated :author, :reader
+
+  before_save :default_data, :on => :create
+
+  def default_data
+    self.status = STATUS_UNREAD
+  end
+
+  def read!
+    self.status = STATUS_READ
+    self.save
+  end
 
   #zgloszenie o odrzucenie oferty
   def self.offer_to_reject! offer, text

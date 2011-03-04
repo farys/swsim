@@ -1,7 +1,6 @@
 class Admin::OffersController < Admin::ApplicationController
   before_filter :load_auction_and_offer
 
-  #wyslij komunikat do wlasciciela aukcji z prosba o odrzucenie oferty
   def recovery
     if @offer.recovery!
       flash[:success] = "Oferta zostala przywrocona"
@@ -9,7 +8,6 @@ class Admin::OffersController < Admin::ApplicationController
     redirect_to :back
   end
 
-  #oferte moze wycofac tylko wlasciciel aukcji
   def destroy
     if @offer.reject!
       flash[:notice] = "Oferta zostala anulowana"

@@ -2,9 +2,14 @@ pl:
   activerecord:
     models:
       auction: Aukcja
+      message: Wiadomość
     attributes:
       auction:
-        title: Tytył
+        title: Tytuł
+      message:
+        topic: Temat
+        body: Treść
+        receiver_login: Login odbiorcy
     errors:
       models:
         auction:

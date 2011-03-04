@@ -1,4 +1,4 @@
-class Panel::MessagesController < Panel::ApplicationController
+class Admin::MessagesController < Admin::ApplicationController
   before_filter :new_message, :only => [:new, :create]
 
   def index
@@ -20,6 +20,7 @@ class Panel::MessagesController < Panel::ApplicationController
     end
   end
 
+
   def new
   end
 
@@ -28,10 +29,11 @@ class Panel::MessagesController < Panel::ApplicationController
 
       if params.has_key?(:reply_message_id)
         @msg = @logged_user.messages.received.find(params[:reply_message_id])
-        @msg.replied!
+        @msg.status = Message::STATUS_REPLIED
+        @msg.save
       end
-      flash_t :notice
-      redirect_to sent_panel_messages_path
+      flash[:notice] = t("flash.messages.create")
+      redirect_to sent_admin_messages_path
     else
       render :new
     end
@@ -47,8 +49,8 @@ class Panel::MessagesController < Panel::ApplicationController
   def destroy
     @message = @logged_user.messages.find(params[:id])
     @message.delete!
-    flash_t :warning
-    redirect_to panel_messages_path
+      flash[:warning] = t("flash.messages.destroy")
+      redirect_to admin_messages_path
   end
 
   private

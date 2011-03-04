@@ -1,14 +1,28 @@
 class Auction < ActiveRecord::Base
   STATUS_ACTIVE = 0
-  STATUS_CANCELED = 1
-  STATUS_FINISHED = 2
+  STATUS_FINISHED = 1
+  STATUS_CANCELED = 2
+
+  ORDER_MODES = [
+    ["po nazwie", "title DESC", 0],
+    ["po statusie", "status ASC", 1],
+    ["po ID malejaco", "id DESC", 2],
+    ["po ID rosnaco", "id ASC", 3],
+    ["po OCENIE malejaco", "rating DESC", 4],
+    ["po OCENIE rosnaco", "rating ASC", 5]
+    ]
 
   belongs_to :owner, :class_name => 'User'
   belongs_to :won_offer, :class_name => 'Offer', :include => [:offerer] #has_and_belongs_to?
   has_many :offers, :dependent => :destroy
   has_many :communications, :dependent => :delete_all, :order => 'id DESC'
-  has_and_belongs_to_many :tags
-  has_many :rating_values, :class_name => 'AuctionRating', :dependent => :delete_all
+  has_and_belongs_to_many :tags,
+    :after_add => :tag_counter_up,
+    :after_remove => :tag_counter_down
+
+  has_many :rating_values, :class_name => 'AuctionRating', :dependent => :delete_all,
+    :after_add => :calculate_rating,
+    :after_remove => :calculate_rating
   
   define_index do
     indexes :title
@@ -32,32 +46,15 @@ class Auction < ActiveRecord::Base
   scope :public_auctions, lambda { where(:private => false)}
   
   before_validation :init_auction_row, :on => :create
-  before_update :won_offer_choosed, :if => ->{ self.won_offer_id_changed? }
-  before_update :status_changed, :if => ->{ self.status_changed? }
-  
+  before_update :won_offer_choosed, :if => :won_offer_id_changed?
+  before_update :status_changed, :if => :is_down?
+
   #create form
   attr_accessor :expired_after
   validates_inclusion_of :expired_after, :in => (1..14).to_a.collect{|d| d.to_s}, :on => :create
   
   def to_s
     self.title
-  end
-  
-  def init_auction_row
-    self.expired = DateTime.now + self.expired_after.to_i.days
-    self.status = Auction::STATUS_ACTIVE
-  end
-
-  def won_offer_choosed
-    unless self.offers.find(self.won_offer_id)
-      self.errors.add("won_offer_id", "Wybrana oferta nie nalezy do ofert uczestniczacych w licytacji")
-    else
-      self.status = Auction::STATUS_FINISHED
-    end
-  end
-  
-  def status_changed
-    self.expired = DateTime.now
   end
 
   #ustawia status aukcji na anulowano
@@ -88,19 +85,9 @@ class Auction < ActiveRecord::Base
   def rate user, value
     self.rating_values.create :value => value, :user => user
   end
-  
-  #oblicza srednia ocene aukcji, jesli aukcja nie zostala jeszcze oceniona to metoda zwroci nil
-  def rating
-  	return (self.ratings_sum.to_f / self.ratings_count).ceil.to_i if (self.ratings_count > 0)
-  	return nil
-  end
 
   def rated_by? user
-    if self.rating_values.where("user_id=?", user.id).exists?
-      true
-    else
-      false
-    end
+    self.rating_values.where("user_id=?", user.id).exists?
   end
   
   #czy uzytkownik jest wlascicielem aukcji
@@ -128,7 +115,7 @@ class Auction < ActiveRecord::Base
     not self.offers.select {|offer| offer.offerer.eql?(offerer)}.empty?
   end  
   
-  def self.search_by_sphinx(query = '', search_in_description = false, tags_ids = [], budgets_ids = [], page = 1, per_page = 15)
+  def self.search_by_sphinx(query = '', search_in_description = false, tags_ids = [], budgets_ids = [], order = nil, page = 1, per_page = 15)
 
     unless search_in_description || query.length == 0
       query = '@title ' + query
@@ -150,7 +137,7 @@ class Auction < ActiveRecord::Base
       :page => page,
       :sort_mode => :extended,
       :match_mode => :extended,
-      :order => "@rank DESC"
+      :order => order || "@rank DESC"
   end
   
   def new_offer params
@@ -160,9 +147,10 @@ class Auction < ActiveRecord::Base
   end
 
   #wyszukiwanie aukcji dla admina
-  def self.admin_search(query = "", selected_date = nil, status = Array.new, page = 1)
-    criteria = self.includes(:owner).order("id DESC")
-
+  def self.admin_search(query = "", selected_date = nil, status = Array.new, order = 0, page = 1)
+    criteria = self.includes(:owner)
+    criteria.order(ORDER_MODES[order][1])
+    
     unless query.empty?
       criteria = criteria.where("auctions.title like ? OR auctions.id=?", "%#{query}%", query)
     end
@@ -176,5 +164,54 @@ class Auction < ActiveRecord::Base
     end
 
     criteria.paginate(:per_page => 15, :page => page)
+  end
+
+  def update_offers params
+    return true if params.nil?
+    
+    saved = true
+    self.offers.each do |offer|
+      offer_id = offer.id.to_s
+      if params.has_key? offer_id
+        save = offer.update_attributes(params[offer_id])
+        saved = false if save == false
+      end
+    end
+    saved
+  end
+
+  private
+  def is_down?
+    self.status_changed? && [STATUS_CANCELED, STATUS_FINISHED].include?(self.status)
+  end
+  
+  def init_auction_row
+    self.expired = DateTime.now + self.expired_after.to_i.days
+    self.status = Auction::STATUS_ACTIVE
+  end
+
+  def tag_counter_up tag
+    tag.increment! :auction_count
+  end
+
+  def tag_counter_down tag
+    tag.decrement! :auction_count
+  end
+
+  def won_offer_choosed
+    unless self.offers.find(self.won_offer_id)
+      self.errors.add("won_offer_id", "Wybrana oferta nie nalezy do ofert uczestniczacych w licytacji")
+    else
+      self.status = Auction::STATUS_FINISHED
+    end
+  end
+
+  def status_changed
+    self.expired = DateTime.now
+    self.tags.delete_all
+  end
+
+  def calculate_rating(v1)
+    self.update_attribute(:rating, self.rating_values.sum(:value) / self.rating_values.count(1))
   end
 end

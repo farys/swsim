@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   private
   def init
     @global_title = '- inz v0.1'
-    @logged_user = User.find(2)#TODO
+    @logged_user = User.find(3)#TODO
   end
   
   def login_required
@@ -21,5 +21,13 @@ class ApplicationController < ActionController::Base
     unless @logged_user.nil?
       @alerts_count = @logged_user.received_alerts.count
     end
+  end
+
+  #metoda przetwarza wywolanie, /users/create => t("flash.users.create")
+  def flash_t type=nil
+    params[:controller]["/"] = "."
+    text = t("flash.#{params[:controller]}.#{params[:action]}")
+    return text if type.nil?
+    flash[type] = text
   end
 end

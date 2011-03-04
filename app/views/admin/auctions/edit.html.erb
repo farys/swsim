@@ -3,7 +3,12 @@
   <% form_for [:admin, @auction] do |f| -%>
 
     <%= render "layouts/error_messages", :target => @auction %>
-
+    <% @offers.each do |offer| %>
+      <% if offer.errors.any? %>
+        <div class="error">Któryś z atrybutów ma błąd</div>
+        <% break %>
+      <% end %>
+    <% end %>
     <p>
       <%= f.label :created_at, "Rozpoczęta: " %>
       <%= @auction.created_at %>
@@ -25,6 +30,49 @@
 
     <%= render :partial => "shared/auction/form_fields", :locals => {:f => f} %>
 
-    <%= f.submit "Publikuj" %>
+    <% unless @offers.empty? %>
+      <h2 class="box top-1">Oferty</h2>
+      <div class="prepend-5 append-5">
+        <table class="list">
+          <thead>
+            <tr>
+              <td>wycena</td>
+              <td colspan="2">wykonawca</td>
+              <td>data</td>
+              <td>opcje</td>
+            </tr>
+          </thead>
+          <tbody>
+            <%
+            statuses = [["aktywna", Offer::STATUS_ACTIVE], ["odrzucona", Offer::STATUS_REJECTED]]
+          %>
+            <% @offers.each do |offer| %>
+              <%= fields_for "offers[#{offer.id}]", offer do |sf| %>
+                <%= render "layouts/error_messages", :target => offer %>
+                <tr>
+                  <td>
+                    <%= sf.text_field :price, :class => "span-1 right" %> zł / <%= sf.text_field :days, :class => "right span-1" %> dni
+                  </td>
+                  <td style="text-align: right">
+                    <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
+                  </td>
+                  <td>
+                    <%= offer.offerer %>
+                  </td>
+                  <td>
+                    <%= escape_time(offer.created_at) %>
+                  </td>
+                  <td>
+                    <%= select "offers[#{offer.id}]", "status", options_for_select(statuses, offer.status), {:index => nil}  %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+
+    <%= f.submit "Aktualizuj" %>
   <% end -%>
 </div>

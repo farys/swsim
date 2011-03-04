@@ -1,45 +1,39 @@
 class Admin::AuctionsController < Admin::ApplicationController
-  before_filter :form_data, :only => [:update, :edit]#TODO czy edycja potrzebna?
   before_filter :load_auction, :only => [:show, :edit, :update, :destroy]
+  before_filter :form_data, :only => [:edit, :update]#TODO czy edycja potrzebna?
   
   def index
-    @status = Array.new
     @date = Time.new
-  end
-
-  def result
     @query = params[:query] || ""
-    @on_date = params[:on_date] || false
+    @on_date = params[:on_date] || nil
+    @order = (params[:order] || 0).to_i
+    #date select
     d = params[:date]
-    @date = Date::civil(d[:year].to_i, d[:month].to_i, d[:day].to_i)
-    @date_to_search = if @on_date.nil? then; nil; else @date; end
+    @date = (d.nil?)? Time.new : Date::civil(d[:year].to_i, d[:month].to_i, d[:day].to_i)
+    @date_to_search = (@on_date.nil?)? nil : @date
+
     @status = (params[:status] || {}).values.map(&:to_i)
-
-    @auctions = Auction.admin_search(@query, @date_to_search, @status, params[:page])
+    @auctions = Auction.admin_search(@query, @date_to_search, @status, @order, params[:page])
   end
-
-  def show
-    @tags = @auction.tags
-    @offers = @auction.offers
-    @communications = @auction.communications
-  end
-
+  
   def edit
+    @communications = @auction.communications
   end
 
   def update
     @auction.tag_ids = (params[:tag_ids] || {}).values
-    if @auction.update_attributes params[:auction]
-      flash[:notice] = 'Aukcja zostala zaktualizowana'
-      redirect_to auction_path(@auction)
+
+    if @auction.update_attributes(params[:auction]) && @auction.update_offers(params[:offers])
+      flash[:notice] = t("flash.admin.auctions.update")
+      redirect_to admin_auctions_path
     else
-      render :won_offer
+      render :edit
     end
   end
 
   def destroy
     if @auction.cancel!
-      flash[:notice] = 'Aukcja zostala anulowana'
+      flash[:notice] = t("flash.admin.auctions.destroy")
       redirect_to admin_auctions_path
     end
   end
@@ -47,6 +41,7 @@ class Admin::AuctionsController < Admin::ApplicationController
   private
   def form_data
     @groups = Group.all
+    @offers = @auction.offers
   end
 
   def load_auction

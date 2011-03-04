@@ -6,16 +6,16 @@
     <%= render "layouts/error_messages", :target => @message %>
 
     <p>
-      <%= f.label :receiver_login %><br />
+      <%= f.label :receiver_login, "Odbiorca" %><br />
       <%= f.text_field :receiver_login %>
     </p>
 
     <p>
-      <%= f.label :topic %><br />
+      <%= f.label :topic, 'Temat' %><br />
       <%= f.text_field :topic, :class => "title span-22" %>
     </p>
     <p>
-      <%= f.label :body %><br />
+      <%= f.label :topic, 'Treść wiadomości' %><br />
       <%= f.text_area :body, :class => "mceEditor span-22" %>
     </p>
 

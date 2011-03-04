@@ -1,4 +1,5 @@
 require 'faker'
+I18n.locale= :en
 
 #wypelnianie bazy development danymi => rake db:populate
 

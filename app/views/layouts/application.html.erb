@@ -13,7 +13,7 @@
     <div class="container">
       <header>
         <%= link_to "zlecenia IT", "/", :id => "logo", :class => "prepend-1" %>
-        <nav class="append-1">
+        <nav>
           <% top_menu = case params[:controller].include?("admin")
           when true
             "layouts/top_menu/admin"
@@ -29,7 +29,7 @@
       <section class="prepend-1 append-1"><div class="<%= key.to_s %>"><%= flash[key] %></div></section>
       <% end %>
 
-      <article class="span-22 prepend-1 append-1">
+      <article class="span-24">
         <h1 class="box bottom"><%= yield :title %></h1>
         <%= yield %>
         <div class="clear"> </div>
