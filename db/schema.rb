@@ -125,7 +125,7 @@ ActiveRecord::Schema.define(:version => 20110301175201) do
     t.string   "name"
     t.integer  "owner_id"
     t.integer  "leader_id"
-    t.date     "deadline"
+    t.integer  "duration"
     t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"

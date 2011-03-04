@@ -10,7 +10,7 @@ class Project < ActiveRecord::Base
 	                 :length => { :within => 5..50}
 	validates :owner_id, :presence => true
 	validates :leader_id, :presence => true
-	validates :deadline, :presence => true
+	validates :duration, :presence => true
 	validates :status, :presence => true,
 	                   :inclusion => { :in => [Project::STATUS_ACTIVE, Project::STATUS_CANCELED, Project::STATUS_FINISHED] }
 	
@@ -23,5 +23,13 @@ class Project < ActiveRecord::Base
 	  when STATUS_FINISHED
 	    'Zakończony'
 	  end
+	end
+	
+	def deadline
+	  self.created_at + self.duration.days
+	end
+	
+	def time_left
+	  self.deadline - DateTime.now
 	end
 end

@@ -4,7 +4,7 @@ class CreateProjects < ActiveRecord::Migration
       t.string :name
       t.integer :owner_id
       t.integer :leader_id
-      t.date :deadline
+      t.integer :duration
       t.integer :status
 
       t.timestamps

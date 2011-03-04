@@ -1,0 +1,6 @@
+pl:
+  day:
+    zero: 'dni'
+    one: 'dzień'
+    few: 'dni'
+    other: 'dni'

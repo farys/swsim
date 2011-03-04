@@ -1,0 +1,14 @@
+pl:
+  activerecord:
+    models:
+      auction: Aukcja
+    attributes:
+      auction:
+        title: Tytył
+    errors:
+      models:
+        auction:
+          attributes:
+            title:
+              blank: nie może byc pusty
+    

@@ -16,7 +16,10 @@
         <tr>
           <td><%= proj.name %></td>
           <td>todo ;]</td>
-          <td><%= proj.deadline %></td>
+          <td>
+            <%= escape_date(proj.deadline) %>
+            (<%= I18n.t :day, :count => 2 %>)
+          </td>
           <td><%= proj.string_status %></td>
         </tr>>
       <% end %>
