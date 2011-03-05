@@ -25,7 +25,7 @@
         end
       %>
         <tr>
-          <td><%= link_to auction.title, admin_auction_path(auction) %></td>
+          <td><%= link_to auction.title, edit_admin_auction_path(auction) %></td>
           <td><%= link_to auction.owner, user_path(auction.owner) %></td>
           <td style="font-weight: bold"><% if auction.is_public? %>publiczna<% else %>prywatna<% end %></td>
           <td><%= escape_date(auction.created_at) %></td>

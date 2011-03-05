@@ -13,7 +13,7 @@ class AuctionsController < ApplicationController
     @tags = @auction.tags
     
     unless (@auction.is_allowed_to_see?(@logged_user))
-      render :text => 'Nie masz prawa dostepu do aukcji', :status => :forbidden
+      render :text => flash_t, :status => :forbidden
       return
     end
     

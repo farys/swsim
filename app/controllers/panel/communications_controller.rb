@@ -6,7 +6,7 @@ class Panel::CommunicationsController < Panel::ApplicationController
 
   def create
     if @communication.save
-      flash[:notice] = 'Komunikat zostal opublikowany'
+      flash_t :notice
       redirect_to auction_path(@auction)
     else
       render :new

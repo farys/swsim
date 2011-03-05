@@ -4,13 +4,11 @@ class Panel::MessagesController < Panel::ApplicationController
   def index
     @status = "received"
     @messages = @logged_user.find_messages(:received, params[:page])
-    @title = "Odebrane"
   end
   
   def sent
     @status = "sent"
     @messages = @logged_user.find_messages(:sent, params[:page])
-    @title = "Wyslane"
     render :index
   end
   
@@ -18,13 +16,9 @@ class Panel::MessagesController < Panel::ApplicationController
     @message = @logged_user.messages.find(params[:id])
   
     if @message.status == Message::STATUS_UNREAD
-      @message.status = Message::STATUS_READ
-      unless @message.save
-        flash[:error] = 'Nie mozna bylo zmienic statusu wiadomosci. Skontaktuj sie z administratorem serwisu'
-      end
+      @message.read!
     end
   end
-
 
   def new
   end
@@ -34,10 +28,9 @@ class Panel::MessagesController < Panel::ApplicationController
 
       if params.has_key?(:reply_message_id)
         @msg = @logged_user.messages.received.find(params[:reply_message_id])
-        @msg.status = Message::STATUS_REPLIED
-        @msg.save
+        @msg.replied!
       end
-      flash[:notice] = 'Wiadomosc zostala wyslana'
+      flash_t :notice
       redirect_to sent_panel_messages_path
     else
       render :new
@@ -53,14 +46,9 @@ class Panel::MessagesController < Panel::ApplicationController
   
   def destroy
     @message = @logged_user.messages.find(params[:id])
-    @message.status = Message::STATUS_DELETED
-    if @message.save
-      flash[:warning] = 'Wiadomosc zostala usunieta'
-      redirect_to panel_messages_path
-    else
-      flash[:error] = 'Nie mozna bylo usunac wiadomosci. Skontaktuj sie z administratorem serwisu'
-      redirect_to panel_message_path(@message)
-    end
+    @message.delete!
+    flash_t :warning
+    redirect_to panel_messages_path
   end
 
   private

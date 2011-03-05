@@ -350,7 +350,7 @@
 	$.fn.rating.options = { //$.extend($.fn.rating, { options: {
 			//cancel: 'Cancel Rating',   // advisory title for the 'cancel' link
 			//cancelValue: '',           // value to submit when user click the 'cancel' link
-			split: 3,                  // split the star into how many parts?
+			split: 1,                  // split the star into how many parts?
 			
 			// Width of star image in case the plugin can't work it out. This can happen if
 			// the jQuery.dimensions plugin is not available OR the image is hidden at installation

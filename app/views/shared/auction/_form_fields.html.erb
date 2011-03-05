@@ -1,11 +1,11 @@
 <p>
   <%= f.label :title, "Tytuł aukcji" %><br />
-  <%= f.text_field :title, :class => "title span-20" %>
+  <%= f.text_field :title, :class => "title span-22" %>
 </p>
 
 <p>
   <%= f.label :description, "Opis zlecenia" %><br />
-  <%= f.text_area :description, :class => "mceEditor span-20" %>
+  <%= f.text_area :description, :class => "mceEditor span-22" %>
 </p>
 
 <p>
@@ -27,7 +27,7 @@
 <div id="stageDiv" style="margin-top: 20px;margin-bottom: 20px">
   <div id="publicDiv">
     <h2 class="box">Tagi</h2>
-    <%= render :partial => "shared/clickable_tags", :locals => {:groups => @groups, :selected_tag_ids => @auction.tag_ids, :fieldset_width => 10} %>
+    <%= render :partial => "shared/clickable_tags", :locals => {:groups => @groups, :selected_tag_ids => @auction.tag_ids, :fieldset_width => 11} %>
     <p style="font-size: 85%">Wybranie niepasujących tagów może zaważyć na niekorzystnej ocenie aukcji.</p>
   </div>
   <div id="privateDiv" style="display: none">

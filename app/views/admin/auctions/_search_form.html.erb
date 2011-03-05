@@ -1,25 +1,21 @@
-<div class="span-22 last append-bottom">
-
-  <% form_tag result_admin_auctions_path, :method => :get do |f| %>
-    <div class="prepend-1 append-1 span-20">
-      <div class="box center">
-          Nazwa lub ID: <%= text_field_tag :query, @query %>
-          <%= check_box_tag "on_date", true, @on_date %>
-          <%= label_tag "on_date", "rozp w" %>
-          <%= select_date(
-            @date,
-            :start_year => 2011
-          ) %>
-          <%= check_box_tag "status[#{Auction::STATUS_ACTIVE}]", Auction::STATUS_ACTIVE, @status.include?(Auction::STATUS_ACTIVE) %>
-          <%= label_tag "status[#{Auction::STATUS_ACTIVE}]", "aktywne" %>,
-          <%= check_box_tag "status[#{Auction::STATUS_CANCELED}]", Auction::STATUS_CANCELED, @status.include?(Auction::STATUS_CANCELED) %>
-          <%= label_tag "status[#{Auction::STATUS_CANCELED}]", "anulowane" %>,
-          <%= check_box_tag "status[#{Auction::STATUS_FINISHED}]", Auction::STATUS_FINISHED, @status.include?(Auction::STATUS_FINISHED) %>
-          <%= label_tag "status[#{Auction::STATUS_FINISHED}]", "zakończone" %>
-
-          <%= submit_tag "wyszukaj" %>
-      </div>
-
+<% form_tag admin_auctions_path, :method => :get do |f| %>
+  <div class="span-24">
+    <div class="box center">
+      Nazwa lub ID: <%= text_field_tag :query, @query %>
+      <%= check_box_tag "on_date", true, @on_date %>
+      <%= label_tag "on_date", "rozp w" %>
+      <%= select_date(
+        @date,
+        :start_year => 2011
+      ) %>
+      <%= check_box_tag "status[#{Auction::STATUS_ACTIVE}]", Auction::STATUS_ACTIVE, @status.include?(Auction::STATUS_ACTIVE) %>
+      <%= label_tag "status[#{Auction::STATUS_ACTIVE}]", "aktywne" %>,
+      <%= check_box_tag "status[#{Auction::STATUS_CANCELED}]", Auction::STATUS_CANCELED, @status.include?(Auction::STATUS_CANCELED) %>
+      <%= label_tag "status[#{Auction::STATUS_CANCELED}]", "anulowane" %>,
+      <%= check_box_tag "status[#{Auction::STATUS_FINISHED}]", Auction::STATUS_FINISHED, @status.include?(Auction::STATUS_FINISHED) %>
+      <%= label_tag "status[#{Auction::STATUS_FINISHED}]", "zakończone" %>
+      sortuj <%= select_tag "order", options_for_select(Auction::ORDER_MODES, @order) %>
+      <%= submit_tag "wyszukaj" %>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>

@@ -1,16 +1,17 @@
 <ul id="mega-menu-1" class="mega-menu">
   <li><%= link_to 'Aukcje', admin_auctions_path %></li>
-  <li><%= link_to 'Prywatne wiadomości', panel_messages_path %>
+  <li><%= link_to 'Tagi', admin_tags_path %>
+  <li><%= link_to 'Prywatne wiadomości', admin_messages_path %>
     <ul>
       <li><p>foldery</p>
         <ul>
-          <li><%= link_to 'odebrane', panel_messages_path %></li>
-          <li><%= link_to 'wysłane', sent_panel_messages_path %></li>
+          <li><%= link_to 'odebrane', admin_messages_path %></li>
+          <li><%= link_to 'wysłane', sent_admin_messages_path %></li>
         </ul>
       </li>
       <li><p>opcje</p>
         <ul>
-          <li><%= link_to 'nowa wiadomość', new_panel_message_path %></li>
+          <li><%= link_to 'nowa wiadomość', new_admin_message_path %></li>
         </ul>
       </li>
     </ul>

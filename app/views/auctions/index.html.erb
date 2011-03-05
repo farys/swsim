@@ -1,6 +1,6 @@
 <% content_for :title, "Witamy!" %>
-<div class="span-22">
-  <div class="span-11">
+<div class="span-24">
+  <div class="span-12">
     <p class="box">
       Jeśli szukasz specjaliste lub pracujesz w branży IT, to dobrze trafiles.
       Pozwól iż wyjaśnimy Ci na czym polega fenomen tego portalu!
@@ -13,7 +13,7 @@
       Tak więc, skończ czytac i zapierdalaj do roboty z takim uśmiechem --> :D
     </p>
   </div>
-  <%= image_tag "/images/class.gif", :class => "span-11 last"%>
+  <%= image_tag "/images/class.gif", :class => "span-12 last"%>
 </div>
 <div class="span-6 statistics">
   <h2>Statystyki</h2>
@@ -34,15 +34,15 @@
     <div class="prepend-top">Dane aktualizowane raz na godzine</div>
   </div>
 </div>
-<div class="span-16 last">
+<div class="span-18 last">
   <h2>Najnowsze zlecenia</h2>
 
-  <div class="span-8"><div class="box">
+  <div class="span-9"><div class="box">
       <% @auctions.shift(@auctions.length/2).each do |auction| %>
         <%= link_to auction, auction_path(auction) %><br />
       <% end %>
     </div></div>
-  <div class="span-8 last"><div class="box">
+  <div class="span-9 last"><div class="box">
       <% @auctions.each do |auction| %>
         <%= link_to auction, auction_path(auction) %><br />
       <% end %>

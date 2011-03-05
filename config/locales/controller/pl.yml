@@ -1,2 +1,27 @@
 pl:
-  
+  flash:
+    alerts:
+      create: Zgłoszenie zostało przyjęte!
+    offers:
+      create: Oferta została złożona!
+    auction:
+      show: Nie masz prawa dostępu do aukcji
+    panel:
+      communications:
+        create: Komunikat zostal opublikowany
+      messages:
+        destroy: Wiadomość została usunięta
+        create: Wiadomość została wysłana
+
+    admin:
+      auctions:
+        update: Aukcja została zaktualizowana
+        destroy: Aukcja została anulowana
+      tags:
+        create: Tag został utworzony
+        update: Tag został zaktualizowany
+        destroy: Tag został usunięty
+  title:
+    messages:
+      received: Odebrane wiadomości
+      sent: Wysłane wiadomości

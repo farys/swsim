@@ -1,6 +1,6 @@
 <% content_for :title, "Nowa oferta dla " + @offer.auction.title %>
 
-<div class="prepend-1 span-20 append-1">
+<div class="prepend-1 span-22 append-1">
   <% form_for [:panel, @offer.auction, @offer] do |f| %>
 
     <%= render "layouts/error_messages", :target => @offer %>

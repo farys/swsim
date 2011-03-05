@@ -18,19 +18,12 @@ class Panel::OffersController < Panel::ApplicationController
     @offer = @logged_user.sent_offers.new data
 
     if @offer.save
-      flash[:notice] = "Oferta zostala zlozona!"
+      flash_t :notice
       redirect_to auction_path(@offer.auction_id)
     end
   end
 
-  #wyslij komunikat do wlasciciela aukcji z prosba o odrzucenie oferty
-  def to_reject
-    @offer = @logged_user.sent_offers.normal.find(params[:id])
-    Alert.offer_to_reject!(@offer, params[:text])
-    redirect_to :back
-  end
-
-  #oferte moze wycofac tylko wlasciciel aukcji
+  #oferte moze wycofac tylko wlasciciel aukcji #TODO czy potrzebne
   def destroy
     @auction = @logged_user.auctions.find(params[:auction_id])
     @offer = @auction.offers.find(params[:id])

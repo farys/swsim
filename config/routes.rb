@@ -38,13 +38,16 @@ Inz::Application.routes.draw do
   end
 
   namespace :admin do
-    resources :auctions do
-      get :result, :on => :collection
+    resources :auctions, :except => [:show] do
       resources :offers, :only => [:destroy] do
         get :recovery, :on => :member
       end
     end
-    
+    resources :messages, :except => [:edit, :update] do
+      get :reply, :on => :member
+      get :sent, :on => :collection
+    end
+    resources :tags, :except => [:show]
   end
   
   namespace :project do
