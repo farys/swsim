@@ -14,6 +14,8 @@ class Project < ActiveRecord::Base
 	validates :status, :presence => true,
 	                   :inclusion => { :in => [Project::STATUS_ACTIVE, Project::STATUS_CANCELED, Project::STATUS_FINISHED] }
 	
+	default_scope :order => 'projects.id DESC'
+	
 	def string_status
 	  case self.status
 	  when STATUS_ACTIVE

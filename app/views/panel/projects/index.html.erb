@@ -1,4 +1,4 @@
-<% content_for :title, @title %>
+<% content_for :title, 'Projekty' %>
 <% if @projects.empty? %>
   <div class="notice">Obecnie nie uczestniczysz w żadnych projektach</div>
 <% else %>
@@ -14,14 +14,14 @@
     <tbody>
       <% @projects.each do |proj| %>
         <tr>
-          <td><%= proj.name %></td>
+          <td><%= link_to proj.name, project_info_path(proj) %></td>
           <td>todo ;]</td>
           <td>
             <%= escape_date(proj.deadline) %>
-            (<%= I18n.t :day, :count => 2 %>)
+            (Pozostało <%= time_ago_in_words(proj.deadline) %>)
           </td>
           <td><%= proj.string_status %></td>
-        </tr>>
+        </tr>
       <% end %>
     </tbody>
   </table>

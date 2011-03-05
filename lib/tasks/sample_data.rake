@@ -1,5 +1,5 @@
 require 'faker'
-
+I18n.locale = :en
 #wypelnianie bazy development danymi => rake db:populate
 
 namespace :db do
@@ -19,7 +19,8 @@ def make_users
 end
 
 def make_projects
-  Project.create!(:name => 'uber projekt', :owner_id => 2, :leader_id => 1, :duration => 14, :status => 2 )
-  Project.create!(:name => 'wymiatacze', :owner_id => 1, :leader_id => 3, :duration => 30, :status => 2 )
-  Project.create!(:name => 'uber diablo', :owner_id => 2, :leader_id => 5, :duration => 90, :status => 2 )
+  100.times do |n|
+    name = Faker::Company.name
+    Project.create!(:name => name, :owner_id => rand(20), :leader_id => rand(100), :duration => rand(370), :status => rand(2) )
+  end
 end

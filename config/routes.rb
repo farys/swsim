@@ -46,7 +46,10 @@ Inz::Application.routes.draw do
     end
     
   end
-    
+  
+  namespace :project do
+    resources :info
+  end  
   resources :alerts, :only => [:create]
   
   root :to =>  "auctions#index"

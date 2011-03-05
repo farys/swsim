@@ -1,0 +1,24 @@
+<% content_for :title, "Edycja tagu o id #{@tag.id}" %>
+<div class="prepend-1 append-1">
+  <% form_for [:admin, @tag] do |f| -%>
+
+    <%= render "layouts/error_messages", :target => @tag %>
+
+    <p>
+      <%= f.label :created_at, "Nazwa: " %>
+      <%= f.text_field :name, :class => "title" %>
+    </p>
+
+    <p>
+      <%= f.label :status, "Status: " %>
+      <% options = [
+        ["aktywny", Tag::STATUS_ACTIVE],
+        ["ukryty", Tag::STATUS_HIDDEN],
+      ]
+    %>
+      <%= select :tag, :status, options_for_select(options, @tag.status) %>
+    </p>
+
+    <%= f.submit "Zmień" %>
+  <% end -%>
+</div>

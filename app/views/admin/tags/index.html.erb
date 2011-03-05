@@ -1,0 +1,38 @@
+<% content_for :title, "Tagi" %>
+<%= render :partial => "search_form" %>
+<% unless @tags.nil? %>
+  <% unless @tags.empty? %>
+    <table class="list">
+      <thead>
+        <tr>
+          <td>nazwa</td>
+          <td>należy do grup</td>
+          <td>status</td>
+          <td>opcje</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tags.each do |tag| %>
+          <% status = case tag.status
+          when Tag::STATUS_ACTIVE
+            'aktywna'
+          when Tag::STATUS_HIDDENSTATUS_HIDDEN
+            'ukryty'
+          end
+        %>
+          <tr>
+            <td><%= link_to tag, edit_admin_tag_path(tag) %><br /></td>
+            <td><%= tag.groups.join(", ") %></td>
+            <td class="bold"><%= status %></td>
+            <td>
+              <%= link_to "usuń", admin_tag_path(tag), :method => :delete, :confirm => "Potwierdź usunięcie tagu" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= will_paginate %>
+  <% else %>
+    <div class="clear notice">Nie znaleziono żadnych tagów.</div>
+  <% end %>
+<% end %>

@@ -62,6 +62,36 @@ a:hover {
     -webkit-border-radius: 5px;
     border-radius:         5px;
 }
+/* Project Menu */
+
+#project-nav {
+  float: left;
+  background-color: black;
+  padding: 0.2em 0.7em;
+  white-space: nowrap;
+}
+
+#project-nav ul {
+  margin: 0;
+  padding: 0;
+}
+
+#project-nav ul li {
+  list-style-type: none;
+  display: inline-block;
+  padding: 0.2em 0;
+}
+
+#project-nav ul li a {
+  color: white;
+  padding: 0 5px;
+  font-weight: bold;
+}
+
+#project-nav ul li a:hover {
+  color: lightblue;
+  text-decoration: none;
+}
 
 /* Errors */
 
