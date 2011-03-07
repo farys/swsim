@@ -26,6 +26,6 @@ class Tag < ActiveRecord::Base
 
   private
   def default_data
-    self.status = STATUS_ACTIVE
+    #self.status = STATUS_ACTIVE  nie dziala ?
   end
 end

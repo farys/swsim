@@ -10,15 +10,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110301175201) do
+ActiveRecord::Schema.define(:version => 20110306123721) do
 
   create_table "alerts", :force => true do |t|
-    t.integer  "status",     :null => false
     t.integer  "author_id",  :null => false
-    t.integer  "reader_id",  :null => false
-    t.integer  "model_id",   :null => false
-    t.string   "model_type", :null => false
-    t.string   "topic",      :null => false
+    t.integer  "reader_id"
+    t.integer  "model_id"
+    t.string   "model_type"
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -31,25 +29,24 @@ ActiveRecord::Schema.define(:version => 20110301175201) do
     t.datetime "created_at"
   end
 
-  add_index "auction_ratings", ["user_id", "auction_id"], :name => "index_auction_ratings_on_user_id_and_auction_id"
+  add_index "auction_ratings", ["user_id", "auction_id"], :name => "index_auction_ratings_on_user_id_and_auction_id", :unique => true
 
   create_table "auctions", :force => true do |t|
-    t.boolean  "private",      :default => false, :null => false
-    t.integer  "status",       :default => 0,     :null => false
-    t.integer  "budget_id",                       :null => false
-    t.integer  "owner_id",                        :null => false
+    t.boolean  "private",       :default => false, :null => false
+    t.integer  "status",        :default => 0,     :null => false
+    t.integer  "budget_id",                        :null => false
+    t.integer  "owner_id",                         :null => false
     t.integer  "won_offer_id"
-    t.string   "title",                           :null => false
-    t.text     "description",                     :null => false
-    t.datetime "expired",                         :null => false
-    t.integer  "offers_count", :default => 0
-    t.integer  "visits",       :default => 0,     :null => false
+    t.string   "title",                            :null => false
+    t.text     "description",                      :null => false
+    t.datetime "expired",                          :null => false
+    t.integer  "offers_count",  :default => 0
+    t.integer  "visits",        :default => 0,     :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "rating",       :default => 0.0
+    t.integer  "ratings_sum",   :default => 0
+    t.integer  "ratings_count", :default => 0
   end
-
-  add_index "auctions", ["rating"], :name => "index_auctions_on_rating"
 
   create_table "auctions_tags", :id => false, :force => true do |t|
     t.integer "tag_id"
@@ -103,6 +100,14 @@ ActiveRecord::Schema.define(:version => 20110301175201) do
 
   add_index "groups_tags", ["group_id", "tag_id"], :name => "index_groups_tags_on_group_id_and_tag_id", :unique => true
 
+  create_table "memberships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.integer  "role_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "messages", :force => true do |t|
     t.integer  "owner_id",                   :null => false
     t.integer  "author_id",                  :null => false
@@ -142,9 +147,7 @@ ActiveRecord::Schema.define(:version => 20110301175201) do
   end
 
   create_table "tags", :force => true do |t|
-    t.integer "status"
-    t.string  "name"
-    t.integer "auction_count", :default => 0
+    t.string "name"
   end
 
   create_table "teams", :force => true do |t|
