@@ -1,4 +1,3 @@
-<% content_for :title, "Edycja aukcji numer #{@auction.id}" %>
 <div class="prepend-1 append-1">
   <% form_for [:admin, @auction] do |f| -%>
 
@@ -10,22 +9,16 @@
       <% end %>
     <% end %>
     <p>
-      <%= f.label :created_at, "Rozpoczęta: " %>
+      <%= f.label :created_at %>
       <%= @auction.created_at %>
     </p>
     <p>
-      <%= f.label :expired, "Zakończenie aukcji w " %>
+      <%= f.label :expired %>
       <%= datetime_select :auction, :expired %>
     </p>
     <p>
-      <%= f.label :expired, "Status aukcji: " %>
-      <% options = [
-        ["aktywna", Auction::STATUS_ACTIVE],
-        ["anulowana", Auction::STATUS_CANCELED],
-        ["zakończona", Auction::STATUS_FINISHED]
-      ]
-    %>
-      <%= select :auction, :status, options_for_select(options, @auction.status) %>
+      <%= f.label :status %>
+      <%= select :auction, :status, statuses_for_select(@auction) %>
     </p>
 
     <%= render :partial => "shared/auction/form_fields", :locals => {:f => f} %>
@@ -39,13 +32,10 @@
               <td>wycena</td>
               <td colspan="2">wykonawca</td>
               <td>data</td>
-              <td>opcje</td>
+              <td>status</td>
             </tr>
           </thead>
           <tbody>
-            <%
-            statuses = [["aktywna", Offer::STATUS_ACTIVE], ["odrzucona", Offer::STATUS_REJECTED]]
-          %>
             <% @offers.each do |offer| %>
               <%= fields_for "offers[#{offer.id}]", offer do |sf| %>
                 <%= render "layouts/error_messages", :target => offer %>
@@ -56,14 +46,10 @@
                   <td style="text-align: right">
                     <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
                   </td>
+                  <td><%= offer.offerer %></td>
+                  <td><%= escape_time(offer.created_at) %></td>
                   <td>
-                    <%= offer.offerer %>
-                  </td>
-                  <td>
-                    <%= escape_time(offer.created_at) %>
-                  </td>
-                  <td>
-                    <%= select "offers[#{offer.id}]", "status", options_for_select(statuses, offer.status), {:index => nil}  %>
+                    <%= select "offers[#{offer.id}]", "status", statuses_for_select(offer), {:index => nil}  %>
                   </td>
                 </tr>
               <% end %>
@@ -73,6 +59,28 @@
       </div>
     <% end %>
 
-    <%= f.submit "Aktualizuj" %>
-  <% end -%>
-</div>
+    <% unless @communications.empty? %>
+      <h2 class="box top-1">Komunikaty</h2>
+      <div class="prepend-5 append-5">
+        <table class="list">
+          <thead>
+            <tr>
+              <td>nadano</td>
+              <td>treść</td>
+              <td>opcja</td>
+            </tr>
+          </thead>
+          <tbody>
+            <% @communications.each do |c| %>
+            <tr id="communicat_<%= c.id %>">
+              <td><%= escape_time(c.created_at) %></td>
+              <td><%= c.body %></td>
+              <td><%= link_to "usuń", admin_communication_path(c), :remote => true, :method => :delete, :confirm => "Potwierdź usunięcie komunikatu" %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+      <%= f.submit "Aktualizuj" %>
+    <% end -%>
+  </div>

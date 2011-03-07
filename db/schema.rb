@@ -90,7 +90,8 @@ ActiveRecord::Schema.define(:version => 20110306123721) do
   end
 
   create_table "groups", :force => true do |t|
-    t.string "name", :null => false
+    t.string  "name",   :null => false
+    t.integer "status"
   end
 
   create_table "groups_tags", :id => false, :force => true do |t|

@@ -1,27 +1,32 @@
 class Admin::TagsController < Admin::ApplicationController
-  before_filter :load_form_data, :except => [:destroy, :show]
-  before_filter :load_tag, :only => [:edit, :update, :show, :destroy]
+  before_filter :load_tag, :only => [:edit, :update, :destroy]
   before_filter :new_tag, :only => [:new, :create]
 
   def index
-    @query = params[:query] || ""
-    @group_id = params[:group_id]
-    @tags = Tag.admin_search(@query, @group_id, params[:page])
+    @status = params[:status] || "all"
+    @tags = Tag
+    @tags = @tags.unlinked if @status.eql?("unlinked")
+    @tags = @tags.paginate :page => params[:page], :per_page => 15
+    title_t @status
   end
 
   def new
+    title_t
   end
 
   def create
     if @tag.save
       flash_t :success
-      redirect_to admin_tag_path(@tag)
+      redirect_to admin_tags_path
     else
+      title_t :new
       render :new
     end
   end
 
   def edit
+    title_t
+    render :new
   end
 
   def update
@@ -29,23 +34,17 @@ class Admin::TagsController < Admin::ApplicationController
       flash_t :success
       redirect_to admin_tags_path
     else
-      render :edit
+      title_t :edit
+      render :new
     end
-  end
-
-  def show
   end
 
   def destroy
     @tag.destroy
-    flash_t :notice
-    redirect_to :back
+    redirect_to :back, :notice => flash_t
   end
 
   private
-  def load_form_data
-    @groups = Group.all
-  end
 
   def load_tag
     @tag = Tag.find(params[:id])

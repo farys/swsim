@@ -3,16 +3,14 @@ class Admin::OffersController < Admin::ApplicationController
 
   def recovery
     if @offer.recovery!
-      flash[:success] = "Oferta zostala przywrocona"
+      flash[:success] = flash_t
     end
     redirect_to :back
   end
 
   def destroy
-    if @offer.reject!
-      flash[:notice] = "Oferta zostala anulowana"
-    end
-    redirect_to :back
+    @offer.reject!
+    redirect_to :back, :notice => flash_t
   end
 
   private

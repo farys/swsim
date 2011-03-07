@@ -1,0 +1,2 @@
+page["#communicat_#{@id}"].remove
+page.alert(@flash)

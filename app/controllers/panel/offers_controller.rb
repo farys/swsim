@@ -1,9 +1,9 @@
 class Panel::OffersController < Panel::ApplicationController
 
   def index
-    @status = (params[:status] || Offer::STATUS_ACTIVE).to_i
-
-    @offers = @logged_user.sent_offers.with_status(@status)
+    @status = params[:status] || :active
+    title_t @status
+    @offers = @logged_user.sent_offers.with_status(@status.to_sym)
   end
 
   def create

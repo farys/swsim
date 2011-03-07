@@ -1,5 +1,3 @@
-<% content_for :title, @auction.title %>
-
 <div class="span-24 last">
   <div class="span-11 prepend-2">
     <%= render :partial => "/shared/auction/info_table" %>
@@ -12,16 +10,19 @@
       </div>
     </div>
   </div>
-  <div style="clear: both"> </div>
+  <div class="clear top-1"> </div>
   <h2 class="box">Opis zlecenia</h2>
-  <section class="prepend-1 append-1 auctionDescription"><%= @auction.description %></section>
+  <div class="prepend-1 append-1 auctionDescription">
+    <%= @auction.description %>
+  </div>
 
   <% if @auction.communications.size > 0 %>
-    <h2 class="box">Komunikaty</h2>
+
+    <h2 class="box top-1">Komunikaty</h2>
     <table class="communicationsTable">
       <tbody>
         <% @auction.communications.each do |msg| %>
-          <tr>
+          <tr id="communication_<%= msg.id %>">
             <td>nadano <%= escape_time(msg.created_at) %></td>
             <td><%= msg.body %></td>
           </tr>

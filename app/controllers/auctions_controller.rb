@@ -3,7 +3,8 @@ class AuctionsController < ApplicationController
   before_filter :to_search_event, :only => [:search, :result]
 
   def index
-    @auctions = Auction.with_status(Auction::STATUS_ACTIVE).order("id DESC").limit(18)
+    @auctions = Auction.with_status(:active).order("id DESC").limit(18)
+    title_t
   end
 
   def show
@@ -23,6 +24,7 @@ class AuctionsController < ApplicationController
     unless @logged_user.nil?
     	@rated = @auction.rated_by?(@logged_user)
     end
+    title_t
   end
 
   def search
@@ -35,6 +37,7 @@ class AuctionsController < ApplicationController
     @elapsed_time = Benchmark.realtime do |x|
       @auctions = Auction.search_by_sphinx(@query, @search_in_description, @selected_tag_ids, @budgets_ids)#Auction.has_tags.all {@selected_tags})
     end
+    title_t
   end
   
   private

@@ -1,0 +1,24 @@
+<% unless @groups.empty? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>nazwa</td>
+        <td>status</td>
+        <td>opcje</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @groups.each do |group| %>
+        <tr>
+          <td><%= link_to group, edit_admin_group_path(group) %></td>
+          <td class="bold"><%= escape_status(group) %></td>
+          <td>
+            <%= link_to "usuń", admin_group_path(group), :method => :delete, :confirm => "Potwierdź usunięcie grupy" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="clear notice">Nie znaleziono żadnych grup z tagami.</div>
+<% end %>

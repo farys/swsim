@@ -1,7 +1,5 @@
 class Auction < ActiveRecord::Base
-  STATUS_ACTIVE = 0
-  STATUS_FINISHED = 1
-  STATUS_CANCELED = 2
+  STATUSES = {:active => 0, :finished => 1, :canceled => 2}
 
   ORDER_MODES = [
     ["po nazwie", "title DESC", 0],
@@ -31,18 +29,18 @@ class Auction < ActiveRecord::Base
     indexes :expired
     indexes tags(:id), :as => :tags_ids
     
-    where 'status = '+Auction::STATUS_ACTIVE.to_s+' AND private = 0'
+    where 'auctions.status = '+Auction::STATUSES[:active].to_s+' AND auctions.private = 0'
   end
 
   validates :title, :presence => true
   validates :description, :presence => true
-  validates_inclusion_of :status, :in => [Auction::STATUS_ACTIVE, Auction::STATUS_CANCELED, Auction::STATUS_FINISHED]
+  validates_inclusion_of :status, :in => [STATUSES[:active], STATUSES[:canceled], STATUSES[:finished]]
   validates_inclusion_of :budget_id, :in => Budget.ids
   validates_associated :tags, :owner
   
   scope :has_tags, lambda { |tags| {:conditions => ['id in (SELECT auction_id FROM auctions_tags WHERE tag_id in (?))', tags.join(',')]}}
-  scope :with_status, lambda { |status| where(:status => status)}
-  scope :online, lambda { where(:status => Auction::STATUS_ACTIVE)}
+  scope :with_status, lambda { |status| where(:status => STATUSES[status.to_sym])}
+  scope :online, lambda { where(:status => STATUSES[:active])}
   scope :public_auctions, lambda { where(:private => false)}
   
   before_validation :init_auction_row, :on => :create
@@ -59,7 +57,7 @@ class Auction < ActiveRecord::Base
 
   #ustawia status aukcji na anulowano
   def cancel!
-    self.status = STATUS_CANCELED
+    self.status = STATUSES[:canceled]
     self.save
   end
 
@@ -133,7 +131,7 @@ class Auction < ActiveRecord::Base
 
     Auction.search query, 
       :field_weights => {:tags_ids => 3, :title => 2, :description => 1},
-      :per_page => 15,
+      :per_page => per_page,
       :page => page,
       :sort_mode => :extended,
       :match_mode => :extended,
@@ -142,7 +140,7 @@ class Auction < ActiveRecord::Base
   
   def new_offer params
     self.offers.new params do |o|
-      o.status = Offer::STATUS_ACTIVE
+      o.status = Offer::STATUSES[:active]
     end
   end
 
@@ -182,12 +180,12 @@ class Auction < ActiveRecord::Base
 
   private
   def is_down?
-    self.status_changed? && [STATUS_CANCELED, STATUS_FINISHED].include?(self.status)
+    self.status_changed? && [STATUSES[:canceled], STATUSES[:finished]].include?(self.status)
   end
   
   def init_auction_row
     self.expired = DateTime.now + self.expired_after.to_i.days
-    self.status = Auction::STATUS_ACTIVE
+    self.status = STATUSES[:active]
   end
 
   def tag_counter_up tag
@@ -202,7 +200,7 @@ class Auction < ActiveRecord::Base
     unless self.offers.find(self.won_offer_id)
       self.errors.add("won_offer_id", "Wybrana oferta nie nalezy do ofert uczestniczacych w licytacji")
     else
-      self.status = Auction::STATUS_FINISHED
+      self.status = STATUSES[:finished]
     end
   end
 

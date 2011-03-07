@@ -1,7 +1,5 @@
 class Offer < ActiveRecord::Base
-  STATUS_WON = 2
-  STATUS_ACTIVE = 1
-  STATUS_REJECTED = 0
+  STATUSES = {:won => 2, :active => 1, :rejected => 0}
 
   has_many :alerts
   belongs_to :auction, :counter_cache => true
@@ -11,24 +9,24 @@ class Offer < ActiveRecord::Base
   validates_numericality_of :price
   validates_numericality_of :days, :only_integer => true
 
-  scope :normal, lambda { where(:status => STATUS_ACTIVE) }
-  scope :won, lambda { where(:status => STATUS_WON) }
-  scope :rejected, lambda { where(:status => STATUS_REJECTED) }
-  scope :with_status, lambda {|status| where(:status => status)}
+  scope :normal, lambda { where(:status => STATUSES[:active]) }
+  scope :won, lambda { where(:status => STATUSES[:won]) }
+  scope :rejected, lambda { where(:status => STATUSES[:rejected]) }
+  scope :with_status, lambda {|status| where(:status => STATUSES[status])}
 
   before_save :default_values, :on => :create
 
   def default_values
-    self.status = STATUS_ACTIVE if self.status.nil?
+    self.status = STATUSES[:active] if self.status.nil?
   end
 
   def reject!
-    self.status = STATUS_REJECTED
+    self.status = STATUSES[:rejected]
     self.save
   end
 
   def recovery!
-    self.status = STATUS_ACTIVE
+    self.status = STATUSES[:active]
     self.save
   end
 end

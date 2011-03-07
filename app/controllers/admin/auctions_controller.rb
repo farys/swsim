@@ -14,27 +14,27 @@ class Admin::AuctionsController < Admin::ApplicationController
 
     @status = (params[:status] || {}).values.map(&:to_i)
     @auctions = Auction.admin_search(@query, @date_to_search, @status, @order, params[:page])
+    title_t
   end
-  
+
   def edit
-    @communications = @auction.communications
+    title_t
   end
 
   def update
     @auction.tag_ids = (params[:tag_ids] || {}).values
 
     if @auction.update_attributes(params[:auction]) && @auction.update_offers(params[:offers])
-      flash[:notice] = t("flash.admin.auctions.update")
-      redirect_to admin_auctions_path
+      redirect_to admin_auctions_path, :notice => flash_t
     else
+      title_t :edit
       render :edit
     end
   end
 
   def destroy
     if @auction.cancel!
-      flash[:notice] = t("flash.admin.auctions.destroy")
-      redirect_to admin_auctions_path
+      redirect_to admin_auctions_path, :notice => flash_t
     end
   end
 
@@ -42,6 +42,7 @@ class Admin::AuctionsController < Admin::ApplicationController
   def form_data
     @groups = Group.all
     @offers = @auction.offers
+    @communications = @auction.communications
   end
 
   def load_auction

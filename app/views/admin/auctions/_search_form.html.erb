@@ -8,12 +8,12 @@
         @date,
         :start_year => 2011
       ) %>
-      <%= check_box_tag "status[#{Auction::STATUS_ACTIVE}]", Auction::STATUS_ACTIVE, @status.include?(Auction::STATUS_ACTIVE) %>
-      <%= label_tag "status[#{Auction::STATUS_ACTIVE}]", "aktywne" %>,
-      <%= check_box_tag "status[#{Auction::STATUS_CANCELED}]", Auction::STATUS_CANCELED, @status.include?(Auction::STATUS_CANCELED) %>
-      <%= label_tag "status[#{Auction::STATUS_CANCELED}]", "anulowane" %>,
-      <%= check_box_tag "status[#{Auction::STATUS_FINISHED}]", Auction::STATUS_FINISHED, @status.include?(Auction::STATUS_FINISHED) %>
-      <%= label_tag "status[#{Auction::STATUS_FINISHED}]", "zakończone" %>
+      <%= check_box_tag "status[#{Auction::STATUSES[:active]}]", Auction::STATUSES[:active], @status.include?(Auction::STATUSES[:active]) %>
+      <%= label_tag "status[#{Auction::STATUSES[:active]}]", "aktywne" %>,
+      <%= check_box_tag "status[#{Auction::STATUSES[:canceled]}]", Auction::STATUSES[:canceled], @status.include?(Auction::STATUSES[:canceled]) %>
+      <%= label_tag "status[#{Auction::STATUSES[:canceled]}]", "anulowane" %>,
+      <%= check_box_tag "status[#{Auction::STATUSES[:finished]}]", Auction::STATUSES[:finished], @status.include?(Auction::STATUSES[:finished]) %>
+      <%= label_tag "status[#{Auction::STATUSES[:finished]}]", "zakończone" %>
       sortuj <%= select_tag "order", options_for_select(Auction::ORDER_MODES, @order) %>
       <%= submit_tag "wyszukaj" %>
     </div>

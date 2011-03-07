@@ -8,8 +8,8 @@
         <li><p>przeglądaj</p>
           <ul>
             <li><%= link_to 'aktualnie trwające', panel_auctions_path %></li>
-            <li><%= raw link_to 'anulowane', panel_auctions_path(:status => Auction::STATUS_CANCELED) %></li>
-            <li><%= raw link_to 'zakończone', panel_auctions_path(:status => Auction::STATUS_FINISHED) %></li>
+            <li><%= raw link_to 'anulowane', panel_auctions_path(:status => :canceled) %></li>
+            <li><%= raw link_to 'zakończone', panel_auctions_path(:status => :finished) %></li>
           </ul>
         </li>
         <li><p>opcje</p>
@@ -39,9 +39,9 @@
       <ul>
         <li><p>przeglądaj</p>
           <ul>
-            <li><%= raw link_to 'biorące udział', panel_offers_path(:status => Offer::STATUS_ACTIVE) %></li>
-            <li><%= raw link_to 'odrzucone', panel_offers_path(:status => Offer::STATUS_REJECTED) %></li>
-            <li><%= raw link_to 'wygrane', panel_offers_path(:status => Offer::STATUS_WON) %></li>
+            <li><%= raw link_to 'biorące udział', panel_offers_path(:status => :active) %></li>
+            <li><%= raw link_to 'odrzucone', panel_offers_path(:status => :rejected) %></li>
+            <li><%= raw link_to 'wygrane', panel_offers_path(:status => :won) %></li>
           </ul>
         </li>
       </ul>

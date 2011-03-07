@@ -1,11 +1,10 @@
 class Tag < ActiveRecord::Base
-  STATUS_ACTIVE = 0
-  STATUS_HIDDEN = 1
+  STATUSES = {:active => 0, :hidden => 1}
 
   has_and_belongs_to_many :groups
   has_many :auctions
 
-  before_save :default_data, :on => :create
+  scope :unlinked, where("(SELECT COUNT(1) FROM groups_tags WHERE groups_tags.tag_id=tags.id)=0")
 
   def self.from_text text   
     text.downcase!
@@ -22,10 +21,5 @@ class Tag < ActiveRecord::Base
     criteria = criteria.where("tags.name like '%#{name}%' OR tags.id='#{name}'") unless name.empty?
 
     criteria.paginate :page => page, :per_page => 15
-  end
-
-  private
-  def default_data
-    #self.status = STATUS_ACTIVE  nie dziala ?
   end
 end

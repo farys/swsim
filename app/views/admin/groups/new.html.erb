@@ -1,0 +1,31 @@
+<div class="prepend-1 append-1">
+  <% form_for [:admin, @group] do |f| -%>
+
+    <%= render "layouts/error_messages", :target => @group %>
+
+    <p>
+      <%= f.label :name %>
+      <%= f.text_field :name, :class => "title" %>
+    </p>
+
+    <p>
+      <%= f.label :status %>
+      <%= select :group, :status, statuses_for_select(@group) %>
+    </p>
+    <p>
+      <%= f.label :tag_ids %>
+    <div>
+      <% @tags.each do |tag| %>
+        <% checked = @group.tag_ids.include?(tag.id) %>
+        <%= check_box_tag "tag_ids[#{tag.id}]", tag.id, checked, "data-clickable" => true %>
+        <%= label_tag "tag_ids[#{tag.id}]", tag.name, :class => "round" %>
+      <% end %>
+      <%= javascript_tag do %>
+        clickableLabel();
+      <% end %>
+    </div>
+  </p>
+
+  <%= f.submit "Zmień" %>
+<% end -%>
+</div>

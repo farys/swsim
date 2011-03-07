@@ -1,6 +1,5 @@
 class Group < ActiveRecord::Base
-  STATUS_ACTIVE = 0
-  STATUS_HIDDEN = 1
+  STATUSES = {:active => 0, :hidden => 1}
   
   has_and_belongs_to_many :tags
 

@@ -23,11 +23,25 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  #metoda przetwarza wywolanie, /users/create => t("flash.users.create")
   def flash_t type=nil
-    params[:controller]["/"] = "."
-    text = t("flash.#{params[:controller]}.#{params[:action]}")
+    params = request.parameters.clone
+    params["controller"]["/"] = "." if params["controller"].include?("/")
+    text = t("flash.#{params["controller"]}.#{params[:action]}")
     return text if type.nil?
     flash[type] = text
+  end
+
+  def title_t action=nil
+    action ||= request.parameters["action"].clone
+    controller = request.parameters["controller"].clone
+    
+    controller["/"] = "." if controller.include?("/")
+    title = t("title.#{controller}.#{action}")
+
+    title.scan(/{[^}]+}/).each do |var|
+      title[var] = eval("->"+var+".call").to_s
+    end
+
+    @title = title
   end
 end

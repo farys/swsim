@@ -1,15 +1,3 @@
-<% title = case @status
-when Offer::STATUS_ACTIVE
-  "biorące udział w aukcji"
-when Offer::STATUS_REJECTED
-  "odrzucone"
-when Offer::STATUS_WON
-  "wygrane"
-end
-%>
-
-<% content_for :title, "Twoje #{title} oferty" %>
-
 <% unless @offers.empty? %>
   <table class="list">
     <thead>
@@ -27,17 +15,7 @@ end
           <td><%= link_to offer.auction.title, offer.auction %></td>
           <td><%= offer.price %>zł / <%= offer.days %>dni</td>
           <td><%=raw escape_time(offer.created_at) %></td>
-          <td>
-            <%= case offer.status
-            when Offer::STATUS_ACTIVE
-              'wystawiona'
-            when Offer::STATUS_REJECTED
-              'odrzucona'
-            when Offer::STATUS_WON
-              'wygrana!'
-            end
-          %>
-          </td>
+          <td><%= escape_status(offer) %></td>
         </tr>
       <% end %>
     </tbody>

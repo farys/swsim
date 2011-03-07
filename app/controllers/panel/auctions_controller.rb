@@ -3,8 +3,8 @@ class Panel::AuctionsController < Panel::ApplicationController
   before_filter :new_auction_and_form_data, :only => [:new, :create]
   
   def index
-    @status = params[:status].to_i || Auction::STATUS_ACTIVE
-    
+    @status = params[:status] || :active
+    title_t @status
     @auctions = @logged_user.auctions.with_status(@status).paginate :per_page => 15, :page => params[:page]
   end
   
@@ -15,37 +15,35 @@ class Panel::AuctionsController < Panel::ApplicationController
       @auction.tag_ids = @old_auction.tag_ids
     end
     @auction.expired_after = 14
+    title_t
   end
 
   def create    
     if @auction.save
-      flash[:notice] = 'Aukcja zostala zapisana i opublikowana'
-      redirect_to auction_path(@auction)
+      redirect_to auction_path(@auction), :notice => flash_t
     else
+      title_t :new
       render :action => :new
     end
   end
 
   def offers
+    title_t
     @offers = @auction.offers
   end
 
   def update
     if @auction.set_won_offer!(params[:auction][:won_offer_id])
-      flash[:notice] = 'Zwycieska oferta zostala wyznaczona'
-      redirect_to auction_path(@auction)
+      redirect_to auction_path(@auction), :notice => flash_t
     else
-      render :won_offer
+      title_t :offers
+      render :offers
     end
   end
 
   def destroy
-    if @auction.cancel!
-      flash[:notice] = 'Aukcja zostala anulowana'
-    else
-      flash[:error] = 'Anulowanie aukcji nie powiodlo sie!'
-    end
-    redirect_to panel_auctions_path
+    @auction.cancel!
+    redirect_to panel_auctions_path, :notice => flash_t
   end
   
   private

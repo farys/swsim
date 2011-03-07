@@ -21,7 +21,6 @@ end
 def make_projects
   100.times do |n|
     name = Faker::Company.name
-    Project.create!(:name => name, :owner_id => rand(25), :leader_id => rand(50), 
-    :duration => rand(370), :status => rand(2))
+    Project.create!(:name => name, :owner_id => rand(20), :leader_id => rand(100), :duration => rand(370), :status => rand(2) )
   end
 end

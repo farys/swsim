@@ -1,6 +1,22 @@
 <ul id="mega-menu-1" class="mega-menu">
   <li><%= link_to 'Aukcje', admin_auctions_path %></li>
-  <li><%= link_to 'Tagi', admin_tags_path %>
+  <li><%= link_to 'Grupy z tagimi', admin_groups_path %>
+    <ul>
+      <li><p>Tagi</p>
+        <ul>
+          <li><%= link_to 'Nowy tag', new_admin_tag_path %></li>
+          <li><%= link_to 'Niepowiązane tagi', admin_tags_path(:status => "unlinked") %></li>
+          <li><%= link_to 'Wszystkie tagi', admin_tags_path %></li>
+        </ul>
+      </li>
+      <li><p>Grupy</p>
+        <ul>
+          <li><%= link_to 'Nowa grupa', new_admin_group_path %></li>
+          <li><%= link_to 'Lista grup', admin_groups_path %></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
   <li><%= link_to 'Prywatne wiadomości', admin_messages_path %>
     <ul>
       <li><p>foldery</p>

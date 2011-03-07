@@ -9,6 +9,23 @@ module ApplicationHelper
     date.strftime('%d-%m-%Y')
   end
 
+  #gdy zwroci hash z slownika to obiekt ma ustawiony status bez pokrycia w STATUSES
+  def escape_status(model, status = nil)
+    status = model.class::STATUSES.invert[(status || model.status)]
+    t("#{model.class.name.downcase}.#{status.to_s}")
+  end
+
+  # Metoda tworzy pola wyboru dla kolumny status
+  # wymogiem jest hash STATUSES o zawartosci np. {:active => 0, :hidden => 1}
+  # metoda zaglada do slownika po nazwy statusow
+  def statuses_for_select(model)
+    options = []
+    model.class::STATUSES.each_pair do |k, v|
+      options += [[escape_status(model, v), v]]
+    end
+    options_for_select(options, model.status)
+  end
+
   def include_active_link_mechanism urls=Array.new
     current_path = request.fullpath
     current_path += "/new" if params[:action].eql?("create")
@@ -24,16 +41,16 @@ module ApplicationHelper
           }
         "
 
-#        p[:a].each do |a|
-#          a << "
-          #link = $(this).attr('href');
-          # var active_links_on_menu = $('.activeLink', $(this).parent().parent()).size();
-          #
-          #  if(uri[i] == link && active_links_on_menu == 0){
-          #    $(this).addClass('activeLink')
-          #  }
-         # }#"
-#        end
+        #        p[:a].each do |a|
+        #          a << "
+        #link = $(this).attr('href');
+        # var active_links_on_menu = $('.activeLink', $(this).parent().parent()).size();
+        #
+        #  if(uri[i] == link && active_links_on_menu == 0){
+        #    $(this).addClass('activeLink')
+        #  }
+        # }#"
+        #        end
       end
     end
   end

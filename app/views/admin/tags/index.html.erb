@@ -1,29 +1,20 @@
-<% content_for :title, "Tagi" %>
-<%= render :partial => "search_form" %>
 <% unless @tags.nil? %>
   <% unless @tags.empty? %>
     <table class="list">
       <thead>
         <tr>
           <td>nazwa</td>
-          <td>należy do grup</td>
+          <td>należy do grupy</td>
           <td>status</td>
           <td>opcje</td>
         </tr>
       </thead>
       <tbody>
         <% @tags.each do |tag| %>
-          <% status = case tag.status
-          when Tag::STATUS_ACTIVE
-            'aktywna'
-          when Tag::STATUS_HIDDENSTATUS_HIDDEN
-            'ukryty'
-          end
-        %>
           <tr>
-            <td><%= link_to tag, edit_admin_tag_path(tag) %><br /></td>
+            <td><%= link_to tag, edit_admin_tag_path(tag) %></td>
             <td><%= tag.groups.join(", ") %></td>
-            <td class="bold"><%= status %></td>
+            <td class="bold"><%= escape_status(tag) %></td>
             <td>
               <%= link_to "usuń", admin_tag_path(tag), :method => :delete, :confirm => "Potwierdź usunięcie tagu" %>
             </td>

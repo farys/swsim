@@ -1,4 +1,3 @@
-<% content_for :title, "Aukcje użytkowników" %>
 <%= render :partial => "search_form" %>
 
 <% unless @auctions.empty? %>
@@ -15,15 +14,6 @@
     </thead>
     <tbody>
       <% @auctions.each do |auction| %>
-        <% status = case auction.status
-        when Auction::STATUS_ACTIVE
-          'aktywna'
-        when Auction::STATUS_FINISHED
-          'zakończona'
-        when Auction::STATUS_CANCELED
-          'anulowana'
-        end
-      %>
         <tr>
           <td><%= link_to auction.title, edit_admin_auction_path(auction) %></td>
           <td><%= link_to auction.owner, user_path(auction.owner) %></td>
@@ -33,7 +23,7 @@
             after <%= distance_of_time_in_words auction.expired.to_i, Time.now.to_i %>
           </td>
           <td>
-            <%= status %>
+            <%= escape_status(auction) %>
           </td>
         </tr>
       <% end %>

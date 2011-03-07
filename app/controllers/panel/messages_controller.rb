@@ -4,11 +4,13 @@ class Panel::MessagesController < Panel::ApplicationController
   def index
     @status = "received"
     @messages = @logged_user.find_messages(:received, params[:page])
+    title_t :received
   end
   
   def sent
     @status = "sent"
     @messages = @logged_user.find_messages(:sent, params[:page])
+    title_t :sent
     render :index
   end
   

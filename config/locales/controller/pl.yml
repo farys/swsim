@@ -6,7 +6,12 @@ pl:
       create: Oferta została złożona!
     auction:
       show: Nie masz prawa dostępu do aukcji
+
     panel:
+      auctions:
+        create: Aukcja została zapisana i opublikowana
+        update: Zwycięska oferta została wyznaczona
+        destroy: Aukcja została anulowana
       communications:
         create: Komunikat zostal opublikowany
       messages:
@@ -17,11 +22,55 @@ pl:
       auctions:
         update: Aukcja została zaktualizowana
         destroy: Aukcja została anulowana
+      communications:
+        destroy: Komunikat został usunięty
+      offers:
+        recovery: Oferta została przywrócona
+        destroy: Oferta została anulowana
       tags:
         create: Tag został utworzony
         update: Tag został zaktualizowany
         destroy: Tag został usunięty
+      groups:
+        update: Grupa została zaktualizowana
+        create: Grupa została utworzona
+        destroy: Grupa została usunięta, tagi z grupy pozostały w bazie
+        
   title:
-    messages:
-      received: Odebrane wiadomości
-      sent: Wysłane wiadomości
+    auctions:
+      index: Witamy !
+      show: "{@auction.title} (id {@auction.id})"
+ 
+    panel:
+      auctions:
+        new: Nowa aukcja
+        active: Twoje aktualnie trwające aukcje
+        canceled: Twoje anulowane aukcje
+        finished: Twoje zakończone aukcje
+      messages:
+        new: Nowa wiadomość
+        received: Odebrane wiadomości
+        sent: Wysłane wiadomości
+      offers:
+        active: Oferty biorące udział w aukcji
+        won: Oferty które wygrały
+        rejected: Oferty które zostały odrzucone
+        
+    admin:
+      messages:
+        new: Nowa wiadomość
+        received: Odebrane wiadomości
+        sent: Wysłane wiadomości
+      auctions:
+        index: Aukcje użytkowników
+        edit: Edycja aukcji numer {@auction.id}
+        show: "{@auction.title}"
+      groups:
+        new: Nowa grupa
+        index: Grupy
+        edit: Edycja grupy o id {@group.id}
+      tags:
+        new: Nowy tag
+        all: Wszystkie tagi
+        unlinked: Niepowiązane tagi
+        edit: Edycja tagu o id {@tag.id}

@@ -47,7 +47,9 @@ Inz::Application.routes.draw do
       get :reply, :on => :member
       get :sent, :on => :collection
     end
+    resources :groups, :except => [:show]
     resources :tags, :except => [:show]
+    resources :communications, :only => [:destroy]
   end
   
   namespace :project do

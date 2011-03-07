@@ -1,57 +1,63 @@
 class Admin::GroupsController < Admin::ApplicationController
-  before_filter :load_form_data, :except => [:destroy, :show]
-  before_filter :load_tag, :only => [:edit, :update, :show, :destroy]
-  before_filter :new_tag, :only => [:new, :create]
+  before_filter :load_group, :only => [:update, :edit, :destroy]
+  before_filter :load_form_data, :only => [:new, :create, :edit, :update]
+  before_filter :new_group, :only => [:new, :create]
+  before_filter :parse_tag_ids_from_post, :only => [:create, :update]
 
   def index
-    @query = params[:query] || ""
-    @group_id = params[:group_id]
-    @tags = Tag.admin_search(@query, @group_id, params[:page])
+    @groups = Group.all
+    title_t
   end
 
   def new
+    title_t
   end
 
   def create
-    if @tag.save
-      flash[:success] = "Tag zostal utworzony"
-      redirect_to admin_tag_path(@tag)
+    if @group.save
+      redirect_to admin_groups_path, :success => flash_t
     else
+      title_t :new
+      render :new
+    end
+  end
+
+  def update
+    if @group.update_attributes(params[:group])
+      flash_t :success
+      redirect_to admin_groups_path
+    else
+      title_t :edit
       render :new
     end
   end
 
   def edit
-  end
-
-  def update
-    if @tag.update_attributes params[:tag]
-      flash[:success] = "Tag zostal zaktualizowany"
-      redirect_to admin_tags_path
-    else
-      render :edit
-    end
-  end
-
-  def show
+    title_t
+    render :new
   end
 
   def destroy
-    @tag.destroy
-    flash[:notice] = "Tag zostal usuniety"
+    @group.destroy
+    flash_t :notice
     redirect_to :back
   end
 
   private
+
   def load_form_data
-    @groups = Group.all
+    @tags = Tag.all
   end
 
-  def load_tag
-    @tag = Tag.find(params[:id])
+  def load_group
+    @group = Group.find(params[:id])
   end
 
-  def new_tag
-    @tag = Tag.new params[:tag]
+  def new_group
+    @group = Group.new params[:group]
+  end
+
+  def parse_tag_ids_from_post
+    @group.tag_ids = (params[:tag_ids] || {}).values
   end
 end

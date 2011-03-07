@@ -6,6 +6,11 @@ pl:
     attributes:
       auction:
         title: Tytuł
+        expired_at: "Zakończenie aukcji w "
+        created_at: "Rozpoczęta: "
+      group:
+        name: Nazwa
+        tag_ids: Powiązania z tagami
       message:
         topic: Temat
         body: Treść
@@ -16,4 +21,19 @@ pl:
           attributes:
             title:
               blank: nie może byc pusty
+#STATUSY MODELI
+  tag:
+    active: aktywny
+    hidden: ukryty
+  group:
+    active: aktywna
+    hidden: ukryta
+  offer:
+    active: aktywna
+    rejected: odrzucona
+    won: zwycięska
+  auction:
+    active: aktywna
+    finished: zakończona
+    canceled: anulowana
     

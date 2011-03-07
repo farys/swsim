@@ -4,11 +4,13 @@ class Admin::MessagesController < Admin::ApplicationController
   def index
     @status = "received"
     @messages = @logged_user.find_messages(:received, params[:page])
+    title_t :received
   end
   
   def sent
     @status = "sent"
     @messages = @logged_user.find_messages(:sent, params[:page])
+    title_t :sent
     render :index
   end
   
@@ -18,10 +20,12 @@ class Admin::MessagesController < Admin::ApplicationController
     if @message.status == Message::STATUS_UNREAD
       @message.read!
     end
+    title_t
   end
 
 
   def new
+    title_t
   end
 
   def create
@@ -32,9 +36,9 @@ class Admin::MessagesController < Admin::ApplicationController
         @msg.status = Message::STATUS_REPLIED
         @msg.save
       end
-      flash[:notice] = t("flash.messages.create")
-      redirect_to sent_admin_messages_path
+      redirect_to sent_admin_messages_path, :notice => flash_t
     else
+      title_t :new
       render :new
     end
   end
@@ -43,13 +47,14 @@ class Admin::MessagesController < Admin::ApplicationController
     @old_message = @logged_user.messages.received.find(params[:id])
     @message = @old_message.prepare_reply_message
     @receiver = @message.receiver
+    title_t :new
     render :new
   end
   
   def destroy
     @message = @logged_user.messages.find(params[:id])
     @message.delete!
-      flash[:warning] = t("flash.messages.destroy")
+      flash[:warning] = flash_t
       redirect_to admin_messages_path
   end
 
