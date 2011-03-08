@@ -6,4 +6,5 @@ class Membership < ActiveRecord::Base
   validates :project_id, :presence => true
   validates :user_id, :presence => true
   validates :role_id, :presence => true
+
 end

@@ -14,10 +14,10 @@ class Project < ActiveRecord::Base
 	                   :inclusion => { :in => STATUSES.values }
 	validates :description, :presence => true,
 	                        :length => { :in => 10..2000}
-	
+		
 	default_scope :order => 'projects.id DESC'
 	
-	#before_create :set_default_status
+	before_validation :set_default_status, :on => :create
 	after_create :add_default_users
 	
 	def deadline
@@ -29,7 +29,7 @@ class Project < ActiveRecord::Base
 	end
 	
 	 def add_user(user_id)
-    memberships.create(:project_id => self.id, :user_id => user_id, :role_id => 0)
+    memberships.create(:project_id => self.id, :user_id => user_id)
   end
   
   def remove_user(user_id)
@@ -37,17 +37,22 @@ class Project < ActiveRecord::Base
   end
   
   def set_user_role(user_id, role_id)
-    memberships.find(user_id).role_id = role_id
+    membership = Membership.where("project_id = ? AND user_id = ?", self.id, user_id)
+    if membership.empty? && membership.count != 1
+      'nie ma takiego usera'
+    else
+      membership.first.role_id=role_id
+    end  
   end
-
-  private
-  
+   
+  private 
+	
+	def add_default_users
+	  Membership.create(:project_id => self.id, :user_id => self.owner_id, :role_id => 3)
+	  Membership.create(:project_id => self.id, :user_id => self.leader_id, :role_id => 2)
+	end
+	
 	def set_default_status
     self.status = STATUSES[:active] if self.status.nil?
   end
-	
-	def add_default_users
-	  self.add_user(self.owner_id)
-	  #self.set_user_role(self.owner_id, 1)
-	end
 end
