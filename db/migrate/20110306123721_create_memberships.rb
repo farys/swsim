@@ -1,9 +1,9 @@
 class CreateMemberships < ActiveRecord::Migration
   def self.up
     create_table :memberships do |t|
-      t.integer :user_id
-      t.integer :project_id
-      t.integer :role_id
+      t.references :user, :null => false
+      t.references :project, :null => false
+      t.references :role, :null => false
 
       t.timestamps
     end

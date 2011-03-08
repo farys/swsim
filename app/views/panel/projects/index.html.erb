@@ -20,7 +20,7 @@
             <%= escape_date(proj.deadline) %>
             (Pozostało <%= time_ago_in_words(proj.deadline) %>)
           </td>
-          <td><%= proj.string_status %></td>
+          <td><%= escape_status(proj).capitalize %></td>
         </tr>
       <% end %>
     </tbody>

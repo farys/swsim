@@ -36,4 +36,7 @@ pl:
     active: aktywna
     finished: zakończona
     canceled: anulowana
+  project:
+    active: aktywny
+    finished: zakończony
     
