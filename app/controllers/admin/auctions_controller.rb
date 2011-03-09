@@ -1,6 +1,6 @@
 class Admin::AuctionsController < Admin::ApplicationController
   before_filter :load_auction, :only => [:show, :edit, :update, :destroy]
-  before_filter :form_data, :only => [:edit, :update]#TODO czy edycja potrzebna?
+  before_filter :form_data, :only => [:edit, :update]
   
   def index
     @date = Time.new

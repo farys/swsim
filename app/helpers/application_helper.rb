@@ -12,7 +12,11 @@ module ApplicationHelper
   #gdy zwroci hash z slownika to obiekt ma ustawiony status bez pokrycia w STATUSES
   def escape_status(model, status = nil)
     status = model.class::STATUSES.invert[(status || model.status)]
-    t("#{model.class.name.downcase}.#{status.to_s}")
+    t("#{model.class.name.downcase}.statuses.#{status.to_s}")
+  end
+
+  def escape_column(model, column)
+    t("#{model.class.name.downcase}.#{column}.#{model.send(column)}")
   end
 
   # Metoda tworzy pola wyboru dla kolumny status
@@ -62,4 +66,5 @@ module ApplicationHelper
       end
     end
   end
+
 end

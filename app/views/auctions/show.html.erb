@@ -64,9 +64,9 @@
         <% @auction.offers.each do |offer| %>
           <% i += 1 %>
           <% html = case
-          when offer.status == Offer::STATUS_REJECTED
+          when offer.status == Offer::STATUSES[:rejected]
             'rejected'
-          when offer.status == Offer::STATUS_WON
+          when offer.status == Offer::STATUSES[:won]
             'winner'
           end
         %>

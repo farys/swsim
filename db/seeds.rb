@@ -12,21 +12,6 @@ stefanUser = User.create(:login => 'stefan', :password => 'stefan')
 User.create(:login => 'quake', :password => 'quake')
 User.create(:login => 'abraham', :password => 'abraham')
 
-googleTag = Tag.create(:name => "google")
-easyTag = Tag.create(:name => "proste")
-rubyTag = Tag.create(:name => "ruby")
-cppTag = Tag.create(:name => "c++")
-
-programowanie = Group.create(:name => "Programowanie")
-programowanie.tags << [rubyTag, cppTag]
-
-
-grafika = Group.create(:name => "Grafika")
-grafika.tags << easyTag
-
-reklama = Group.create(:name => "Reklama")
-reklama.tags << googleTag
-
 aukcja = Auction.create!(
   :owner => farysUser,
   :title => "Wyszukiwarka google na forum",
@@ -48,8 +33,3 @@ aukcja3 = Auction.create!(
   :expired_after => 10.to_s,
   :budget_id => "1"
 )
-
-aukcja2.tags << googleTag
-aukcja3.tags << googleTag
-aukcja3.tags << easyTag
-aukcja3.tags << rubyTag

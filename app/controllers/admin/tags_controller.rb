@@ -3,11 +3,8 @@ class Admin::TagsController < Admin::ApplicationController
   before_filter :new_tag, :only => [:new, :create]
 
   def index
-    @status = params[:status] || "all"
-    @tags = Tag
-    @tags = @tags.unlinked if @status.eql?("unlinked")
-    @tags = @tags.paginate :page => params[:page], :per_page => 15
-    title_t @status
+    @tags = Tag.includes(:group).paginate :page => params[:page], :per_page => 15
+    title_t
   end
 
   def new
@@ -17,7 +14,7 @@ class Admin::TagsController < Admin::ApplicationController
   def create
     if @tag.save
       flash_t :success
-      redirect_to admin_tags_path
+      redirect_to edit_admin_group_path(@tag.group_id)
     else
       title_t :new
       render :new
@@ -51,6 +48,7 @@ class Admin::TagsController < Admin::ApplicationController
   end
 
   def new_tag
+    params[:tag] = {:group_id => params[:group_id]} if params.include?(:group_id)
     @tag = Tag.new params[:tag]
   end
 end

@@ -1,47 +1,49 @@
-<% content_for :title, 'Wybierz zwyciężcę' %>
-
-<h1 class="headField">Wybierz zwyciężcę</h1>
-
-<div class="standardField" style="width:900px;padding:30px;margin: 10px auto">
 <% form_for [:panel, @auction] do |f| %>
 
-<%= render "layouts/error_messages", :target => @auction %>
+  <%= render "layouts/error_messages", :target => @auction %>
 
   <%= f.label :won_offer_id, 'Która oferta zwycięża ?' %><br /><br />
   <table>
     <thead>
-    <tr class="headField">
-      <td>wybór</td>
-      <td>kwota</td>
-      <td>czas</td>
-      <td>wykonawca</td>
-      <td>data</td>
-    </tr>
-  </thead>
-  <tbody>
-    <% i = 0 %>
+      <tr class="headField">
+        <td>wybór</td>
+        <td>kwota</td>
+        <td>czas</td>
+        <td>wykonawca</td>
+        <td>data</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% i = 0 %>
       <% @offers.each do |offer| %>
-    <% i += 1 %>
-    <% html = case
-    when offer.status == Offer::STATUS_REJECTED
-      'rejected'
-    when i%2 < 1
-      'cycle'
-    end
+        <% i += 1 %>
+        <% html = case
+        when offer.status == Offer::STATUSES[:rejected]
+          'rejected'
+        when i%2 < 1
+          'cycle'
+        end
       %>
         <tr<% unless html.nil? %> class="<%= html %>"<% end %>>
-          <td><% if [Offer::STATUS_ACTIVE].include?(offer.status) %><%= radio_button :auction, :won_offer_id, offer.id %><% end %></td>
+          <td>
+            <% if Offer::STATUSES[:active] == offer.status %>
+              <%= radio_button :auction, :won_offer_id, offer.id %>
+            <% end %>
+          </td>
           <td style="font-weight:bold"><%= offer.price %> zł</td>
           <td><%= offer.days %> dni</td>
           <td style="text-align: center">
             <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
-          <%= offer.offerer %>
+            <%= offer.offerer %>
           </td>
           <td><%=raw escape_time(offer.created_at) %></td>
         </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br />
+  <%= check_box_tag :create_project, true %>
+  <%= label_tag :create_project, "Proszę również o utworzenie projektu dla tego zlecenia." %>
+  <br />
+  <%= f.submit "Wybierz" %>
 <% end %>
-  </tbody>
-</table>
-<%= f.submit "Wybierz" %>
-<% end %>
-</div>

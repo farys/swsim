@@ -26,15 +26,16 @@ class Auction < ActiveRecord::Base
     indexes :title
     indexes :description
     indexes :budget_id
-    indexes :expired
+    indexes :expired_at
     indexes tags(:id), :as => :tags_ids
-    
-    where 'auctions.status = '+Auction::STATUSES[:active].to_s+' AND auctions.private = 0'
+
+    indexes :expired_at
+    where 'auctions.private = 0 AND auctions.expired_at > NOW()'
   end
 
-  validates :title, :presence => true
+  validates :title, :presence => true, :length => { :within => 5..50}
   validates :description, :presence => true
-  validates_inclusion_of :status, :in => [STATUSES[:active], STATUSES[:canceled], STATUSES[:finished]]
+  validates_inclusion_of :status, :in => STATUSES.values
   validates_inclusion_of :budget_id, :in => Budget.ids
   validates_associated :tags, :owner
   
@@ -57,6 +58,7 @@ class Auction < ActiveRecord::Base
 
   #ustawia status aukcji na anulowano
   def cancel!
+    self.expired_at = DateTime.now
     self.status = STATUSES[:canceled]
     self.save
   end
@@ -135,6 +137,7 @@ class Auction < ActiveRecord::Base
       :page => page,
       :sort_mode => :extended,
       :match_mode => :extended,
+      :conditions => {:expired_at => ">" + DateTime.now.to_s},
       :order => order || "@rank DESC"
   end
   
@@ -184,7 +187,7 @@ class Auction < ActiveRecord::Base
   end
   
   def init_auction_row
-    self.expired = DateTime.now + self.expired_after.to_i.days
+    self.expired_at = DateTime.now + self.expired_after.to_i.days
     self.status = STATUSES[:active]
   end
 
@@ -205,7 +208,7 @@ class Auction < ActiveRecord::Base
   end
 
   def status_changed
-    self.expired = DateTime.now
+    self.expired_at = DateTime.now
     self.tags.delete_all
   end
 

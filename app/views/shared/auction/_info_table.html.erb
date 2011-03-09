@@ -37,8 +37,8 @@
       <p>Utworzona: <%= escape_time(@auction.created_at) %></p>
       <p>Do końca:
         <span class="bold">
-          <%= distance_of_time_in_words @auction.expired.to_i, Time.now.to_i %>
-        </span> (<%= escape_time(@auction.expired) %>)</p>
+          <%= distance_of_time_in_words @auction.expired_at.to_i, Time.now.to_i %>
+        </span> (<%= escape_time(@auction.expired_at) %>)</p>
     </td>
   </tr>
   <tr>

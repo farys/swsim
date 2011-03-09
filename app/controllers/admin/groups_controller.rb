@@ -1,7 +1,7 @@
 class Admin::GroupsController < Admin::ApplicationController
   before_filter :load_group, :only => [:update, :edit, :destroy]
-  before_filter :load_form_data, :only => [:new, :create, :edit, :update]
   before_filter :new_group, :only => [:new, :create]
+  before_filter :load_form_data, :only => [:new, :create, :edit, :update]
   before_filter :parse_tag_ids_from_post, :only => [:create, :update]
 
   def index
@@ -44,17 +44,16 @@ class Admin::GroupsController < Admin::ApplicationController
   end
 
   private
-
-  def load_form_data
-    @tags = Tag.all
-  end
-
   def load_group
     @group = Group.find(params[:id])
   end
 
   def new_group
     @group = Group.new params[:group]
+  end
+
+  def load_form_data
+    @tags = @group.tags
   end
 
   def parse_tag_ids_from_post
