@@ -24,22 +24,31 @@ pl:
           attributes:
             title:
               blank: nie może byc pusty
-#STATUSY MODELI
+#MODELE
   tag:
-    active: aktywny
-    hidden: ukryty
+    statuses:
+      active: aktywny
+      hidden: ukryty
+    
   group:
-    active: aktywna
-    hidden: ukryta
+    statuses:
+      active: aktywna
+      hidden: ukryta
+
   offer:
-    active: aktywna
-    rejected: odrzucona
-    won: zwycięska
+    statuses:
+      active: aktywna
+      rejected: odrzucona
+      won: zwycięska
+
   auction:
-    active: aktywna
-    finished: zakończona
-    canceled: anulowana
+    statuses:
+      active: aktywna
+      finished: zakończona
+      canceled: anulowana
+
   project:
-    active: aktywny
-    finished: zakończony
+    statuses:
+      active: aktywny
+      finished: zakończony
     
