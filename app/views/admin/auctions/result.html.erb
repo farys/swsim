@@ -29,7 +29,7 @@
           <td style="font-weight: bold"><% if auction.is_public? %>publiczna<% else %>prywatna<% end %></td>
           <td><%= escape_date(auction.created_at) %></td>
           <td>
-            after <%= distance_of_time_in_words auction.expired.to_i, Time.now.to_i %>
+            after <%= distance_of_time_in_words auction.expired_at.to_i, Time.now.to_i %>
           </td>
           <td>
             <%= status %>

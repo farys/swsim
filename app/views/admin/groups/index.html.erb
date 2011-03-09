@@ -13,6 +13,7 @@
           <td><%= link_to group, edit_admin_group_path(group) %></td>
           <td class="bold"><%= escape_status(group) %></td>
           <td>
+            <%= link_to "dodaj tag", new_admin_tag_path(:group_id => group.id) %><br />
             <%= link_to "usuń", admin_group_path(group), :method => :delete, :confirm => "Potwierdź usunięcie grupy" %>
           </td>
         </tr>

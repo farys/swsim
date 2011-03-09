@@ -1,11 +1,15 @@
 <div class="prepend-1 append-1">
   <% form_for [:admin, @tag] do |f| -%>
-
     <%= render "layouts/error_messages", :target => @tag %>
 
     <p>
       <%= f.label :name %>
       <%= f.text_field :name, :class => "title" %>
+    </p>
+
+    <p>
+      <%= f.label :group_id %>
+      <%= f.select :group_id, Group.admin_array_to_select %>
     </p>
 
     <p>

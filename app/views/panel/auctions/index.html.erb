@@ -22,16 +22,16 @@
           <td><%=raw escape_time(auction.created_at) %></td>
           <td><%= escape_status(auction) %></td>
           <td><% if auction.status == 'stages' %>
-              za <%= distance_of_time_in_words auction.expired.to_i, Time.now.to_i %>
+              za <%= distance_of_time_in_words auction.expired_at.to_i, Time.now.to_i %>
             <% else %>
-              <%=raw escape_time(auction.expired)%>
+              <%=raw escape_time(auction.expired_at)%>
             <% end %>
           </td>
           <td><% if auction.status == Auction::STATUSES[:active] %>
               <%= link_to 'Anuluj aukcję', panel_auction_path(auction), :method => :delete, :confirm => "Czy napewno chcesz anulować aukcję #{auction.title}?" %><br />
               <%= link_to 'Nadaj komunikat', new_panel_auction_communication_path(auction) %><br />
               <% if auction.offers.count > 0 %>
-                <%= link_to 'Przeglądaj oferty', offers_panel_auction_path(auction) %><br />
+                <%= link_to 'Wybierz zwyciężcę', offers_panel_auction_path(auction) %><br />
               <% end %>
             <% elsif auction.status == Auction::STATUSES[:finished] %>
               <% o = auction.won_offer %>

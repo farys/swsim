@@ -2,7 +2,7 @@ class CreateGroups < ActiveRecord::Migration
   def self.up
     create_table :groups do |t|
       t.string :name, :length => 32, :null => false
-      t.integer :status
+      t.integer :status, :null => false
     end
   end
 

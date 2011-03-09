@@ -1,9 +1,11 @@
 class Tag < ActiveRecord::Base
   STATUSES = {:active => 0, :hidden => 1}
 
-  has_and_belongs_to_many :groups
+  belongs_to :group
   has_many :auctions
+  validates_inclusion_of :status, :in => STATUSES.values
 
+  default_scope order("name ASC")
   scope :unlinked, where("(SELECT COUNT(1) FROM groups_tags WHERE groups_tags.tag_id=tags.id)=0")
 
   def self.from_text text   

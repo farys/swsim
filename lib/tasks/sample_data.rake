@@ -1,8 +1,19 @@
+#encoding: utf-8
 require 'faker'
 I18n.locale = :en
 #wypelnianie bazy development danymi => rake db:populate
 
 namespace :db do
+
+  desc "Reset the base after changes in migration"
+  task :reload => :environment do
+    File.delete("db/schema.rb") if File.exist?("db/schema.rb")
+    Rake::Task['db:drop'].invoke
+    Rake::Task['db:create'].invoke
+    Rake::Task['db:migrate'].invoke
+    Rake::Task['db:populate'].invoke
+  end
+
   desc "Fill database with sample data"
   task :populate => :environment do
     Rake::Task['db:reset'].invoke
@@ -10,6 +21,7 @@ namespace :db do
     make_roles
     make_projects
     #make_files
+    make_groups_and_tags
   end
 end
 
@@ -25,6 +37,32 @@ def make_projects
     name = Faker::Company.name
     description = Faker::Lorem.sentence(4)
     Project.create!(:name => name, :owner_id => rand(20), :leader_id => rand(100), :duration => rand(370), :description => description )
+  end
+end
+
+def make_groups_and_tags
+  g_status = Group::STATUSES[:active]
+  programowanie = Group.create(:name => "Programowanie", :status => g_status)
+  grafika = Group.create(:name => "Grafika", :status => g_status)
+
+  prog_tags = ["ASP", "Assembler", "C#", "C / C++", "Obj-C", "Delphi",
+    "Inne", "Java", "Perl", "PHP",
+    "Python", "Ruby"]
+
+  grafika_tags = ["Video", "CI", "Grafika 3D", "Logotypy", "Retusz zdjęć",
+    "Flash", "Banery", "Broszury", "Wizytówki", "Inne", "Layouty stron",
+    "Fotografia"]
+
+  tags_list = {
+    programowanie => prog_tags,
+    grafika => grafika_tags
+  }
+  
+  while (link = tags_list.shift).is_a?(Array) do
+    group = link.shift
+    link.shift.each do |tag|
+      Tag.create( :name => tag, :group_id => group.id, :status => Tag::STATUSES[:active])
+    end
   end
 end
 

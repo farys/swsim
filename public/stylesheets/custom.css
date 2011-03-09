@@ -111,10 +111,12 @@ a:hover {
 .clickable {
     font-weight: bold;
     padding: 6px;
+    text-align: center;
+    width: 100px;
     display: inline-block;
     background-color: #dcdcdc;
     border-color: #DDDDDD;
-    margin: 2px;
+    margin: 1px;
 }
 .clickable:hover {
     background-color: black;

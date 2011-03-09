@@ -11,6 +11,9 @@ pl:
       group:
         name: Nazwa
         tag_ids: Powiązania z tagami
+      tag:
+        name: Nazwa
+        group_id: Grupa
       message:
         topic: Temat
         body: Treść

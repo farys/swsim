@@ -13,8 +13,8 @@
       <%= @auction.created_at %>
     </p>
     <p>
-      <%= f.label :expired %>
-      <%= datetime_select :auction, :expired %>
+      <%= f.label :expired_at %>
+      <%= datetime_select :auction, :expired_at %>
     </p>
     <p>
       <%= f.label :status %>
@@ -72,15 +72,16 @@
           </thead>
           <tbody>
             <% @communications.each do |c| %>
-            <tr id="communicat_<%= c.id %>">
-              <td><%= escape_time(c.created_at) %></td>
-              <td><%= c.body %></td>
-              <td><%= link_to "usuń", admin_communication_path(c), :remote => true, :method => :delete, :confirm => "Potwierdź usunięcie komunikatu" %></td>
-            </tr>
+              <tr id="communicat_<%= c.id %>">
+                <td><%= escape_time(c.created_at) %></td>
+                <td><%= c.body %></td>
+                <td><%= link_to "usuń", admin_communication_path(c), :remote => true, :method => :delete, :confirm => "Potwierdź usunięcie komunikatu" %></td>
+              </tr>
             <% end %>
           </tbody>
         </table>
-      <% end %>
-      <%= f.submit "Aktualizuj" %>
-    <% end -%>
-  </div>
+      </div>
+    <% end %>
+    <%= f.submit "Aktualizuj" %>
+  <% end -%>
+</div>

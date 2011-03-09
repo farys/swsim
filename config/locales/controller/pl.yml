@@ -6,7 +6,6 @@ pl:
       create: Oferta została złożona!
     auction:
       show: Nie masz prawa dostępu do aukcji
-
     panel:
       auctions:
         create: Aukcja została zapisana i opublikowana
@@ -14,6 +13,8 @@ pl:
         destroy: Aukcja została anulowana
       communications:
         create: Komunikat zostal opublikowany
+      offers:
+        create: Oferta została złożona
       messages:
         destroy: Wiadomość została usunięta
         create: Wiadomość została wysłana
@@ -34,12 +35,14 @@ pl:
       groups:
         update: Grupa została zaktualizowana
         create: Grupa została utworzona
-        destroy: Grupa została usunięta, tagi z grupy pozostały w bazie
+        destroy: Grupa wraz z tagami została usunięta
         
   title:
     auctions:
       index: Witamy !
       show: "{@auction.title} (id {@auction.id})"
+      search: Wyszukaj zlecenie!
+      result: Wynik zapytania {@query}
  
     panel:
       auctions:
@@ -47,6 +50,7 @@ pl:
         active: Twoje aktualnie trwające aukcje
         canceled: Twoje anulowane aukcje
         finished: Twoje zakończone aukcje
+        offers: Formularz wyboru zwyciężcy
       messages:
         new: Nowa wiadomość
         received: Odebrane wiadomości
@@ -71,6 +75,5 @@ pl:
         edit: Edycja grupy o id {@group.id}
       tags:
         new: Nowy tag
-        all: Wszystkie tagi
-        unlinked: Niepowiązane tagi
+        index: Tagi
         edit: Edycja tagu o id {@tag.id}

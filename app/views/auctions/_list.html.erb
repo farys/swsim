@@ -24,7 +24,7 @@ $(document).ready(function(){
     <td><%= link_to auction.title, auction %><% unless auction.rating.nil? %> <div style="display: inline-block"><% for i in 1..15 do %><%= radio_button_tag("star#{auction.id}", i, i == auction.rating, :class => "star", :title => "ocena") %><% end %></div><% end %></td>
     <td><%= Budget.find(auction.budget_id) %></td>
     <td><%= auction.offers_count %></td>
-    <td><%= distance_of_time_in_words auction.expired.to_i, Time.now.to_i %></td>
+    <td><%= distance_of_time_in_words auction.expired_at.to_i, Time.now.to_i %></td>
   </tr>
 <% end %>
 </tbody>
