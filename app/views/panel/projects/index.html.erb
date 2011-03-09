@@ -1,6 +1,5 @@
-<% content_for :title, 'Projekty' %>
-<% if @projects.empty? %>
-  <div class="notice">Obecnie nie uczestniczysz w żadnych projektach</div>
+<% if @projects.empty? %> 
+  <%= raw flash_t("notice") %>
 <% else %>
   <table class="list">
     <thead>
@@ -15,7 +14,7 @@
       <% @projects.each do |proj| %>
         <tr>
           <td><%= link_to proj.name, project_info_path(proj) %></td>
-          <td>todo ;]</td>
+          <td><%= proj.user_role(@logged_user) %></td>
           <td>
             <%= escape_date(proj.deadline) %>
             (Pozostało <%= time_ago_in_words(proj.deadline) %>)

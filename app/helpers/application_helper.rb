@@ -25,6 +25,18 @@ module ApplicationHelper
     end
     options_for_select(options, model.status)
   end
+  
+  def flash_t(type=nil)
+    params = request.parameters.clone
+    params["controller"]["/"] = "." if params["controller"].include?("/")
+    translation = t("flash.#{params["controller"]}.#{params[:action]}")
+    text = "<div class=\"#{type}\">#{translation}</div>"
+    return text unless type.nil?
+  end
+  
+  def escape_role(role)
+    
+  end
 
   def include_active_link_mechanism urls=Array.new
     current_path = request.fullpath

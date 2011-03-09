@@ -17,6 +17,8 @@ pl:
       messages:
         destroy: Wiadomość została usunięta
         create: Wiadomość została wysłana
+      projects:
+        index: Obecnie nie uczestniczysz w żadnych projektach
 
     admin:
       auctions:
@@ -35,6 +37,10 @@ pl:
         update: Grupa została zaktualizowana
         create: Grupa została utworzona
         destroy: Grupa została usunięta, tagi z grupy pozostały w bazie
+   
+    project:
+      info:
+        show: Nie bierzesz udziału w tym projekcie
         
   title:
     auctions:
@@ -55,6 +61,8 @@ pl:
         active: Oferty biorące udział w aukcji
         won: Oferty które wygrały
         rejected: Oferty które zostały odrzucone
+      projects:
+        index: Projekty
         
     admin:
       messages:
