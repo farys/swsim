@@ -38,7 +38,7 @@ class Project < ActiveRecord::Base
   
   def user_role(user_id)
     membership = Membership.where("project_id = ? AND user_id = ?", self.id, user_id)
-    Role.find(membership.first)
+    Role.find(membership.first.role_id)
   end
   
   def user_role=(user_id, role_id)

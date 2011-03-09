@@ -34,10 +34,6 @@ module ApplicationHelper
     return text unless type.nil?
   end
   
-  def escape_role(role)
-    
-  end
-
   def include_active_link_mechanism urls=Array.new
     current_path = request.fullpath
     current_path += "/new" if params[:action].eql?("create")
