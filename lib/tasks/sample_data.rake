@@ -69,6 +69,7 @@ end
 def make_roles
   Role.create!(:name => 'guest')
   Role.create!(:name => 'leader', :file => true, :forum => true, :user => true, :info => true)
+  Role.create!(:name => 'owner', :info => true)
   Role.create!(:name => 'info_mod', :info => true)
 end
 

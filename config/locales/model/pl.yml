@@ -51,4 +51,11 @@ pl:
     statuses:
       active: aktywny
       finished: zakończony
+
+  role:
+    name:
+      guest: gość
+      owner: właściciel
+      leader: lider
+      info_mod: moderator informacji
     

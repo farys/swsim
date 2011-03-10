@@ -86,3 +86,6 @@ pl:
         new: Nowy tag
         index: Tagi
         edit: Edycja tagu o id {@tag.id}
+    project:
+      info:
+        show: "{@project.name}"

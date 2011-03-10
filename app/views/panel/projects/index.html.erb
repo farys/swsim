@@ -14,7 +14,7 @@
       <% @projects.each do |proj| %>
         <tr>
           <td><%= link_to proj.name, project_info_path(proj) %></td>
-          <td><%= proj.user_role(@logged_user).name %></td>
+          <td><%= escape_column(proj.user_role(@logged_user), "name").capitalize %></td>
           <td>
             <%= escape_date(proj.deadline) %>
             (Pozostało <%= time_ago_in_words(proj.deadline) %>)
