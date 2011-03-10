@@ -1,5 +1,5 @@
 <p>
-  <%= f.label :title, "Tytul aukcji" %><br />
+  <%= f.label :title, "Tytuł aukcji" %><br />
   <%= f.text_field :title, :class => "title span-22" %>
 </p>
 
@@ -9,7 +9,7 @@
 </p>
 
 <p>
-  <%= f.label :budget_id, "Okresl budzet jaki ma byc przeznaczony na to zlecenie :" %>
+  <%= f.label :budget_id, "Określ budżet jaki ma być przeznaczony na to zlecenie :" %>
   <%= select("auction", "budget_id", Budget.all.collect {|p| [ p.to_s, p.id ] }, { :include_blank => 'wybierz przedzial' }) %>
 </p>
 
@@ -28,10 +28,10 @@
   <div id="publicDiv">
     <h2 class="box">Tagi</h2>
     <%= render :partial => "shared/clickable_tags", :locals => {:groups => @groups, :selected_tag_ids => @auction.tag_ids, :fieldset_width => 11} %>
-    <p style="font-size: 85%">Wybranie niepasujacych tagow moze zawazyz na niekorzystnej ocenie aukcji.</p>
+    <p style="font-size: 85%">Wybranie niepasujących tagów może zaważyć na niekorzystnej ocenie aukcji.</p>
   </div>
   <div id="privateDiv" style="display: none">
-    Wybierz teraz uzytkownikow ktorzy maja zostac zaproszeni do licytacji.
+    Wybierz teraz użytkowników którzy mają zostać zaproszeni do licytacji.
     <% #TODO dopisac szukanie uzytkownikow %>
   </div>
 </div>

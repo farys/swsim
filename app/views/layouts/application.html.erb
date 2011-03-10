@@ -29,7 +29,7 @@
       <section class="prepend-1 append-1"><div class="<%= key.to_s %>"><%= flash[key] %></div></section>
       <% end %>
 
-      <article class="span-24" class="showgrid">
+      <article class="span-24">
         <h1 class="box bottom"><%= @title || yield(:title) %></h1>
         <%= yield %>
         <div class="clear"> </div>

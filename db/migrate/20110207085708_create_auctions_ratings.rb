@@ -9,7 +9,7 @@ class CreateAuctionsRatings < ActiveRecord::Migration
     add_index :auction_ratings, [:user_id, :auction_id]
     
   	add_column :auctions, :rating, :float, :default => 0
-    add_index :auctions, [:rating]
+    add_index :auctions, :rating
   end
 
   def self.down
