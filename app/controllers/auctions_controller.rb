@@ -11,7 +11,7 @@ class AuctionsController < ApplicationController
     options = {:include => [:owner, {:offers => :offerer}, :communications]}
     @auction = Auction.find(params[:id], options)
 
-    unless @auction.expired_at.past?
+    if @auction.expired_at.past?
       @auction.status = Auction::STATUSES[:finished]
     end
 

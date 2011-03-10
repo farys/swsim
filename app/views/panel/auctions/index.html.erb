@@ -15,32 +15,33 @@
     <tbody>
       <% @auctions.each do |auction| %>
         <tr>
-          <td><%= link_to auction.title, auction %></td>
+          <td><%= link_to auction.title, auction %>
+            <br />
+            <% if auction.status?(:finished) && auction.won_offer_exists? %>
+              <%= o = auction.won_offer %>
+            <% end %>
+          </td>
           <td><%= auction.visits %></td>
           <td><%= auction.offers.count %></td>
           <td style="font-weight: bold"><% if auction.is_public? %>publiczna<% else %>prywatna<% end %></td>
           <td><%=raw escape_time(auction.created_at) %></td>
           <td><%= escape_status(auction) %></td>
-          <td><% if auction.status == 'stages' %>
+          <td><% if auction.status?(:active) %>
               za <%= distance_of_time_in_words auction.expired_at.to_i, Time.now.to_i %>
             <% else %>
               <%=raw escape_time(auction.expired_at)%>
             <% end %>
           </td>
-          <td><% if auction.status == Auction::STATUSES[:active] %>
+          <td>
+            <% if auction.status?(:active) %>
               <%= link_to 'Anuluj aukcję', panel_auction_path(auction), :method => :delete, :confirm => "Czy napewno chcesz anulować aukcję #{auction.title}?" %><br />
               <%= link_to 'Nadaj komunikat', new_panel_auction_communication_path(auction) %><br />
-              <% if auction.offers.count > 0 %>
-                <%= link_to 'Wybierz zwyciężcę', offers_panel_auction_path(auction) %><br />
-              <% end %>
-            <% elsif auction.status == Auction::STATUSES[:finished] %>
-              <% o = auction.won_offer %>
-              <%= o.price %>zł / <%= o.days %>dni
-              (<%= link_to o.offerer, user_path(o.offerer) %>)
-              <br />
-            <% elsif auction.status == Auction::STATUSES[:canceled] %>
             <% end %>
-            <% if [Auction::STATUSES[:canceled], Auction::STATUSES[:finished]].include?(auction.status) %>
+
+            <% unless auction.status?(:canceled) || auction.offers.empty? || auction.won_offer_exists? %>
+              <%= link_to 'Wybierz zwycięzcę', offers_panel_auction_path(auction) %><br />
+            <% end %>
+            <% if auction.status?(:canceled) || auction.status?(:finished) %>
               <%= link_to 'Wystaw ponownie', new_panel_auction_path(:from_id => auction.id) %><br />
             <% end %>
           </td>

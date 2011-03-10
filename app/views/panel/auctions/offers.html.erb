@@ -1,8 +1,9 @@
 <% form_for [:panel, @auction] do |f| %>
+  <%= f.hidden_field :won_offer_id, :value => "" %>
 
   <%= render "layouts/error_messages", :target => @auction %>
 
-  <%= f.label :won_offer_id, 'Która oferta zwycięża ?' %><br /><br />
+  <%= f.label :won_offer_id %><br /><br />
   <table>
     <thead>
       <tr class="headField">

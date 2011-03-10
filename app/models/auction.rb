@@ -1,6 +1,6 @@
 class Auction < ActiveRecord::Base
   STATUSES = {:active => 0, :finished => 1, :canceled => 2}
-
+  MAX_EXPIRED_AFTER = 14
   ORDER_MODES = [
     ["po nazwie", "title DESC", 0],
     ["po statusie", "status ASC", 1],
@@ -26,10 +26,8 @@ class Auction < ActiveRecord::Base
     indexes :title
     indexes :description
     indexes :budget_id
-    indexes :expired_at
     indexes tags(:id), :as => :tags_ids
-
-    indexes :expired_at
+    has :expired_at
     where 'auctions.private = 0 AND auctions.expired_at > NOW()'
   end
 
@@ -38,7 +36,8 @@ class Auction < ActiveRecord::Base
   validates_inclusion_of :status, :in => STATUSES.values
   validates_inclusion_of :budget_id, :in => Budget.ids
   validates_associated :tags, :owner
-  
+  validates :won_offer, :presence => true, :on => :update
+
   scope :has_tags, lambda { |tags| {:conditions => ['id in (SELECT auction_id FROM auctions_tags WHERE tag_id in (?))', tags.join(',')]}}
   scope :with_status, lambda { |status| where(:status => STATUSES[status.to_sym])}
   scope :online, lambda { where(:status => STATUSES[:active])}
@@ -50,7 +49,7 @@ class Auction < ActiveRecord::Base
 
   #create form
   attr_accessor :expired_after
-  validates_inclusion_of :expired_after, :in => (1..14).to_a.collect{|d| d.to_s}, :on => :create
+  validates_inclusion_of :expired_after, :in => (1..MAX_EXPIRED_AFTER).to_a.collect{|d| d}, :on => :create
   
   def to_s
     self.title
@@ -89,7 +88,15 @@ class Auction < ActiveRecord::Base
   def rated_by? user
     self.rating_values.where("user_id=?", user.id).exists?
   end
-  
+
+  def status?(status)
+    self.status == STATUSES[status.to_sym]
+  end
+
+  def won_offer_exists?
+    self.won_offer_id != nil
+  end
+
   #czy uzytkownik jest wlascicielem aukcji
   def is_owner? user
     self.owner.eql?(user)
@@ -115,7 +122,7 @@ class Auction < ActiveRecord::Base
     not self.offers.select {|offer| offer.offerer.eql?(offerer)}.empty?
   end  
   
-  def self.search_by_sphinx(query = '', search_in_description = false, tags_ids = [], budgets_ids = [], order = nil, page = 1, per_page = 15)
+  def self.search_by_sphinx(query = '', search_in_description = false, tags_ids = [], budget_ids = [], order = nil, page = 1, per_page = 15)
 
     unless search_in_description || query.length == 0
       query = '@title ' + query
@@ -126,10 +133,11 @@ class Auction < ActiveRecord::Base
       query += ' @tags_ids '+tags_ids.join(' | ')+''
     end
     
-    unless budgets_ids.empty?
+    unless budget_ids.empty?
       #options.merge! :weights => {:tag_list => 2}
-      query += ' @budget_id '+budgets_ids.join(' | ')+''
+      query += ' @budget_id '+budget_ids.join(' | ')+''
     end
+    now = DateTime.now
 
     Auction.search query, 
       :field_weights => {:tags_ids => 3, :title => 2, :description => 1},
@@ -137,7 +145,7 @@ class Auction < ActiveRecord::Base
       :page => page,
       :sort_mode => :extended,
       :match_mode => :extended,
-      :conditions => {:expired_at => ">" + DateTime.now.to_s},
+      :with => {:expired_at => now..(now+MAX_EXPIRED_AFTER.days)},
       :order => order || "@rank DESC"
   end
   
@@ -187,7 +195,8 @@ class Auction < ActiveRecord::Base
   end
   
   def init_auction_row
-    self.expired_at = DateTime.now + self.expired_after.to_i.days
+    self.expired_after = self.expired_after.to_i
+    self.expired_at = DateTime.now + self.expired_after.days
     self.status = STATUSES[:active]
   end
 
@@ -204,6 +213,9 @@ class Auction < ActiveRecord::Base
       self.errors.add("won_offer_id", "Wybrana oferta nie nalezy do ofert uczestniczacych w licytacji")
     else
       self.status = STATUSES[:finished]
+
+      self.won_offer.status = Offer::STATUSES[:won]
+      self.won_offer.save
     end
   end
 
@@ -213,6 +225,6 @@ class Auction < ActiveRecord::Base
   end
 
   def calculate_rating(v1)
-    self.update_attribute(:rating, self.rating_values.sum(:value) / self.rating_values.count(1))
+    self.update_attribute(:rating, self.rating_values.sum(:value) / self.rating_values.count)
   end
 end
