@@ -1,5 +1,7 @@
 pl:
   flash:
+    users:
+      create: Witaj nowy użytkowniku
     alerts:
       create: Zgłoszenie zostało przyjęte!
     offers:

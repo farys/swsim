@@ -46,6 +46,8 @@ GEM
     activesupport (3.0.3)
     arel (2.0.6)
     builder (2.1.2)
+    carmen (0.2.6)
+      carmen
     erubis (2.6.6)
       abstract (>= 1.0.0)
     faker (0.9.5)
@@ -60,8 +62,8 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
-    mysql2 (0.2.6)
-    mysql2 (0.2.6-x86-mingw32)
+    mysql (2.8.1)
+    mysql (2.8.1-x86-mingw32)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
@@ -93,9 +95,10 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  carmen
   faker
   jquery-rails
-  mysql2
+  mysql
   rails (= 3.0.3)
   thinking-sphinx!
   will_paginate!

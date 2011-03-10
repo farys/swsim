@@ -1,0 +1,34 @@
+<div class="prepend-1">
+<% form_for [@user] do |f| -%>
+<%= render "layouts/error_messages", :target => @user %>
+<div class="field">
+  <%= f.label :login %><br />
+  <%= f.text_field :login, :class=>"span-6" %>
+</div>
+<div class="field">
+  <%= f.label :name %><br />
+  <%= f.text_field :name, :class=>"span-6" %>
+</div>
+<div class="field">
+  <%= f.label :lastname %><br />
+  <%= f.text_field :lastname, :class=>"span-6" %>
+</div>
+<div class="field">
+  <%= f.label :email %><br />
+  <%= f.text_field :email, :class=>"span-6" %>
+</div>
+<%= f.label :country %><br />
+<%= f.select :country, @countries, {:selected => 'PL'} %>
+<div class="field">
+  <%= f.label :password %><br />
+  <%= f.password_field :password, :class=>"span-6" %>
+</div>
+<div class="field">
+  <%= f.label :password_confirmation, "Confirmation" %><br />
+  <%= f.password_field :password_confirmation, :class=>"span-6" %>
+</div>
+<div class="actions">
+    <%= f.submit "Sign up" %>
+  </div>
+<% end %>
+</div>

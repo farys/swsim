@@ -28,9 +28,12 @@ namespace :db do
 end
 
 def make_users
-  96.times do
-    name  = Faker::Name.name
-    User.create!(:login => name, :password => 'password')
+  96.times do |i|
+    login  = Faker::Name.first_name
+    firstname = Faker::Name.first_name
+    country = Carmen.default_country
+    email = Faker::Internet.email
+    User.create!(:login => "Login_#{i+1}", :password => 'password', :name => firstname, :lastname => "Kowalski_#{i+1}", :role => 'user', :status => 1, :country => country, :email => email)
   end
 end
 
@@ -51,8 +54,8 @@ def make_groups_and_tags
     "Inne", "Java", "Perl", "PHP",
     "Python", "Ruby"]
 
-  grafika_tags = ["Video", "CI", "Grafika 3D", "Logotypy", "Retusz zdjęć",
-    "Flash", "Banery", "Broszury", "Wizytówki", "Inne", "Layouty stron",
+  grafika_tags = ["Video", "CI", "Grafika 3D", "Logotypy", "Retusz zdjec",
+    "Flash", "Banery", "Broszury", "Wizytowki", "Inne", "Layouty stron",
     "Fotografia"]
 
   tags_list = {

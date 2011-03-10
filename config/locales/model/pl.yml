@@ -4,6 +4,11 @@ pl:
       auction: Aukcja
       message: Wiadomość
     attributes:
+      user:
+        name: Imie
+        lastname: Nazwisko
+        password: Hasło
+        password_confirmation: Powierdzenie hasła
       auction:
         title: Tytuł
         expired_at: "Zakończenie aukcji w "
