@@ -8,6 +8,7 @@ pl:
         title: Tytuł
         expired_at: "Zakończenie aukcji w "
         created_at: "Rozpoczęta: "
+        won_offer_id: Która oferta zwycięża ?
       group:
         name: Nazwa
         tag_ids: Powiązania z tagami

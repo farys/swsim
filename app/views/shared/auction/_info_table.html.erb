@@ -8,11 +8,13 @@
       $(".star").rating({
         callback: function(value)
         {
+          $(".star").rating('readOnly',true);
           $.ajax({
             type: "POST",
             url: "<%= auction_ratings_url(@auction) %>",
             data: "value="+value,
             success: function(response){
+              $(".star").rating('readOnly',false);
               if(response == "rated") alert("Głosowałeś już wcześniej");
               if(response == "log_in") alert("Aby zagłosować musisz być zalogowany");
               $(".star").rating('readOnly',true);
@@ -35,10 +37,16 @@
     <td class="span-3">Terminy</td>
     <td>
       <p>Utworzona: <%= escape_time(@auction.created_at) %></p>
-      <p>Do końca:
-        <span class="bold">
-          <%= distance_of_time_in_words @auction.expired_at.to_i, Time.now.to_i %>
-        </span> (<%= escape_time(@auction.expired_at) %>)</p>
+      <p>
+        <% if @auction.status?(:active) %>
+          Do końca:
+          <span class="bold">
+            <%= distance_of_time_in_words @auction.expired_at.to_i, Time.now.to_i %>
+          </span>
+        <% else %>
+          Zakończono:
+        <% end %>
+        <%= escape_time(@auction.expired_at) %></p>
     </td>
   </tr>
   <tr>
@@ -54,12 +62,17 @@
   <tr>
     <td>Informacje</td>
     <td>
-      <p>Typ aukcji:
-        <span style="font-weight:bold">
+      <p>Typ:
+        <span class="bold">
           aukcja <% if @auction.is_public? %>publiczna<% else %>prywatna<% end %></span>
       </p>
+      <p>Status:
+        <span class="bold">
+          <%= escape_status(@auction) %>
+        </span>
+      </p>
       <p>Budżet:
-        <span style="font-weight:bold">
+        <span class="bold">
           <%= Budget.find(@auction.budget_id).to_s %>
         </span>
       </p>

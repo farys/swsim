@@ -57,7 +57,7 @@ pl:
         active: Twoje aktualnie trwające aukcje
         canceled: Twoje anulowane aukcje
         finished: Twoje zakończone aukcje
-        offers: Formularz wyboru zwyciężcy
+        offers: Formularz wyboru zwycięzcy
       messages:
         new: Nowa wiadomość
         received: Odebrane wiadomości

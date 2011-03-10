@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_many :sent_alerts, :class_name => 'Alert',:foreign_key => :author_id
   has_many :received_alerts, :class_name => 'Alert',:foreign_key => :reader_id
-  has_many :auctions, :foreign_key => :owner_id
+  has_many :auctions, :foreign_key => :owner_id, :include => [:won_offer]
   has_many :won_in_auctions, :class_name => 'Auction', :as => :winner
   has_many :messages, :foreign_key => :owner_id, :order => 'id DESC'
   has_many :written_comments, :class_name => 'Comment', :foreign_key => :author_id

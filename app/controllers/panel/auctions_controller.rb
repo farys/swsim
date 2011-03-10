@@ -29,7 +29,6 @@ class Panel::AuctionsController < Panel::ApplicationController
 
   def offers
     title_t
-    @offers = @auction.offers
   end
 
   def update
@@ -57,5 +56,6 @@ class Panel::AuctionsController < Panel::ApplicationController
     options = nil
     options = {:include => [:owner, {:offers => :offerer}, :communications]} if params[:action].eql?('show')
     @auction = @logged_user.auctions.find(params[:id], options)
+    @offers = @auction.offers
   end
 end

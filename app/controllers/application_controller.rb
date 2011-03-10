@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   private
   def init
     @global_title = '- inz v0.1'
-    @logged_user = User.find(2)#TODO
+    @logged_user = User.find(3)#TODO
   end
   
   def login_required

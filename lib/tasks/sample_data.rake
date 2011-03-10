@@ -22,6 +22,8 @@ namespace :db do
     make_projects
     #make_files
     make_groups_and_tags
+    make_auctions
+    make_offers
   end
 end
 
@@ -78,4 +80,29 @@ def make_files
   type = Faker::Lorem.words(1)
   description = Faker::Lorem.sentence(4)
   ProjectFile.create!(:project_id => rand(50), :user_id => rand(30), :name => name, :size => rand(10**7), :type => type, :description => description)
+end
+
+def make_auctions
+  100.times do
+    name = Faker::Company.name
+    description = Faker::Lorem.sentence(12)
+    Auction.create!(
+      :title => name, :budget_id => 1+rand(Budget.ids.size-1),
+      :owner_id => 1+rand(User.count-1), :expired_after => 1+rand(13),
+      :description => description
+    )
+    
+  end
+end
+
+def make_offers
+  100.times do
+    Offer.create!(
+      :price => 1+rand(10000),
+      :days => 1+rand(31),
+      :offerer_id => 1+rand(User.count-1),
+      :auction_id => 1+rand(Auction.count-1)
+    )
+    
+  end
 end
