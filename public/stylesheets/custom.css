@@ -45,6 +45,11 @@ article h2 {
     font-size: 130%;
 }
 
+article h3 {
+    font-size: 110%;
+    font-weight: bold;
+}
+
 /* Links */
 
 a {
