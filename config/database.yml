@@ -12,7 +12,7 @@ development:
   database: inz_development
   pool: 5
   username: root
-  password: rot
+  password: root
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
@@ -25,7 +25,7 @@ test:
   database: inz_test
   pool: 5
   username: root
-  password: rot
+  password: root
   host: localhost
 
 production:
@@ -35,5 +35,5 @@ production:
   database: inz_production
   pool: 5
   username: root
-  password: rot
+  password: root
   host: localhost

@@ -5,7 +5,6 @@ class Offer < ActiveRecord::Base
   belongs_to :auction, :counter_cache => true
   belongs_to :offerer, :class_name => "User"
 
-  validates_associated :offerer
   validates_numericality_of :price
   validates_numericality_of :days, :only_integer => true
 

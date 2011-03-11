@@ -10,7 +10,7 @@
 
 <p>
   <%= f.label :budget_id, "Określ budżet jaki ma być przeznaczony na to zlecenie :" %>
-  <%= select("auction", "budget_id", Budget.all.collect {|p| [ p.to_s, p.id ] }, { :include_blank => 'wybierz przedział' }) %>
+  <%= select("auction", "budget_id", Budget.all.collect {|p| [ p.to_s, p.id ] }, { :include_blank => 'wybierz przedzial' }) %>
 </p>
 
 <% if @auction.new_record? %>

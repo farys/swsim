@@ -13,6 +13,20 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :memberships
   has_many :project_files, :dependent => :destroy
   
+  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  string = /\A[\w+\-.]+\z/
+	
+	validates :login, :presence => true, :format => {:with => string}, :length => {:within => 3..40}, :uniqueness => true
+	validates :name, :presence => true, :format => {:with => string}, :length => {:within => 3..40}
+	validates :lastname, :presence => true, :format => {:with => string}, :length => {:within => 3..40}
+	validates :country, :presence => true
+	validates :email, :presence => true, :format => {:with => email_regex}, :uniqueness => { :case_sensitive => false }, :length => {:within => 6..50}
+	validates :password, :presence => true, :confirmation => true, :length => { :within => 6..40 }
+	validates_numericality_of :status, :presence => true
+	validates_inclusion_of :role, :in => ["administrator", "user"]
+	
+	before_save :encrypt_password
+  
   def to_s
     self.login
   end
@@ -30,4 +44,24 @@ class User < ActiveRecord::Base
     
     self.messages.send(folder).paginate(:page => page, :per_page => 15)    
   end
+  
+  private
+
+    def encrypt_password
+      self.salt = make_salt if new_record?
+      self.password = encrypt(password)
+    end
+
+    def encrypt(string)
+      secure_hash("#{salt}--#{string}")
+    end
+    
+    def make_salt
+      secure_hash("#{Time.now.utc}--#{password}")
+    end
+
+    def secure_hash(string)
+      Digest::SHA2.hexdigest(string)
+    end
+  
 end
