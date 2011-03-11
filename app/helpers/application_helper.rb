@@ -6,7 +6,7 @@ module ApplicationHelper
   end
   
   def escape_date(date = DateTime.now)
-    date.strftime('%d-%m-%Y')
+    date = date.strftime('%d-%m-%Y')
   end
 
   #gdy zwroci hash z slownika to obiekt ma ustawiony status bez pokrycia w STATUSES

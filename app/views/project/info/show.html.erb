@@ -1,3 +1,46 @@
 <%= render 'project/shared/menu' %>
 
-<div><%= @project.description %></div>
+<div class="span-22 last">
+  <div class="prepend-1 span-7">
+    <table class>
+      <tr>
+        <td>Nazwa</td>
+        <td><%= @project.name %></td>
+      </tr>
+      <tr>
+        <td>Uwtorzony</td>
+        <td><%= escape_date(@project.created_at) %></td>
+      </tr>
+      <tr>
+        <td>Do końca</td>
+        <td><b><%= time_ago_in_words(@project.deadline) %></b> (<%= escape_time(@project.deadline) %>)</td>
+      </tr>
+      <tr>
+        <td>Właściciel</td>
+        <td><%= User.find(@project.owner_id).login %></td>
+      </tr>
+      <tr>
+        <td>Lider</td>
+        <td><%= User.find(@project.leader_id).login %></td>
+      </tr>
+      <tr>
+        <td>Użytkownicy</td>
+        <td><%= @users.count %></td>
+      </tr>
+    </table>
+  </div>
+  <div class="span-12 last append-1 prepend-1">
+    <% if @project.user_role(@logged_user.id).info == true %>
+    <%= render :partial => 'edit' %>
+    <% else %>
+      <table>
+        <tr>
+          <td>Opis</td>
+        </tr>
+        <tr>
+          <td><%= @project.description %></td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</div>

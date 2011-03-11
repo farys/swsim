@@ -3,9 +3,10 @@ class Project::ApplicationController < ApplicationController
   
   def get_project
     @project = Project.find(params[:id])
-    if @project.member?(@logged_user.id) == false
+    unless @project.member?(@logged_user.id)
       flash_t :notice
       redirect_to :controller => '/panel/projects', :action => :index
     end
+    @users = @project.users
   end
 end

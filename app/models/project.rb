@@ -53,7 +53,7 @@ class Project < ActiveRecord::Base
   def member? (user_id)
     self.user_ids.include?(user_id)
   end
-   
+
   private 
 	
 	def add_default_users
