@@ -62,8 +62,8 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
-    mysql (2.8.1)
-    mysql (2.8.1-x86-mingw32)
+    mysql2 (0.2.6)
+    mysql2 (0.2.6-x86-mingw32)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
@@ -98,7 +98,7 @@ DEPENDENCIES
   carmen
   faker
   jquery-rails
-  mysql
+  mysql2
   rails (= 3.0.3)
   thinking-sphinx!
   will_paginate!
