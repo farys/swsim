@@ -12,7 +12,7 @@ development:
   database: inz_development
   pool: 5
   username: root
-  password: Rot192
+  password: Rot192 #trzymajmy sie jednego hasla :P, zaproponowalem jakies bardziej 'secure' ;p
   host: localhost
 
 # Warning: The database defined as "test" will be erased and

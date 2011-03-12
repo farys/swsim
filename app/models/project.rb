@@ -36,15 +36,24 @@ class Project < ActiveRecord::Base
     memberships.find_by_user_id(user_id).destroy
   end
   
-  def set_user_role(user_id, role_id)
+  def user_role(user_id)
+    membership = Membership.where("project_id = ? AND user_id = ?", self.id, user_id)
+    Role.find(membership.first.role_id)
+  end
+  
+  def user_role=(user_id, role_id)
     membership = Membership.where("project_id = ? AND user_id = ?", self.id, user_id)
     if membership.empty? && membership.count != 1
-      'nie ma takiego usera'
+      'error xD' #TODO
     else
       membership.first.role_id=role_id
     end  
   end
-   
+  
+  def member? (user_id)
+    self.user_ids.include?(user_id)
+  end
+
   private 
 	
 	def add_default_users

@@ -7,7 +7,7 @@ module ApplicationHelper
   end
   
   def escape_date(date = DateTime.now)
-    date.strftime('%d-%m-%Y')
+    date = date.strftime('%d-%m-%Y')
   end
 
   #gdy zwroci hash z slownika to obiekt ma ustawiony status bez pokrycia w STATUSES
@@ -30,7 +30,15 @@ module ApplicationHelper
     end
     options_for_select(options, model.status)
   end
-
+  
+  def flash_t(type=nil)
+    params = request.parameters.clone
+    params["controller"]["/"] = "." if params["controller"].include?("/")
+    translation = t("flash.#{params["controller"]}.#{params[:action]}")
+    text = "<div class=\"#{type}\">#{translation}</div>"
+    return text unless type.nil?
+  end
+  
   def include_active_link_mechanism urls=Array.new
     current_path = request.fullpath
     current_path += "/new" if params[:action].eql?("create")
