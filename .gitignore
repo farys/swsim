@@ -9,4 +9,4 @@ log/*.log
 doc/
 *.swp
 *~
-.DS_Store
+.DS_Storeconfig/database.yml
