@@ -35,7 +35,6 @@ class Auction < ActiveRecord::Base
   validates :description, :presence => true
   validates_inclusion_of :status, :in => STATUSES.values
   validates_inclusion_of :budget_id, :in => Budget.ids
-  validates_associated :tags, :owner
   validates :won_offer, :presence => true, :on => :update
 
   scope :has_tags, lambda { |tags| {:conditions => ['id in (SELECT auction_id FROM auctions_tags WHERE tag_id in (?))', tags.join(',')]}}

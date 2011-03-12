@@ -1,5 +1,5 @@
 class Project::InfoController < Project::ApplicationController
   def show
-    @project = Project.find(params[:id])
+    title_t :show
   end
 end

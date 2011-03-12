@@ -46,6 +46,8 @@ GEM
     activesupport (3.0.3)
     arel (2.0.6)
     builder (2.1.2)
+    carmen (0.2.6)
+      carmen
     erubis (2.6.6)
       abstract (>= 1.0.0)
     faker (0.9.5)
@@ -93,6 +95,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  carmen
   faker
   jquery-rails
   mysql2

@@ -1,11 +1,14 @@
 pl:
   flash:
+    users:
+      create: Witaj nowy użytkowniku
     alerts:
       create: Zgłoszenie zostało przyjęte!
     offers:
       create: Oferta została złożona!
     auction:
       show: Nie masz prawa dostępu do aukcji
+
     panel:
       auctions:
         create: Aukcja została zapisana i opublikowana
@@ -18,6 +21,8 @@ pl:
       messages:
         destroy: Wiadomość została usunięta
         create: Wiadomość została wysłana
+      projects:
+        index: Obecnie nie uczestniczysz w żadnych projektach
 
     admin:
       auctions:
@@ -35,7 +40,11 @@ pl:
       groups:
         update: Grupa została zaktualizowana
         create: Grupa została utworzona
-        destroy: Grupa wraz z tagami została usunięta
+        destroy: Grupa została usunięta wraz z tagami
+   
+    project:
+      info:
+        show: Nie bierzesz udziału w tym projekcie
         
   title:
     auctions:
@@ -59,6 +68,8 @@ pl:
         active: Oferty biorące udział w aukcji
         won: Oferty które wygrały
         rejected: Oferty które zostały odrzucone
+      projects:
+        index: Projekty
         
     admin:
       messages:
@@ -77,3 +88,6 @@ pl:
         new: Nowy tag
         index: Tagi
         edit: Edycja tagu o id {@tag.id}
+    project:
+      info:
+        show: "{@project.name}"

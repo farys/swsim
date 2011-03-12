@@ -1,7 +1,12 @@
 .bundle
-db/*.sqlite3
+db/schema.rb
+db/seeds.rb
+config/database.yml
+nbproject/
 log/*.log
-tmp/**/*
-
-public/images/src
-public/images/src/*
+*.log
+/tmp/
+doc/
+*.swp
+*~
+.DS_Store
