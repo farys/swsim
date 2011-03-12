@@ -17,7 +17,7 @@ class Panel::CommunicationsController < Panel::ApplicationController
   
   def load_auction_and_form_data
     params[:communication] ||= Hash.new
-    @auction = @logged_user.auctions.online.find(params[:auction_id])
+    @auction = current_user.auctions.online.find(params[:auction_id])
     @communication = @auction.communications.new(params[:communication])
   end
 end

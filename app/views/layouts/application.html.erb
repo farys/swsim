@@ -14,7 +14,7 @@
       <header>
         <%= link_to "zlecenia IT", "/", :id => "logo", :class => "prepend-1" %>
         <nav>
-          <% top_menu = case params[:controller].include?("admin")
+          <% top_menu = case params[:controller].include?("administrator")
           when true
             "layouts/top_menu/admin"
           else

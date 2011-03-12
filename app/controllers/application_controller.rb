@@ -1,27 +1,30 @@
 class ApplicationController < ActionController::Base
-  helper :all # include all helpers, all the time
+  include ApplicationHelper
+  include SessionsHelper
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
+  before_filter :authenticate
   before_filter :init
-  before_filter :check_alerts
+  #before_filter :check_alerts
 
   private
   def init
     @global_title = '- inz v0.1'
-    @logged_user = User.find(3)#TODO
-  end
-  
+  end 
+   
+=begin
   def login_required
-    if @logged_user.nil?
-      redirect_to :controller => :users, :action => :login
+    if current_user.nil?
+      redirect_to signin_path, :notice => "Wpierw musisz sie zalogowac"
     end
   end
 
   def check_alerts
-    unless @logged_user.nil?
-      @alerts_count = @logged_user.received_alerts.count
+    unless current_user.nil?
+      @alerts_count = current_user.received_alerts.count
     end
   end
+=end
 
   def flash_t type=nil
     params = request.parameters.clone
