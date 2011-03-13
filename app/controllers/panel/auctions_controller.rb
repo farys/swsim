@@ -1,16 +1,16 @@
-class Panel::AuctionsController < Panel::ApplicationController  
+class Panel::AuctionsController < Panel::ApplicationController
   before_filter :load_auction, :except => [:index, :new, :create]
   before_filter :new_auction_and_form_data, :only => [:new, :create]
   
-  def index
+  def index	
     @status = params[:status] || :active
     title_t @status
-    @auctions = @logged_user.auctions.with_status(@status).paginate :per_page => 15, :page => params[:page]
+    @auctions = current_user.auctions.with_status(@status).paginate :per_page => 15, :page => params[:page]
   end
   
   def new
     unless params[:from_id].nil?
-      @old_auction = @logged_user.auctions.find(params[:from_id])
+      @old_auction = current_user.auctions.find(params[:from_id])
       @auction = @old_auction.clone
       @auction.tag_ids = @old_auction.tag_ids
     end
@@ -47,7 +47,7 @@ class Panel::AuctionsController < Panel::ApplicationController
   
   private
   def new_auction_and_form_data
-    @auction = @logged_user.auctions.new(params[:auction])
+    @auction = current_user.auctions.new(params[:auction])
     @auction.tag_ids = params[:tag_ids].values unless params[:tag_ids].nil?
     @groups = Group.all
   end
@@ -55,7 +55,7 @@ class Panel::AuctionsController < Panel::ApplicationController
   def load_auction
     options = nil
     options = {:include => [:owner, {:offers => :offerer}, :communications]} if params[:action].eql?('show')
-    @auction = @logged_user.auctions.find(params[:id], options)
+    @auction = current_user.auctions.find(params[:id], options)
     @offers = @auction.offers
   end
 end

@@ -1,8 +1,14 @@
 <ul id="mega-menu-1" class="mega-menu">
+  <% if !signed_in? %>
   <li><%= link_to 'Szukaj', search_auctions_path %></li>
-  <li><%= link_to 'Nowa aukcja', new_panel_auction_path %></li>
   <li><%= link_to 'Regulamin', '#' %></li>
-  <% unless @logged_user.nil? %>
+  <li><%= link_to 'Logowanie', signin_path, :method => :new %></li>
+  <li><%= link_to 'Rejestracja', signup_path, :method => :new %></li>
+  <% end %>
+  <% if signed_in? %>
+    <li><%= link_to 'Szukaj', search_auctions_path %></li>
+    <li><%= link_to 'Regulamin', '#' %></li>
+    <li><%= link_to 'Nowa aukcja', new_panel_auction_path %></li>
     <li><%= link_to 'Aukcje', panel_auctions_path %>
       <ul>
         <li><p>przeglądaj</p>
@@ -48,7 +54,7 @@
     </li>
     <li><%= link_to 'Projekty', panel_projects_path %>
     </li>
-    <li><%= link_to 'Wyloguj się(' + @logged_user.to_s + ')', '#' %></li>
+    <li><%= link_to 'Wyloguj się(' + current_user.to_s + ')', signout_path, :method => :delete %></li>
   <% end %>
 </ul>
 <%= javascript_tag do %>

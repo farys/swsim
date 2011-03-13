@@ -2,6 +2,9 @@ pl:
   flash:
     users:
       create: Witaj nowy użytkowniku
+    sessions:
+      destroy: Wylogowano pomyślnie
+      new: Musisz się zalogowac, aby przeglądac tę stronę
     alerts:
       create: Zgłoszenie zostało przyjęte!
     offers:
