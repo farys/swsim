@@ -6,11 +6,11 @@ class AlertsController < ApplicationController
   end
 
   def received
-    @alerts = @logged_user.received_alerts
+    @alerts = @current_user.received_alerts
   end
 
   def show
-    if @alert.author.eql(@logged_user)
+    if @alert.author.eql(@current_user)
       @alert.read!
     end
   end

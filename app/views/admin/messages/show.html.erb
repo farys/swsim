@@ -10,7 +10,7 @@
     Wysłano: <%= escape_time(@message.created_at) %>
   </div>
   <div class="span-9 last">Opcje:
-    <% if @message.receiver_id.eql?(@logged_user.id) %>
+    <% if @message.receiver_id.eql?(@current_user.id) %>
       <%= link_to 'Odpisz', reply_admin_message_path(@message) %>,
     <% end %>
     <%= link_to 'Usuń wiadomość', admin_message_path(@message), :method => :delete, :confirm => 'Czy na pewno?' %>

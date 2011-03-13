@@ -15,7 +15,7 @@ pl:
     panel:
       auctions:
         create: Aukcja została zapisana i opublikowana
-        update: Zwycięska oferta została wyznaczona
+        update: Zwycięzka oferta została wyznaczona
         destroy: Aukcja została anulowana
       communications:
         create: Komunikat zostal opublikowany

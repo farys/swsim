@@ -52,7 +52,7 @@
               'rejected'
             when offer.status == Offer::STATUS_WON
               'winner'
-            when offer.offerer.eql?(@logged_user)
+            when offer.offerer.eql?(@current_user@current_user@current_user)
               'highlight'
             end
           %>

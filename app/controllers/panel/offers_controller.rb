@@ -9,7 +9,7 @@ class Panel::OffersController < Panel::ApplicationController
   def create
     @auction = Auction.find(params[:auction_id])
 
-    unless @auction.is_allowed_to_see?(current_user)
+    unless @auction.allowed_to_see?(current_user)
       redirect_to panel_path
     end
     data = params[:offer]

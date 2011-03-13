@@ -32,8 +32,21 @@ class Panel::AuctionsController < Panel::ApplicationController
   end
 
   def update
-    if @auction.set_won_offer!(params[:auction][:won_offer_id])
-      redirect_to auction_path(@auction), :notice => flash_t
+    @offer = @auction.offers.find(params[:auction][:won_offer_id])
+    if @auction.set_won_offer!(@offer)
+      if params.include?(:create_project)
+        @project = Project.create(
+          :name => @auction.title,
+          :description => @auction.description,
+          :owner_id => @auction.owner_id,
+          :leader_id => @auction.won_offer.offerer.id,
+          :duration => @auction.won_offer.days
+        )
+        redirect_to project_info_path(@project)
+      else
+        redirect_to auction_path(@auction), :notice => flash_t
+      end
+      
     else
       title_t :offers
       render :offers

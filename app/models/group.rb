@@ -4,9 +4,10 @@ class Group < ActiveRecord::Base
   has_many :tags, :dependent => :destroy
 
   validates :name, :presence => true
-  validates_associated :tags
-
+  
   default_scope order("name ASC").includes(:tags)
+
+  before_save :default_status, :on => :create
 
   def to_s
     self.name
@@ -22,5 +23,10 @@ class Group < ActiveRecord::Base
     self.select("id, name").where(:status => STATUSES[:active]).collect do |group|
       [group.name, group.id]
     end
+  end
+
+  private
+  def default_status
+    self.status = STATUSES[:active]
   end
 end
