@@ -26,8 +26,8 @@ class AuctionsController < ApplicationController
     @alert = Alert.new
     @auction.increment! :visits
     
-    unless @logged_user.nil?
-    	@rated = @auction.rated_by?(@logged_user)
+    unless current_user.nil?
+    	@rated = @auction.rated_by?(current_user)
     end
     title_t
   end
