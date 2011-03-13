@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  attr_accessible :login, :name, :lastname, :email, :country, :password, :password_confirmation
+	
   has_many :sent_alerts, :class_name => 'Alert',:foreign_key => :author_id
   has_many :received_alerts, :class_name => 'Alert',:foreign_key => :reader_id
   has_many :auctions, :foreign_key => :owner_id, :include => [:won_offer]
@@ -21,7 +23,7 @@ class User < ActiveRecord::Base
 	validates :lastname, :presence => true, :format => {:with => string}, :length => {:within => 3..40}
 	validates :country, :presence => true
 	validates :email, :presence => true, :format => {:with => email_regex}, :uniqueness => { :case_sensitive => false }, :length => {:within => 6..50}
-	validates :password, :presence => true, :confirmation => true, :length => { :within => 6..40 }
+	validates :password, :presence => true, :confirmation => true, :length => { :within => 5..40 }
 	validates_numericality_of :status, :presence => true
 	validates_inclusion_of :role, :in => ["administrator", "user"]
 	

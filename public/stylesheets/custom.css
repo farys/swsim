@@ -172,3 +172,12 @@ table tr:nth-child(even) {
 .offersList td {
     vertical-align: middle;
 }
+
+/* User */
+
+#table_title{
+	font-weight: bold;
+	text-align: center;
+	color: #FFFFFF;
+	background-color: #000000;
+}

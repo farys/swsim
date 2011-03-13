@@ -1,0 +1,28 @@
+<div class="prepend-1">
+<% form_for (@user) do |f| -%>
+<%= render "layouts/error_messages", :target => @user %>
+<div class="field">
+  <%= f.label :name %><br />
+  <%= f.text_field :name %>
+</div>
+<div class="field">
+  <%= f.label :lastname %><br />
+  <%= f.text_field :lastname %>
+</div>
+<div class="field">
+  <%= f.label :email %><br />
+  <%= f.text_field :email %>
+</div>
+<%= f.label :country %><br />
+<%= f.select :country, $countries, {:selected => @user.country} %>
+<div class="field">
+  <%= f.label :password %><br />
+  <%= f.password_field :password, :value => nil %>
+</div>
+<div class="field">
+  <%= f.label :password_confirmation, "Confirmation" %><br />
+  <%= f.password_field :password_confirmation %>
+</div>
+<%= f.submit "Edit" %>
+<% end %>
+</div>

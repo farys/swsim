@@ -1,3 +1,3 @@
 class Admin::ApplicationController < Panel::ApplicationController
-  before_filter :login_required
+  #before_filter :login_required
 end

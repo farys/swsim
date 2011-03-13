@@ -24,8 +24,8 @@ module SessionsHelper
   
   def authenticate
   	#dodajemy sobie controllery i akcje ktore sa dopuszczone dla niezalogowanego usera
-  	controllers = ["users", "sessions", "auctions", "panel/auctions"]
-    actions = ["new", "create", "index", "search", "result"]
+  	controllers = ["users", "sessions", "auctions"]
+    actions = ["new", "create", "index", "search", "result", "show"]
   	if controllers.include?(params[:controller]) && actions.include?(params[:action])
   		return
     else

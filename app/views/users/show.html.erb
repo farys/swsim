@@ -1,0 +1,38 @@
+<div class="span-22 last">
+  <div class="prepend-1 span-7">
+    <table class>
+      <tr>
+      	<td colspan="2" id="table_title">
+      		Dane osobowe
+      	</td>
+      </tr>
+      <tr>
+        <td>Imie</td>
+        <td><%= @user.name %></td>
+      </tr>
+      <tr>
+        <td>Utworzony</td>
+        <td><%= escape_date(@user.created_at) %></td>
+      </tr>
+      <tr>
+        <td>Login</td>
+        <td><b><%= @user.login %></td>
+      </tr>
+      <tr>
+        <td>Nazwisko</td>
+        <td><%= @user.lastname %></td>
+      </tr>
+      <tr>
+        <td>Kraj</td>
+        <td><%= @user.country %></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td><%= @user.email %></td>
+      </tr>
+    </table>
+    <% if current_user?(@user) %>
+  <%= link_to 'Edytuj', edit_user_path(current_user) %>
+  <% end %>
+  </div>
+</div>
