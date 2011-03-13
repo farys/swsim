@@ -48,6 +48,7 @@ pl:
     project:
       info:
         show: Nie bierzesz udziału w tym projekcie
+        update: Opis został pomyślnie zaktualizowany
         
   title:
     auctions:

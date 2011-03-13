@@ -30,7 +30,7 @@
     </table>
   </div>
   <div class="span-12 last append-1 prepend-1">
-    <% if @project.user_role(@logged_user.id).info == true %>
+    <% if can_edit?("info") %>
     <%= render :partial => 'edit' %>
     <% else %>
       <table>
