@@ -7,24 +7,24 @@
       	</td>
       </tr>
       <tr>
-        <td>Imie</td>
-        <td><%= @user.name %></td>
-      </tr>
-      <tr>
-        <td>Utworzony</td>
-        <td><%= escape_date(@user.created_at) %></td>
-      </tr>
-      <tr>
         <td>Login</td>
         <td><b><%= @user.login %></td>
+      </tr>
+      <tr>
+        <td>Imie</td>
+        <td><%= @user.name %></td>
       </tr>
       <tr>
         <td>Nazwisko</td>
         <td><%= @user.lastname %></td>
       </tr>
       <tr>
+        <td>Utworzony</td>
+        <td><%= escape_date(@user.created_at) %></td>
+      </tr>
+      <tr>
         <td>Kraj</td>
-        <td><%= @user.country %></td>
+        <td><%= image_tag(@country_flag) %> <%= @country_name %></td>
       </tr>
       <tr>
         <td>Email</td>
