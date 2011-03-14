@@ -31,7 +31,7 @@ class Auction < ActiveRecord::Base
     where 'auctions.private = 0 AND auctions.expired_at > NOW()'
   end
 
-  validates :title, :presence => true, :length => { :within => 5..50}
+  validates :title, :presence => true, :length => { :within => 8..50}
   validates :description, :presence => true
   validates_inclusion_of :status, :in => STATUSES.values
   validates_inclusion_of :budget_id, :in => Budget.ids

@@ -27,17 +27,21 @@ namespace :db do
   end
 end
 
-def make_users
+def make_users #zmieniony format emailu dla latwiejszego logowania
   96.times do |i|
+    login  = Faker::Name.first_name
+    firstname = Faker::Name.first_name
+    country = Carmen.default_country
     email = Faker::Internet.email
-    User.create!(:login => "Login_#{i+1}", :password => 'password', :name => "Nazwisko_#{i+1}", :lastname => "Kowalski_#{i+1}", :role => 'user', :status => 1, :country => 'PL', :email => email)
+    User.create!(:login => "Login_#{i+1}", :password => 'password', :name => firstname, :lastname => "Kowalski_#{i+1}", :role => 'user', :status => 1, :country => country, :email => "#{i+1}@inz.pl")
   end
 end
 
 def make_projects
-  100.times do |i|
+  100.times do
+    name = Faker::Company.name
     description = Faker::Lorem.sentences(12)
-    Project.create!(:name => "Projekt_#{i+1}", :owner_id => rand(20), :leader_id => rand(100), :duration => rand(370), :description => description )
+    Project.create!(:name => name, :owner_id => rand(20), :leader_id => rand(100), :duration => rand(370), :description => description )
   end
 end
 

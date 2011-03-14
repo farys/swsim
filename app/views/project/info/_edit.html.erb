@@ -1,5 +1,6 @@
 <table>
   <%= form_for @project, :url => project_info_path(@project) do |f| %>
+  <%= render "layouts/error_messages", :target => @project %>
   <tr>
     <td>Opis <%= f.submit "Zapisz" %></td>
   </tr>

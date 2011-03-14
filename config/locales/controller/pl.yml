@@ -50,6 +50,10 @@ pl:
       info:
         show: Nie bierzesz udziału w tym projekcie
         update: Opis został pomyślnie zaktualizowany
+      members:
+      	show: Nie bierzesz udziału w tym projekcie
+      	create: Użytkownik {@user.name} został pomyślnie dodany do projektu z rolą {@role.name}
+      	destroy:  Użytkownik {@user.name} został pomyślnie usunięty z projektu
         
   title:
     auctions:
@@ -95,4 +99,6 @@ pl:
         edit: Edycja tagu o id {@tag.id}
     project:
       info:
+        show: "{@project.name}"
+      members:
         show: "{@project.name}"

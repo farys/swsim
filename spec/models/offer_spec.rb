@@ -12,9 +12,22 @@ describe Offer do
     @offer.should be_valid
   end
 
-  it "should change status after reject"
-  it "should change status after recovery"
-  it "should be active by default"
+  it "should change status after reject" do
+    @offer.reject!
+    @offer.reload
+    @offer.status.should == Offer::STATUSES[:rejected]
+  end
+
+  it "should change status after recovery" do
+    @offer.reject!
+    @offer.recovery!
+    @offer.reload
+    @offer.status.should == Offer::STATUSES[:active]
+  end
+
+  it "should be active after create" do
+    @offer.status.should == Offer::STATUSES[:active]
+  end
 
 end
 

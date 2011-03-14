@@ -1,4 +1,4 @@
-class Project::ApplicationController < ApplicationController
+class Project::ApplicationController < ApplicationController	
   before_filter :get_project
   
   def get_project
@@ -7,6 +7,6 @@ class Project::ApplicationController < ApplicationController
       flash_t :notice
       redirect_to :controller => '/panel/projects', :action => :index
     end
-    @users = @project.users
+    @members = @project.users
   end
 end

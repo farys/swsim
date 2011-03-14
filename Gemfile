@@ -4,6 +4,7 @@ gem 'rails', '3.0.3'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem 'mysql'
 gem 'mysql2'
 gem 'carmen'
 
@@ -23,7 +24,7 @@ end
 group :test, :development do
   gem "rspec-rails"
   gem "factory_girl"
-  gem "spork"
+  #gem "spork"
 end
 # Use unicorn as the web server
 # gem 'unicorn'

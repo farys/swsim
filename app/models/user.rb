@@ -18,9 +18,9 @@ class User < ActiveRecord::Base
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   string = /\A[\w+\-.]+\z/
 	
-	validates :login, :presence => true, :format => {:with => string}, :length => {:within => 3..40}, :uniqueness => true
+	validates :login, :presence => true, :format => {:with => string}, :length => {:within => 1..40}, :uniqueness => true
 	validates :name, :presence => true, :format => {:with => string}, :length => {:within => 1..40} #zmienilem od 1 bo Faker mi generowal first_name < 3 znakow
-	validates :lastname, :presence => true, :format => {:with => string}, :length => {:within => 3..40}
+	validates :lastname, :presence => true, :format => {:with => string}, :length => {:within => 1..40}
 	validates :country, :presence => true
 	validates :email, :presence => true, :format => {:with => email_regex}, :uniqueness => { :case_sensitive => false }, :length => {:within => 6..50}
 	validates :password, :presence => true, :confirmation => true, :length => { :within => 5..40 }
