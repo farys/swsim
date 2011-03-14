@@ -27,6 +27,6 @@ class Group < ActiveRecord::Base
 
   private
   def default_status
-    self.status = STATUSES[:active]
+    self.status = STATUSES[:active] if self.status.nil?
   end
 end

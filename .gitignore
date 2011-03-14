@@ -1,4 +1,5 @@
 .bundle
+db/sphinx/development/*
 db/schema.rb
 db/seeds.rb
 config/database.yml

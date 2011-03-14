@@ -5,10 +5,10 @@ class Message < ActiveRecord::Base
   STATUS_DELETED = -1
 
   attr_accessor :receiver_login
-  validates :receiver_login, :presence => true, :on => :create
-  before_validation :check_receiver_login, :on => :create
+  validates :receiver_login, :presence => true, :if => ->{self.receiver.nil?}
+  before_validation :check_receiver_login, :if => ->{self.receiver.nil?}
 
-  belongs_to :owner, :class_name => "User", :include => true
+  belongs_to :owner, :class_name => "User"
   belongs_to :author, :class_name => "User", :include => true
   belongs_to :receiver, :class_name => "User", :include => true
 
@@ -21,10 +21,10 @@ class Message < ActiveRecord::Base
   scope :with_status, lambda {|sts| where(:status => sts)}
 
   def check_receiver_login
-    return if (not self.receiver_id.nil?) || self.receiver_login.empty?
+    return unless self.receiver.nil?
     user = User.find_by_login(self.receiver_login)
     if user.nil?
-      self.errors.add("receiver_login", "dont exists")
+      self.errors.add("receiver_login", "nie istnieje w bazie")
       return
     end
     self.receiver = user
@@ -43,6 +43,7 @@ class Message < ActiveRecord::Base
   end
 
   def send_to_receiver
+    self.owner_id = self.author_id
     return false unless self.save
 
     new_msg = Message.new self.attributes
