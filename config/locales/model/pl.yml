@@ -3,6 +3,7 @@ pl:
     models:
       auction: Aukcja
       message: Wiadomość
+      project: Projekt
     attributes:
       user:
         name: Imie
@@ -24,12 +25,19 @@ pl:
         topic: Temat
         body: Treść
         receiver_login: Login odbiorcy
+      project:
+        description: Opis
     errors:
       models:
         auction:
           attributes:
             title:
               blank: nie może byc pusty
+        project:
+          attributes:
+            description:
+              blank: nie może być pusty
+              too_short: jest za krótki (przynajmniej %{count} znaków)"
 #MODELE
   tag:
     statuses:
@@ -49,14 +57,15 @@ pl:
 
   auction:
     statuses:
-      active: aktywna
-      finished: zakończona
-      canceled: anulowana
+      active: Aktywna
+      finished: Zakończona
+      canceled: Anulowana
 
   project:
     statuses:
-      active: aktywny
-      finished: zakończony
+      active: Aktywny
+      verification: Weryfikacja
+      finished: Zakończony
 
   role:
     name:

@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  STATUSES = {:active => 0, :finished => 1}
+  STATUSES = {:active => 0, :verification => 1, :finished => 2}
    
 	has_many :memberships
   has_many :users, :through => :memberships
@@ -20,8 +20,6 @@ class Project < ActiveRecord::Base
 	before_validation :set_default_status, :on => :create
 	after_create :add_default_users
 
-  attr_accessible :description
-	
 	def deadline
 	  self.created_at + self.duration.days
 	end

@@ -2,7 +2,7 @@
 
 <div class="span-22 last">
   <div class="prepend-1 span-7">
-    <table class>
+    <table class="list">
       <tr>
         <td>Nazwa</td>
         <td><%= @project.name %></td>
@@ -25,8 +25,19 @@
       </tr>
       <tr>
         <td>Użytkownicy</td>
-        <td><%= @users.count %></td>
+        <td><%= @members.count %></td>
       </tr>
+      <% if @project.owner_id == current_user.id && @project.status == Project::STATUSES[:verification] %>
+      	<tr>
+      		<td>Akcje</td>
+      		<td><%= button_to 'Akceptuj projekt' %></td>
+      	</tr>
+      <% elsif @project.leader_id == current_user.id && @project.status == Project::STATUSES[:active] %>
+      	<tr>
+      		<td>Akcje</td>
+      		<td><%= button_to 'Oddaj do weryfikacji' %></td>
+      	</tr>
+      <% end %>
     </table>
   </div>
   <div class="span-12 last append-1 prepend-1">
