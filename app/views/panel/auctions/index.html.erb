@@ -23,7 +23,7 @@
           </td>
           <td><%= auction.visits %></td>
           <td><%= auction.offers.count %></td>
-          <td style="font-weight: bold"><% if auction.is_public? %>publiczna<% else %>prywatna<% end %></td>
+          <td style="font-weight: bold"><% if auction.public? %>publiczna<% else %>prywatna<% end %></td>
           <td><%=raw escape_time(auction.created_at) %></td>
           <td><%= escape_status(auction) %></td>
           <td><% if auction.status?(:active) %>

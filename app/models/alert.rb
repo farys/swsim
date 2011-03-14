@@ -8,7 +8,6 @@ class Alert < ActiveRecord::Base
 
   validates :topic, :presence => true
   validates :text, :presence => true
-  validates_associated :author, :reader
 
   before_save :default_data, :on => :create
 

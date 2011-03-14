@@ -12,7 +12,7 @@ class Panel::AlertsController < Panel::ApplicationController
 
   #rozpatrzenie zgloszenia o odrzucenie oferty - wlasciciel aukcji
   def reject_offer
-    @auction = @logged_user.auctions.find(params[:auction_id])
+    @auction = @current_user.auctions.find(params[:auction_id])
     @offer = @auction.offers.find(params[:offer_id])
     Alert.transaction do
       Alert.offer_to_reject_response!(@offer, @decision)

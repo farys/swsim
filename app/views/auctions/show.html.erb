@@ -6,7 +6,7 @@
   </div>
 
   <div class="span-6 last prepend-3 append-1">
-    <% if @auction.allowed_to_offer?(@logged_user) %>
+    <% if @auction.allowed_to_offer?(@current_user) %>
       <div class="notice last offerField">
         <h2>Złóż ofertę</h2>
         <% form_for [:panel, @auction, @auction.offers.new] do |offer| %>
@@ -26,7 +26,7 @@
         <% end %>
       </div>
     <% end %>
-    <% if @auction.made_offer?(@logged_user) %>
+    <% if @made_offer %>
       <div class="notice last offerField center">Twoja oferta została już przyjęta.</div>
     <% end %>
   </div>
@@ -75,7 +75,7 @@
             <td style="text-align: right">
               <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
             </td>
-            <td class="<%= 'bold' if offer.offerer.eql?(@logged_user)%>">
+            <td class="<%= 'bold' if offer.offerer.eql?(@current_user)%>">
               <%= offer.offerer %>
             </td>
             <td><%= escape_time(offer.created_at) %></td>

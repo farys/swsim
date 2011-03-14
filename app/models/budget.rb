@@ -14,7 +14,7 @@ end
 
 class Budget
   def self.find id
-    @@budgets.select{|o| o.id == id}[0]    
+    @@budgets.select{|o| o.id == id}[0] || raise(Exception)
   end
   
   def self.all
@@ -28,5 +28,5 @@ class Budget
   @@budgets = [
     BudgetRecord.new(1, "0 - 500"),
     BudgetRecord.new(2, "500 - 1000")
-    ]
+  ]
 end

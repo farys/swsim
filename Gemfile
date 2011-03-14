@@ -20,6 +20,11 @@ group :development do
   gem 'faker' #generowanie testowych danych
 end
 
+group :test, :development do
+  gem "rspec-rails"
+  gem "factory_girl"
+  gem "spork"
+end
 # Use unicorn as the web server
 # gem 'unicorn'
 

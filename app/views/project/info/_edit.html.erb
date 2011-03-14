@@ -1,8 +1,12 @@
 <table>
+  <%= form_for @project, :url => project_info_path(@project) do |f| %>
   <tr>
-    <td>Opis</td>
+    <td>Opis <%= f.submit "Zapisz" %></td>
   </tr>
-  <tr>
-    <td>edit ;p</td>
+  <tr style="background:none">
+    <td>
+      <%= f.text_area :description, :class => "span-14", :style => "height: 150px" %><br />
+    </td>
   </tr>
+  <% end %>
 </table>

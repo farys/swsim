@@ -8,16 +8,16 @@ class Auction < ActiveRecord::Base
     ["po ID rosnaco", "id ASC", 3],
     ["po OCENIE malejaco", "rating DESC", 4],
     ["po OCENIE rosnaco", "rating ASC", 5]
-    ]
+  ]
 
   belongs_to :owner, :class_name => 'User'
-  belongs_to :won_offer, :class_name => 'Offer', :include => [:offerer] #has_and_belongs_to?
+  belongs_to :won_offer, :class_name => 'Offer', :include => [:offerer]
   has_many :offers, :dependent => :destroy
   has_many :communications, :dependent => :delete_all, :order => 'id DESC'
-  has_and_belongs_to_many :tags,
+  has_and_belongs_to_many :tags, 
     :after_add => :tag_counter_up,
     :after_remove => :tag_counter_down
-
+  has_many :invitations, :class_name => "AuctionInvitation", :dependent => :delete_all
   has_many :rating_values, :class_name => 'AuctionRating', :dependent => :delete_all,
     :after_add => :calculate_rating,
     :after_remove => :calculate_rating
@@ -35,7 +35,6 @@ class Auction < ActiveRecord::Base
   validates :description, :presence => true
   validates_inclusion_of :status, :in => STATUSES.values
   validates_inclusion_of :budget_id, :in => Budget.ids
-  validates :won_offer, :presence => true, :on => :update
 
   scope :has_tags, lambda { |tags| {:conditions => ['id in (SELECT auction_id FROM auctions_tags WHERE tag_id in (?))', tags.join(',')]}}
   scope :with_status, lambda { |status| where(:status => STATUSES[status.to_sym])}
@@ -44,7 +43,7 @@ class Auction < ActiveRecord::Base
   
   before_validation :init_auction_row, :on => :create
   before_update :won_offer_choosed, :if => :won_offer_id_changed?
-  before_update :status_changed, :if => :is_down?
+  before_update :status_changed, :if => :down?
 
   #create form
   attr_accessor :expired_after
@@ -61,23 +60,21 @@ class Auction < ActiveRecord::Base
     self.save
   end
 
-  def set_won_offer! offer_id
-    self.won_offer_id = offer_id
+  def set_won_offer! offer
+    return false unless offer.auction_id == self.id
+    self.won_offer = offer
     self.save
   end
 
   #czy uzytkownik moze zlozyc oferte
   def allowed_to_offer? user
-    return false if self.owner.eql?(user)
-
-    #todo dwa razy .count czy raz .all?
-    offers = self.offers.select {|offer| offer.offerer.eql?(user)}
+    return false if self.owner?(user) || self.made_offer?(user)
 
     #niepotrzebne ale w wiekszosci przypadkow zakonczy sprawdzanie przed czasem
-    return true if is_public? && offers.empty?
+    return true if self.public?
 
     #jesli zaproszony do aukcji
-    false
+    self.invited?(user)
   end
   
   def rate user, value
@@ -85,10 +82,15 @@ class Auction < ActiveRecord::Base
   end
 
   def rated_by? user
-    self.rating_values.where("user_id=?", user.id).exists?
+    self.rating_values.exists?(:user_id => user.id)
   end
 
-  def status?(status)
+  def allowed_to_rate? user
+    return false if user.nil?
+    not self.rated_by?(user)
+  end
+
+  def status? status
     self.status == STATUSES[status.to_sym]
   end
 
@@ -97,29 +99,32 @@ class Auction < ActiveRecord::Base
   end
 
   #czy uzytkownik jest wlascicielem aukcji
-  def is_owner? user
+  def owner? user
     self.owner.eql?(user)
   end
-  
+
+  def invited? user
+    self.invitations.exists?(:user_id => user.id)
+  end
+
   #czy aukcja jest publiczna
-  def is_public?
+  def public?
     private == false
   end
   
   #czy uzytkownik jest uprawniony do ogladania aukcji
-  def is_allowed_to_see? user
-    return true if is_public? || self.is_owner?(user)
-    return false if (not is_public?) && user.eql?(nil)
+  def allowed_to_see? user
+    return true if public? || self.owner?(user)
+    return false if (not public?) && user.eql?(nil)
 
-    #sprawdzanie czy uzytkownik bierze udział w licytacji jesli jest wyzszy etap aukcji
-    self.offers.latest.each{|offer| return true if offer.offerer.eql?(user) && offer.rejected == 0}
-    false
+    #sprawdzanie czy uzytkownik jest zaproszony do udzialu w aukcji
+    self.invited?(user)
   end
 
   #czy oferent złożył już oferte na aktualnym etapie
-  def made_offer? offerer
-    not self.offers.select {|offer| offer.offerer.eql?(offerer)}.empty?
-  end  
+  def made_offer?(user)
+    self.offers.where(:offerer_id => user.id).count > 0
+  end
   
   def self.search_by_sphinx(query = '', search_in_description = false, tags_ids = [], budget_ids = [], order = nil, page = 1, per_page = 15)
 
@@ -189,7 +194,7 @@ class Auction < ActiveRecord::Base
   end
 
   private
-  def is_down?
+  def down?
     self.status_changed? && [STATUSES[:canceled], STATUSES[:finished]].include?(self.status)
   end
   
@@ -208,14 +213,10 @@ class Auction < ActiveRecord::Base
   end
 
   def won_offer_choosed
-    unless self.offers.find(self.won_offer_id)
-      self.errors.add("won_offer_id", "Wybrana oferta nie nalezy do ofert uczestniczacych w licytacji")
-    else
-      self.status = STATUSES[:finished]
+    self.status = STATUSES[:finished]
 
-      self.won_offer.status = Offer::STATUSES[:won]
-      self.won_offer.save
-    end
+    self.won_offer.status = Offer::STATUSES[:won]
+    self.won_offer.save
   end
 
   def status_changed

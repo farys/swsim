@@ -13,6 +13,11 @@ class ApplicationController < ActionController::Base
   end 
    
 =begin
+=======
+    @logged_user = User.find(1)#TODO
+  end
+  
+
   def login_required
     if current_user.nil?
       redirect_to signin_path, :notice => "Wpierw musisz sie zalogowac"

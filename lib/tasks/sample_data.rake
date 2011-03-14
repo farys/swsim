@@ -40,7 +40,7 @@ end
 def make_projects
   100.times do
     name = Faker::Company.name
-    description = Faker::Lorem.sentence(4)
+    description = Faker::Lorem.sentences(12)
     Project.create!(:name => name, :owner_id => rand(20), :leader_id => rand(100), :duration => rand(370), :description => description )
   end
 end
@@ -73,7 +73,7 @@ end
 
 def make_roles
   Role.create!(:name => 'guest')
-  Role.create!(:name => 'leader', :file => true, :forum => true, :user => true, :info => false)
+  Role.create!(:name => 'leader', :file => true, :forum => true, :user => true, :info => true)
   Role.create!(:name => 'owner', :info => true)
   Role.create!(:name => 'info_mod', :info => true)
 end

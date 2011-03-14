@@ -3,19 +3,19 @@ class Admin::MessagesController < Admin::ApplicationController
 
   def index
     @status = "received"
-    @messages = @logged_user.find_messages(:received, params[:page])
+    @messages = @current_user.find_messages(:received, params[:page])
     title_t :received
   end
   
   def sent
     @status = "sent"
-    @messages = @logged_user.find_messages(:sent, params[:page])
+    @messages = @current_user.find_messages(:sent, params[:page])
     title_t :sent
     render :index
   end
   
   def show
-    @message = @logged_user.messages.find(params[:id])
+    @message = @current_user.messages.find(params[:id])
   
     if @message.status == Message::STATUS_UNREAD
       @message.read!
@@ -32,7 +32,7 @@ class Admin::MessagesController < Admin::ApplicationController
     if @message.send_to_receiver
 
       if params.has_key?(:reply_message_id)
-        @msg = @logged_user.messages.received.find(params[:reply_message_id])
+        @msg = @current_user.messages.received.find(params[:reply_message_id])
         @msg.status = Message::STATUS_REPLIED
         @msg.save
       end
@@ -44,7 +44,7 @@ class Admin::MessagesController < Admin::ApplicationController
   end
 
   def reply
-    @old_message = @logged_user.messages.received.find(params[:id])
+    @old_message = @current_user.messages.received.find(params[:id])
     @message = @old_message.prepare_reply_message
     @receiver = @message.receiver
     title_t :new
@@ -52,7 +52,7 @@ class Admin::MessagesController < Admin::ApplicationController
   end
   
   def destroy
-    @message = @logged_user.messages.find(params[:id])
+    @message = @current_user.messages.find(params[:id])
     @message.delete!
       flash[:warning] = flash_t
       redirect_to admin_messages_path
@@ -61,6 +61,6 @@ class Admin::MessagesController < Admin::ApplicationController
   private
   def new_message
     data = params[:message] || {:receiver_login => params[:receiver_login]}
-    @message = @logged_user.new_message(data)
+    @message = @current_user.new_message(data)
   end
 end

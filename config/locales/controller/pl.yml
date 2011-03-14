@@ -16,7 +16,7 @@ pl:
     panel:
       auctions:
         create: Aukcja została zapisana i opublikowana
-        update: Zwycięska oferta została wyznaczona
+        update: Zwycięzka oferta została wyznaczona
         destroy: Aukcja została anulowana
       communications:
         create: Komunikat zostal opublikowany
@@ -49,6 +49,7 @@ pl:
     project:
       info:
         show: Nie bierzesz udziału w tym projekcie
+        update: Opis został pomyślnie zaktualizowany
         
   title:
     auctions:

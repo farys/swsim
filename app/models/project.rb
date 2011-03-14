@@ -19,6 +19,8 @@ class Project < ActiveRecord::Base
 	
 	before_validation :set_default_status, :on => :create
 	after_create :add_default_users
+
+  attr_accessible :description
 	
 	def deadline
 	  self.created_at + self.duration.days

@@ -7,5 +7,4 @@ class Comment < ActiveRecord::Base
 
   validates_numericality_of :mark, :allow_blank => :true
   validates_numericality_of :status, :allow_blank => :true #jesli puste to domyslnie otrzymuje w bazie status waiting
-  validates_associated :auction, :author, :receiver
 end

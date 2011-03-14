@@ -6,7 +6,7 @@ class CreateProjects < ActiveRecord::Migration
       t.integer :leader_id, :null => false
       t.integer :duration, :null => false
       t.integer :status, :null => false
-      t.string :description, :null => false, :lenght => 2000
+      t.text :description, :null => false, :lenght => 2000
 
       t.timestamps
     end
