@@ -39,12 +39,12 @@
   <% unless @auctions.empty? %>
     <div class="span-9"><div class="box">
         <% @auctions.shift(@auctions.length/2).each do |auction| %>
-          <%= link_to auction, auction_path(auction) %><br />
+          <%= link_to escape_auction(auction), auction_path(auction) %><br />
         <% end %>
       </div></div>
     <div class="span-9 last"><div class="box">
         <% @auctions.each do |auction| %>
-          <%= link_to auction, auction_path(auction) %><br />
+          <%= link_to escape_auction(auction), auction_path(auction) %><br />
         <% end %>
       </div></div>
   <% else %>

@@ -28,6 +28,7 @@ class Panel::AuctionsController < Panel::ApplicationController
   end
 
   def offers
+    redirect_to :back if @auction.won_offer != nil
     title_t
   end
 
@@ -44,9 +45,9 @@ class Panel::AuctionsController < Panel::ApplicationController
         )
         redirect_to project_info_path(@project)
       else
+        Comment.create_from_auction(@auction)
         redirect_to auction_path(@auction), :notice => flash_t
       end
-      
     else
       title_t :offers
       render :offers

@@ -73,6 +73,11 @@ pl:
         new: Nowa wiadomość
         received: Odebrane wiadomości
         sent: Wysłane wiadomości
+      comments:
+        received: Otrzymane komentarze
+        written: Wystawione komentarze
+        queue: Oczekujące komentarze
+        edit: Nowy komentarz
       offers:
         active: Oferty biorące udział w aukcji
         won: Oferty które wygrały

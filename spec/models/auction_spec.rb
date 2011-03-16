@@ -109,6 +109,13 @@ describe Auction do
       @auction.made_offer?(@user).should be_false
     end
 
+    it ".made_offer? should return false if guest" do
+      @auction.made_offer?(nil).should be_false
+    end
+    
+    it ".allowed_to_offer? should return false if guest" do
+      @auction.allowed_to_offer?(nil).should be_false
+    end
   end
 
   context "access" do

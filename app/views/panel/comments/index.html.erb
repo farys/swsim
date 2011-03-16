@@ -1,0 +1,25 @@
+<% unless @comments.empty? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>do</td>
+        <td>za aukcję</td>
+        <td>za projekt</td>
+        <td>opcje</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @comments.each do |c| %>
+        <tr>
+          <td><%= c.receiver %></td>
+          <td><%= link_to escape_auction(c.auction), auction_path(c.auction) %></td>
+          <td><%= c.project %></td>
+          <td><%= link_to "Wystaw komentarz", edit_panel_comment_path(c) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate %>
+<% else %>
+  <div class="notice">Nie znaleziono żadnych aukcji.</div>
+<% end %>

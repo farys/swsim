@@ -10,6 +10,7 @@ class AuctionsController < ApplicationController
   def show
     options = {:include => [:owner, {:offers => :offerer}, :communications]}
     @auction = Auction.find(params[:id], options)
+
     @made_offer = @auction.made_offer?(current_user)
     
     if @auction.expired_at.past?

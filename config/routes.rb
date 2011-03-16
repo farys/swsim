@@ -30,7 +30,9 @@ Inz::Application.routes.draw do
     resources :offers, :only => [:index] do
       post :to_reject, :on => :member
     end
-    
+    resources :comments do
+      get :queue, :on => :collection
+    end
     resources :messages, :except => [:edit, :update] do
       get :reply, :on => :member
       get :sent, :on => :collection
@@ -39,6 +41,7 @@ Inz::Application.routes.draw do
     resources :projects
   end
 
+  #ADMIN
   namespace :admin do
     resources :auctions, :except => [:show] do
       resources :offers, :only => [:destroy] do

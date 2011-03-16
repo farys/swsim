@@ -1,4 +1,6 @@
 class Auction < ActiveRecord::Base
+  attr_protected :status
+  
   STATUSES = {:active => 0, :finished => 1, :canceled => 2}
   MAX_EXPIRED_AFTER = 14
   ORDER_MODES = [
@@ -48,10 +50,6 @@ class Auction < ActiveRecord::Base
   #create form
   attr_accessor :expired_after
   validates_inclusion_of :expired_after, :in => (1..MAX_EXPIRED_AFTER).to_a.collect{|d| d}, :on => :create
-  
-  def to_s
-    self.title
-  end
 
   #ustawia status aukcji na anulowano
   def cancel!
@@ -68,7 +66,7 @@ class Auction < ActiveRecord::Base
 
   #czy uzytkownik moze zlozyc oferte
   def allowed_to_offer? user
-    return false if self.owner?(user) || self.made_offer?(user)
+    return false if user.nil? || self.owner?(user) || self.made_offer?(user)
 
     #niepotrzebne ale w wiekszosci przypadkow zakonczy sprawdzanie przed czasem
     return true if self.public?
@@ -123,10 +121,12 @@ class Auction < ActiveRecord::Base
 
   #czy oferent złożył już oferte na aktualnym etapie
   def made_offer?(user)
+    return false if user.nil?
     self.offers.where(:offerer_id => user.id).count > 0
   end
   
-  def self.search_by_sphinx(query = '', search_in_description = false, tags_ids = [], budget_ids = [], order = nil, page = 1, per_page = 15)
+  def self.search_by_sphinx(query = '', search_in_description = false,
+      tags_ids = [], budget_ids = [], order = nil, page = 1, per_page = 15)
 
     unless search_in_description || query.length == 0
       query = '@title ' + query

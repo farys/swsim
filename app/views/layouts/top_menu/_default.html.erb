@@ -1,8 +1,8 @@
 <ul id="mega-menu-1" class="mega-menu">
   <% if !signed_in? %>
-  <li><%= link_to 'Szukaj', search_auctions_path %></li>
-  <li><%= link_to 'Logowanie', signin_path, :method => :new %></li>
-  <li><%= link_to 'Rejestracja', signup_path, :method => :new %></li>
+    <li><%= link_to 'Szukaj', search_auctions_path %></li>
+    <li><%= link_to 'Logowanie', signin_path, :method => :new %></li>
+    <li><%= link_to 'Rejestracja', signup_path, :method => :new %></li>
   <% end %>
   <% if signed_in? %>
     <li><%= link_to 'Szukaj', search_auctions_path %></li>
@@ -47,6 +47,17 @@
             <li><%= raw link_to 'biorące udział', panel_offers_path(:status => :active) %></li>
             <li><%= raw link_to 'odrzucone', panel_offers_path(:status => :rejected) %></li>
             <li><%= raw link_to 'wygrane', panel_offers_path(:status => :won) %></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><%= link_to 'Komentarze', panel_comments_path %>
+      <ul>
+        <li><p>przeglądaj</p>
+          <ul>
+            <li><%= raw link_to 'oczekujące', queue_panel_comments_path %></li>
+            <li><%= raw link_to 'wystawione', panel_comments_path(:status => :written) %></li>
+            <li><%= raw link_to 'otrzymane', panel_comments_path(:status => :received) %></li>
           </ul>
         </li>
       </ul>
