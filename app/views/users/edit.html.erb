@@ -1,27 +1,28 @@
 <div class="prepend-1">
-<% form_for (@user) do |f| -%>
+<%= form_for @user, :html => { :multipart => true } do |f| -%>
 <%= render "layouts/error_messages", :target => @user %>
 <div class="field">
   <%= f.label :name %><br />
-  <%= f.text_field :name %>
+  <%= f.text_field :name, :value => @user.name.force_encoding("UTF-8"), :class=>"span-6" %>
 </div>
 <div class="field">
   <%= f.label :lastname %><br />
-  <%= f.text_field :lastname %>
+  <%= f.text_field :lastname, :value => @user.lastname.force_encoding("UTF-8"), :class=>"span-6" %>
 </div>
 <div class="field">
   <%= f.label :email %><br />
-  <%= f.text_field :email %>
+  <%= f.text_field :email, :value => @user.email.force_encoding("UTF-8"), :class=>"span-6" %>
 </div>
+<div class="field">
 <%= f.label :country %><br />
 <%= f.select :country, $countries, {:selected => @user.country} %>
-<div class="field">
-  <%= f.label :password %><br />
-  <%= f.password_field :password, :value => nil %>
 </div>
 <div class="field">
-  <%= f.label :password_confirmation, "Confirmation" %><br />
-  <%= f.password_field :password_confirmation %>
+<%= f.file_field :avatar %>
+</div>
+<div class="field">
+  <%= f.label :description %><br />
+  <%= f.text_area :description, :value => @user.description.force_encoding("UTF-8"), :class => "mceEditor span-10" %>
 </div>
 <%= f.submit "Edit" %>
 <% end %>

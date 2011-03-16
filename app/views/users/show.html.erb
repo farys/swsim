@@ -1,22 +1,22 @@
-<div class="span-22 last">
-  <div class="prepend-1 span-7">
+<div class="prepend-1 span-22 last" style="border: 1px solid red;">
+  <div class="span-6">
     <table class>
       <tr>
       	<td colspan="2" id="table_title">
-      		Dane osobowe
+      		Dane osobowe 
       	</td>
       </tr>
       <tr>
         <td>Login</td>
-        <td><b><%= @user.login %></td>
+        <td><b><%= escape_user(@user) %></b></td>
       </tr>
       <tr>
         <td>Imie</td>
-        <td><%= @user.name %></td>
+        <td><%= @user.name.force_encoding("UTF-8") %></td>
       </tr>
       <tr>
         <td>Nazwisko</td>
-        <td><%= @user.lastname %></td>
+        <td><%= @user.lastname.force_encoding("UTF-8") %></td>
       </tr>
       <tr>
         <td>Utworzony</td>
@@ -28,11 +28,25 @@
       </tr>
       <tr>
         <td>Email</td>
-        <td><%= @user.email %></td>
+        <td><%= @user.email.force_encoding("UTF-8") %></td>
       </tr>
     </table>
+    </div>
+    <div class="prepend-0 span-9">
+    <table class>
+    <tr>
+    	<tr>
+      	<td colspan="2" id="table_title">
+      		O sobie
+      	</td>
+      </tr>
+        <td style="vertical-align: top; border-right: 1px solid black;"><%= image_tag @user.avatar.url(:thumb) %></td><td><%= simple_format(@user.description.force_encoding("UTF-8")) -%></td>
+      </tr>
+    </table>
+    </div>
+    <div class="clear span-11 center">
     <% if current_user?(@user) %>
-  <%= link_to 'Edytuj', edit_user_path(current_user) %>
+  <%= link_to 'Edytuj dane', edit_user_path(current_user) %>
   <% end %>
   </div>
-</div>
+  </div>

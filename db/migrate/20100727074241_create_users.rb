@@ -10,6 +10,7 @@ class CreateUsers < ActiveRecord::Migration
       t.integer :status,  :null => false, :default => 1
       t.string :role, :null => false, :default => "user"
       t.string :salt, :null => false
+      t.text :description, :length => 2000, :null => false
 
       t.timestamps
     end

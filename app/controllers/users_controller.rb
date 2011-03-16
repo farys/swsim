@@ -29,7 +29,11 @@ class UsersController < ApplicationController
   	end
   	
   	def update
-    	@user = User.find(params[:id])
+  		@user = User.find(params[:id])
+    	if params[:user][:password] == ''	
+    		params[:user][:password] = @user.password
+    		params[:user][:password_confirmation] = @user.password
+    	end
 	    if @user.update_attributes(params[:user])
 	      redirect_to @user
 	      flash_t :notice

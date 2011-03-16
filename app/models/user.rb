@@ -1,5 +1,9 @@
+# encoding: utf-8
+require 'paperclip'
 class User < ActiveRecord::Base
-  attr_accessible :login, :name, :lastname, :email, :country, :password, :password_confirmation
+  attr_accessible :login, :name, :lastname, :email, :country, :password, :password_confirmation, :description, :avatar
+  
+	has_attached_file :avatar, :styles => { :thumb => "100x100>" }
 	
   has_many :sent_alerts, :class_name => 'Alert',:foreign_key => :author_id
   has_many :received_alerts, :class_name => 'Alert',:foreign_key => :reader_id
@@ -15,19 +19,21 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :memberships
   has_many :project_files, :dependent => :destroy
   
-  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  string = /\A[\w+\-.]+\z/
+  email_regex = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃ\-.]+@[a-zżźćńółęąś\d\-.]+\.[a-z]+\z/i
+  string = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃß\-.]+\z/
 	
 	validates :login, :presence => true, :format => {:with => string}, :length => {:within => 1..40}, :uniqueness => true
 	validates :name, :presence => true, :format => {:with => string}, :length => {:within => 1..40} #zmienilem od 1 bo Faker mi generowal first_name < 3 znakow
 	validates :lastname, :presence => true, :format => {:with => string}, :length => {:within => 1..40}
 	validates :country, :presence => true
 	validates :email, :presence => true, :format => {:with => email_regex}, :uniqueness => { :case_sensitive => false }, :length => {:within => 6..50}
-	validates :password, :presence => true, :confirmation => true, :length => { :within => 5..40 }
+	validates :password, :presence => true, :confirmation => true, :length => { :within => 5..100 }
 	validates_numericality_of :status, :presence => true
 	validates_inclusion_of :role, :in => ["administrator", "user"]
 	
-	before_save :encrypt_password
+	validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png', 'image/gif']
+
+	before_create :encrypt_password
   
   def to_s
     self.login

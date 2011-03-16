@@ -10,7 +10,7 @@ class AuctionsController < ApplicationController
   def show
     options = {:include => [:owner, {:offers => :offerer}, :communications]}
     @auction = Auction.find(params[:id], options)
-    @made_offer = @auction.made_offer?(@current_user)
+    @made_offer = @auction.made_offer?(current_user)
     
     if @auction.expired_at.past?
       @auction.status = Auction::STATUSES[:finished]
@@ -19,7 +19,7 @@ class AuctionsController < ApplicationController
     @offers = @auction.offers
     @tags = @auction.tags
     
-    unless (@auction.allowed_to_see?(@current_user))
+    unless (@auction.allowed_to_see?(current_user))
       render :text => flash_t, :status => :forbidden
       return
     end

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
     <title><%= @title || yield(:title) %> <%= @global_title %></title>
     <%= render 'layouts/stylesheets' %>
     <%= javascript_include_tag :defaults %>
@@ -26,7 +26,7 @@
       </header>
 
       <% flash.each_key do |key| %>
-      <section class="prepend-1 append-1"><div class="<%= key.to_s %>"><%= flash[key] %></div></section>
+      <section class="prepend-1 append-1"><div class="<%= key.to_s %>"><%= flash[key].force_encoding("UTF-8") %></div></section>
       <% end %>
 
       <article class="span-24">

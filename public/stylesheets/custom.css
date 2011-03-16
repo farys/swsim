@@ -156,6 +156,14 @@ table tr:nth-child(even) {
     background:#E5ECF9;
 }
 
+table p{
+	margin: 0 1px 0 1px;
+}
+
+table img{
+	text-align: center;
+}
+
 .statistics span {
     font-weight: bold;
 }
