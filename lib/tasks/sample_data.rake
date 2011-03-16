@@ -96,7 +96,7 @@ end
 
 def make_auctions
   100.times do
-    name = Faker::Company.name
+    name = "Aukcja " + Faker::Company.name
     description = Faker::Lorem.sentence(12)
     Auction.create!(
       :title => name, :budget_id => 1+rand(Budget.ids.size-1),

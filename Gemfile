@@ -7,6 +7,7 @@ gem 'rails', '3.0.3'
 gem 'mysql'
 gem 'mysql2'
 gem 'carmen'
+gem 'rmagick' #libmagickcore-dev, libmagickwand-dev zainstalowac w systemie
 gem 'paperclip'
 
 gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'

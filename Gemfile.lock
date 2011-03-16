@@ -91,6 +91,7 @@ GEM
       thor (~> 0.14.4)
     rake (0.8.7)
     riddle (1.2.2)
+    rmagick (2.13.1)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
       rspec-expectations (~> 2.5.0)
@@ -122,6 +123,7 @@ DEPENDENCIES
   mysql2
   paperclip
   rails (= 3.0.3)
+  rmagick
   rspec-rails
   thinking-sphinx!
   will_paginate!
