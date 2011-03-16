@@ -1,4 +1,5 @@
 # encoding: utf-8
+#require 'paperclip'
 class User < ActiveRecord::Base
   attr_accessible :login, :name, :lastname, :email, :country, :password, :password_confirmation, :description, :avatar
   

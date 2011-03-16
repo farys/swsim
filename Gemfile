@@ -7,8 +7,17 @@ gem 'rails', '3.0.3'
 gem 'mysql'
 gem 'mysql2'
 gem 'carmen'
-gem 'rmagick' #libmagickcore-dev, libmagickwand-dev zainstalowac w systemie
-gem 'paperclip'
+=begin
+Rafael - doszedłem do tego, że nie trzeba nawet mieć całego ImageMagick ani rmagick :D
+Instalacja paperclip:
+Wypieprzyć (nie instalować) gem rmagick oraz samego ImageMagick. Zainstalować:	
+libmagickcore-dev, libmagickwand-dev, libmagickcore3-extra, libmagickcore3, libmagickwand3
+Zainstalować gem paperclip z bundla i nie dodawać żadnych ścieżek ani require w plikach. Jakby nie działało z gemu, to:
+rails plugin install git://github.com/thoughtbot/paperclip.git
+Działa LOL
+=end
+#gem 'rmagick'
+gem "paperclip", "~> 2.3"
 
 gem 'will_paginate', :git => 'git://github.com/mislav/will_paginate.git', :branch => 'rails3'
 
