@@ -4,3 +4,8 @@ pl:
     one: 'dzień'
     few: 'dni'
     other: 'dni'
+  error:
+    zero: błędów
+    one: błąd
+    few: błędy
+    other: błędów

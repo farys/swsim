@@ -4,7 +4,7 @@ class Panel::CommentsController < Panel::ApplicationController
   def index	
     @status = params[:status] || :received
     title_t @status
-    @comments = current_user.send(@status.to_s+"_comments").paginate :per_page => 15, :page => params[:page]
+    @comments = current_user.send(@status.to_s+"_comments").active.paginate :per_page => 15, :page => params[:page]
   end
   
   def queue
@@ -18,18 +18,26 @@ class Panel::CommentsController < Panel::ApplicationController
   end
 
   def update
-    if @comment.update_attributes(params[:comment])
-      redirect_to panel_path, :notice => flash_t
+    if @comment.save
+      @comment.activate!
+      redirect_to queue_panel_comments_path, :notice => flash_t
     else
       title_t :edit
       render :edit
     end
   end
-  
+
+  def show
+    title_t
+    @comment = Comment.active.find(params[:id])
+  end
+
   private
   def comment_and_form_data
     @comment = current_user.written_comments.pending.find(params[:id])
     @keywords = CommentKeyword.all
     @receiver = @comment.receiver
+    @values = (params[:comment_value].nil?)?
+      CommentKeyword.create_comment_values : @comment.values.build(params[:comment_value].values)
   end
 end

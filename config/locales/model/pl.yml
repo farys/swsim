@@ -27,6 +27,11 @@ pl:
         receiver_login: Login odbiorcy
       project:
         description: Opis
+      comment:
+        values: Atrybut komentarza
+      comment_value:
+        extra: Pole opis
+        rating: Pole ocena
     errors:
       models:
         auction:

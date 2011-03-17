@@ -1,6 +1,6 @@
 <% if target.errors.any? %>   
 <div class="error">
-  <h2><%= pluralize(target.errors.count, "error") %> prohibited this record from being saved:</h2>   
+  <h2><%= pluralize(target.errors.count, "error") %> nie mógł zostać zapisany:</h2>
   <ul>   
   <% target.errors.full_messages.each do |msg| %>   
     <li><%= msg %></li>   

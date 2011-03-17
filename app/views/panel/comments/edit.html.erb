@@ -1,24 +1,22 @@
-<% content_for :title, "Nowa aukcja" %>
 <div class="prepend-1 append-1">
   <% form_for [:panel, @comment] do |f| -%>
 
     <%= render "layouts/error_messages", :target => @comment %>
     <p>Proszę ocenić użytkownika <%= escape_user(@receiver) %> :</p>
-    <% @keywords.each do |k| %>
-      <%= f.fields_for "values", k do |ff| %>
-        <%= k.name %>
+    
+    <% @values.each do |v| %>
+    <%= render "layouts/error_messages", :target => v %>
+      <%= fields_for "comment_value", v, :index => "#{v.keyword.id}" do |ff| %>
+        <%= ff.hidden_field :keyword_id %>
+        <%= v.keyword.name.force_encoding("utf-8") %>
         <% for i in 1..5 %>
-          <%= radio_button_tag "values[#{k.id}]",
-            i,
-            false,
-            :class => "star inline",
-            :title => i
-        %>
-      <% text_field_tag "extras[#{k.id}]",  %>
+          <%= ff.radio_button :rating, i, :class => "star inline", :title => i %>
         <% end %>
+        <%= ff.text_field :extra %>
         <br />
       <% end %>
     <% end %>
+
     <br />
     <%= f.submit "Wystaw" %>
   <% end -%>

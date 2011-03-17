@@ -1,7 +1,7 @@
 class CreateComments < ActiveRecord::Migration
   def self.up
     create_table :comments do |t|
-      t.references :auction, :null => false
+      t.references :auction
       t.references :project
       t.references :author, :null => false
       t.references :receiver, :null => false

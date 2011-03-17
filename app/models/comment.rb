@@ -6,10 +6,14 @@ class Comment < ActiveRecord::Base
   belongs_to :receiver, :class_name => "User"
   belongs_to :auction
   belongs_to :project
-  has_many :values, :class_name => "CommentValue", :dependent => :destroy
+  has_many :values, :class_name => "CommentValue", :dependent => :destroy, :include => [:keyword]
+
+  validates :values, :associated => true
 
   scope :pending, ->{ where(:status => STATUSES[:pending])}
-  
+  scope :active, ->{ where(:status => STATUSES[:active])}
+  default_scope includes(:values)
+
   before_save :default_attributes
 
   def self.create_from_auction(auction)
@@ -25,6 +29,15 @@ class Comment < ActiveRecord::Base
       )
       owner, offerer = offerer, owner
     end
+  end
+
+  def activate!
+    self.status = STATUSES[:active]
+    self.save
+  end
+
+  def status? status
+    self.status == STATUSES[status]
   end
 
   private
