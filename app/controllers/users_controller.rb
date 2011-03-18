@@ -11,7 +11,6 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       @country_name = Carmen::country_name(@user.country)
       @country_flag = "flags/#{@user.country.downcase}.gif"
-      #country_flag = "http://www.flagsofallcountries.com/0/#{@user.country.downcase}.gif"
     end
 	
 	def create
