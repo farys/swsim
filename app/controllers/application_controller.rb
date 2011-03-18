@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   include SessionsHelper
   include ReCaptcha::AppHelper
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  protect_from_forgery
 
   before_filter :authenticate
   before_filter :init
