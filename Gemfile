@@ -7,6 +7,7 @@ gem 'rails', '3.0.3'
 gem 'mysql'
 gem 'mysql2'
 gem 'carmen'
+gem 'ruby-recaptcha'
 =begin
 Rafael - doszedłem do tego, że nie trzeba nawet mieć całego ImageMagick ani rmagick :D
 Instalacja paperclip:

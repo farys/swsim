@@ -27,6 +27,10 @@
   <%= f.label :password_confirmation, "Confirmation" %><br />
   <%= f.password_field :password_confirmation, :class=>"span-6" %>
 </div>
+<div class="field">
+  <%= f.label :recaptcha, "Przepisz koda z obrazka" %><br />
+  	<%= raw(get_captcha(:options => {:theme => 'white', :tabindex => 10})) %>
+</div>
 <div class="actions">
     <%= f.submit "Sign up" %>
   </div>

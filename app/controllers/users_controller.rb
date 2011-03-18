@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 	
 	def create
     	@user = User.new(params[:user])
-    	if @user.save
+    	if validate_recap(params, @user.errors) && @user.save
     		redirect_to root_path
       		flash_t :notice
     	else

@@ -104,6 +104,7 @@ GEM
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.5.0)
+    ruby-recaptcha (1.0.2)
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
@@ -123,5 +124,6 @@ DEPENDENCIES
   paperclip (~> 2.3)
   rails (= 3.0.3)
   rspec-rails
+  ruby-recaptcha
   thinking-sphinx!
   will_paginate!
