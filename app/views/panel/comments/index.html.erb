@@ -2,7 +2,8 @@
   <table class="list">
     <thead>
       <tr>
-        <td>do</td>
+        <td><% if @status.eql?("written") %>do<% else %>od<% end %></td>
+        <td>oceny</td>
         <td>za aukcję</td>
         <td>za projekt</td>
         <td>opcje</td>
@@ -11,10 +12,18 @@
     <tbody>
       <% @comments.each do |c| %>
         <tr>
-          <td><%= c.receiver %></td>
-          <td><%= link_to escape_auction(c.auction), auction_path(c.auction) %></td>
+          <td><%= link_to escape_user(c.receiver), c.receiver %></td>
+          <td><% c.values.each do |v| %> <%= v.rating %><% end %></td>
+          <td><%= link_auction(c.auction) %></td>
           <td><%= c.project %></td>
-          <td><%= link_to "Wystaw komentarz", edit_panel_comment_path(c) %></td>
+          <td>
+            <% if c.status?(:active) %>
+              <%= link_to "Szczegóły", panel_comment_path(c) %>
+            <% end %>
+            <% if c.status?(:pending) %>
+              <%= link_to "Wystaw komentarz", edit_panel_comment_path(c) %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>

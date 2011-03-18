@@ -1,0 +1,24 @@
+<table class="list prepend-8 append-8">
+  <tr>
+    <td colspan="2"><%= link_to escape_user(@comment.receiver), @comment.receiver %></td>
+  </tr>
+  <tr>
+    <td colspan="2"><% @comment.values.each do |v| %>
+        <p><%= v.keyword.name.force_encoding("utf-8") %>: <%= v.rating %>
+          <span class="bold"><%= v.extra %></span>
+        </p>
+      <% end %></td>
+  </tr>
+  <% unless @comment.auction.nil? %>
+    <tr>
+      <td>za aukcję</td>
+      <td><%= link_auction(@comment.auction) %></td>
+    </tr>
+  <% end %>
+  <% unless @comment.project.nil? %>
+    <tr>
+      <td>za projekt</td>
+      <td><%= @comment.project %></td>
+    </tr>
+  <% end %>
+</table>

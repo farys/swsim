@@ -11,3 +11,4 @@ doc/
 *.swp
 *~
 .DS_Storeconfig/database.yml
+public/system/avatars/*

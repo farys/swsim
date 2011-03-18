@@ -76,7 +76,7 @@
               <% unless nil %><img style="width:50px; height: 50px" src="/images/avatar.jpg" /><% end %>
             </td>
             <td class="<%= 'bold' if offer.offerer.eql?(@current_user)%>">
-              <%= offer.offerer %>
+              <%= escape_user(offer.offerer) %>
             </td>
             <td><%= escape_time(offer.created_at) %></td>
           </tr>

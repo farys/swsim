@@ -24,6 +24,7 @@ namespace :db do
     make_groups_and_tags
     make_auctions
     make_offers
+    make_comments_keywords
   end
 end
 
@@ -33,16 +34,16 @@ def make_users #zmieniony format emailu dla latwiejszego logowania
     firstname = Faker::Name.first_name
     country = Carmen.default_country
     User.create!(
-    			 :login => "Login_#{i+1}",
-    			 :password => 'password',
-    			 :name => firstname,
-    			 :lastname => "Kowalski_#{i+1}",
-    			 :role => 'user',
-    			 :status => 1, 
-    			 :country => country, 
-    			 :email => "#{i+1}@inz.pl", 
-    			 :description => description
-    			 )
+      :login => "Login_#{i+1}",
+      :password => 'password',
+      :name => firstname,
+      :lastname => "Kowalski_#{i+1}",
+      :role => 'user',
+      :status => 1,
+      :country => country,
+      :email => "#{i+1}@inz.pl",
+      :description => description
+    )
   end
 end
 
@@ -117,4 +118,13 @@ def make_offers
     )
     
   end
+end
+
+def make_comments_keywords
+  CommentKeyword.create!(
+    [{ :name => "Kontakt" },
+    { :name => "Realizacja" },
+    { :name => "Stosunek do użytkownika" }
+    ])
+
 end

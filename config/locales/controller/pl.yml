@@ -18,6 +18,8 @@ pl:
         create: Aukcja została zapisana i opublikowana
         update: Zwycięzka oferta została wyznaczona
         destroy: Aukcja została anulowana
+      comments:
+        update: Komentarz został wystawiony
       communications:
         create: Komunikat zostal opublikowany
       offers:
@@ -74,6 +76,7 @@ pl:
         received: Odebrane wiadomości
         sent: Wysłane wiadomości
       comments:
+        show: Komentarz
         received: Otrzymane komentarze
         written: Wystawione komentarze
         queue: Oczekujące komentarze
