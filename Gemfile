@@ -8,6 +8,7 @@ gem 'mysql'
 gem 'mysql2'
 gem 'carmen'
 gem 'ruby-recaptcha' #zainstalowac przez bundlera
+gem 'mail'
 =begin
 Rafael - doszedłem do tego, że nie trzeba nawet mieć całego ImageMagick ani rmagick :D
 Instalacja paperclip:

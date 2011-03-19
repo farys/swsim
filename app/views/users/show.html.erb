@@ -49,4 +49,26 @@
   <%= link_to 'Edytuj dane', edit_user_path(current_user) %>
   <% end %>
   </div>
+  <!--wstepna integracja z paypal, trzeba sprawdzic czy dziala! -->
+  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+	<input type="hidden" name="cmd" value="_s-xclick">
+	<input type="hidden" name="hosted_button_id" value="66DSC8MCQNHB2">
+	<input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/pl_PL/PL/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal — Płać wygodnie i bezpiecznie">
+	<img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/pl_PL/i/scr/pixel.gif" width="1" height="1">
+  </form>
+
   </div>
+  <table>
+  	<% @projects.each do |proj| %>
+	        <tr>
+	          <td><%= link_to proj.name, project_info_path(proj) %></td>
+	          <td><%= escape_column(proj.user_role(@user), "name").capitalize %></td>
+	          <td>
+	            <%= escape_date(proj.deadline) %>
+	            (Pozostało <%= time_ago_in_words(proj.deadline) %>)
+	          </td>
+	          <td><%= escape_status(proj) %></td>
+	        </tr>
+	 <% end %>
+  </table>
+	 <%= will_paginate @projects %>

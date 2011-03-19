@@ -119,6 +119,7 @@ DEPENDENCIES
   factory_girl
   faker
   jquery-rails
+  mail
   mysql
   mysql2
   paperclip (~> 2.3)

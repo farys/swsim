@@ -1,3 +1,5 @@
+#require 'mail'
+#encoding: utf-8
 class UsersController < ApplicationController
 	before_filter :correct_user, :only => [:edit, :update]
 	
@@ -9,13 +11,17 @@ class UsersController < ApplicationController
 	
 	def show
       @user = User.find(params[:id])
+      @projects = Project.find(@user.project_ids).paginate :per_page => 15, :page => params[:page]
       @country_name = Carmen::country_name(@user.country)
       @country_flag = "flags/#{@user.country.downcase}.gif"
     end
 	
 	def create
     	@user = User.new(params[:user])
-    	if validate_recap(params, @user.errors) && @user.save
+    	@hash_mail = make_hash
+    	@emailver = Emailver.new(:hash => @hash_mail, :user => @user)
+    	if validate_recap(params, @user.errors) && @user.save && @emailver.save
+    		Sender.ver_mail(@hash_mail).deliver
     		redirect_to root_path
       		flash_t :notice
     	else
@@ -41,8 +47,32 @@ class UsersController < ApplicationController
 	      render :action => :edit
 	    end
     end
+    
+    #sprawdzamy hasha ktorego dostal na skrzynke user
+    def mail_ver
+    	@hash = Emailver.find_by_hash(params[:hash])
+    	if @hash.nil?
+    		flash[:error] = "Nie ma takiego uzytkownika!"
+    		redirect_to root_path
+    	else
+    		@user = User.find(@hash.user_id)
+    		#TODO napisac zmiane statusu w bazie na aktywny
+    		redirect_to user_path(@user)
+    		flash[:success] = "OK!"
+    	end
+    end
   	
   	private
+  	
+  	#generowanie hasha, ktory jest wysylany na email uzytkownika przy rejestracji w celu weryfikacji emaila
+  	def make_hash
+    	chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+	    string = ""
+	    20.times do
+	    	string << chars[rand(chars.size-1)]
+	    end
+	    hash = Digest::SHA2.hexdigest(string)
+    end
   	
   	def correct_user
       @user = User.find(params[:id])
