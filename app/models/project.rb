@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
 	has_many :memberships
   has_many :users, :through => :memberships
   has_many :project_files, :dependent => :destroy
+  belongs_to :auction
 	
 	validates :name, :presence => true,
 	                 :length => { :in => 5..50}

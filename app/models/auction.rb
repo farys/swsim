@@ -23,6 +23,7 @@ class Auction < ActiveRecord::Base
   has_many :rating_values, :class_name => 'AuctionRating', :dependent => :delete_all,
     :after_add => :calculate_rating,
     :after_remove => :calculate_rating
+  has_one :project
   
   define_index do
     indexes :title

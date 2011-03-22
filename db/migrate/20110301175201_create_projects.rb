@@ -1,6 +1,7 @@
 class CreateProjects < ActiveRecord::Migration
   def self.up
     create_table :projects do |t|
+    	t.references :auction
       t.string :name, :null => false, :lenght => 50
       t.integer :owner_id, :null => false
       t.integer :leader_id, :null => false

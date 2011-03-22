@@ -37,6 +37,7 @@ class Panel::AuctionsController < Panel::ApplicationController
     if @auction.set_won_offer!(@offer)
       if params.include?(:create_project)
         @project = Project.create(
+          :auction => @auction.id,
           :name => @auction.title,
           :description => @auction.description,
           :owner_id => @auction.owner_id,
