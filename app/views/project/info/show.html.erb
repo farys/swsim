@@ -13,7 +13,13 @@
       </tr>
       <tr>
         <td>Do końca</td>
-        <td><b><%= time_ago_in_words(@project.deadline) %></b> (<%= escape_time(@project.deadline) %>)</td>
+        <td>
+        	<% if @project.active? %>
+        		<b><%= time_ago_in_words(@project.deadline) %></b> (<%= escape_time(@project.deadline) %>)
+        	<% else %>
+        		Projekt <b>zakończony</b> (<%= escape_date(@project.updated_at) %>)
+        	<% end %>
+        </td>		
       </tr>
       <tr>
         <td>Właściciel</td>
@@ -27,21 +33,20 @@
         <td>Użytkownicy</td>
         <td><%= @members.count %></td>
       </tr>
-      <% if @project.owner_id == current_user.id && @project.status == Project::STATUSES[:verification] %>
+      <% if @project.owner_id == current_user.id && @project.status == Project::STATUSES[:active] %>
       	<tr>
       		<td>Akcje</td>
-      		<td><%= button_to 'Akceptuj projekt' %></td>
-      	</tr>
-      <% elsif @project.leader_id == current_user.id && @project.status == Project::STATUSES[:active] %>
-      	<tr>
-      		<td>Akcje</td>
-      		<td><%= button_to 'Oddaj do weryfikacji' %></td>
+      		<td>
+      			<%= form_for @project, :url => project_info_path(@project) do |f| %>
+      			<%= f.submit "Zakończ projekt" %>
+      			<% end %>
+      		</td>
       	</tr>
       <% end %>
     </table>
   </div>
   <div class="span-12 last append-1 prepend-1">
-    <% if @project.user_role(current_user.id).info == true %>
+    <% if can_edit?('info') && @project.active? %>
     <%= render :partial => 'edit' %>
     <% else %>
       <table>

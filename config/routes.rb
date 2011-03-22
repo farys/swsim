@@ -38,7 +38,7 @@ Inz::Application.routes.draw do
       get :sent, :on => :collection
     end
     
-    resources :projects
+    resources :projects, :only => :index
   end
 
   #ADMIN
@@ -57,8 +57,9 @@ Inz::Application.routes.draw do
     resources :communications, :only => [:destroy]
   end
   
+  #PROJECT
   namespace :project do
-    resources :info
+    resources :info, :only => [:show, :update]
     resources :members
   end
     

@@ -51,7 +51,13 @@ def make_projects
   100.times do
     name = Faker::Company.name
     description = Faker::Lorem.sentences(12)
-    Project.create!(:name => name, :owner_id => rand(20), :leader_id => rand(100), :duration => rand(370), :description => description )
+    Project.create!(
+    	:name => name,
+    	:owner_id => rand(20),
+    	:leader_id => rand(100),
+    	:duration => rand(370),
+    	:description => description
+    )
   end
 end
 

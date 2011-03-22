@@ -69,7 +69,6 @@ pl:
   project:
     statuses:
       active: Aktywny
-      verification: Weryfikacja
       finished: Zakończony
 
   role:

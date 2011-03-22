@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  STATUSES = {:active => 0, :verification => 1, :finished => 2}
+  STATUSES = {:active => 0, :finished => 1}
    
 	has_many :memberships
   has_many :users, :through => :memberships
@@ -28,8 +28,10 @@ class Project < ActiveRecord::Base
 	  self.deadline - DateTime.now
 	end
 	
-	 def add_user(user_id)
-    memberships.create(:project_id => self.id, :user_id => user_id)
+	def add_user(user_id, role_id)
+	 	unless member?(user_id)
+      memberships.create!(:project_id => self.id, :user_id => user_id, :role_id => role_id)
+    end
   end
   
   def remove_user(user_id)
@@ -52,6 +54,10 @@ class Project < ActiveRecord::Base
   
   def member? (user_id)
     self.user_ids.include?(user_id)
+  end
+  
+  def active?
+    return self.status == STATUSES[:active] ? true : false
   end
 
   private 
