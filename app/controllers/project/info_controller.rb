@@ -7,7 +7,8 @@ class Project::InfoController < Project::ApplicationController
   	if params[:project].nil? && @project.owner_id == current_user.id && @project.active?
 	  	@project.status = Project::STATUSES[:finished]
 	  	if @project.save
-	      redirect_to panel_projects_path
+        Comment.create_from_project(@project)
+	      redirect_to panel_comments_path
 	    else
 	      title_t :show
 	      render :show

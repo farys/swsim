@@ -1,6 +1,6 @@
 class Comment < ActiveRecord::Base
   STATUSES = {:active => 0, :pending => 1, :deleted => 2}
-  LEVELS = {:auction => 0, :project => 1, :team => 2, :leader => 3}
+  LEVELS = {:auction => 0, :project => 1}
   
   belongs_to :author, :class_name => "User"
   belongs_to :receiver, :class_name => "User"
@@ -31,6 +31,25 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  def self.create_from_project(project)
+    self.create_from_auction(project.auction)
+    users = project.user_ids - [project.leader_id, project.owner_id]
+
+    users.each do |user_id|
+      author_id = project.leader_id
+      receiver_id = user_id
+      2.times do
+        self.create(
+          :project => project,
+          :author_id => author_id,
+          :receiver_id => receiver_id,
+          :level => LEVELS[:project]
+        )
+        author_id, receiver_id = receiver_id, author_id
+      end
+    end
+  end
+
   def activate!
     self.status = STATUSES[:active]
     self.save
@@ -38,6 +57,10 @@ class Comment < ActiveRecord::Base
 
   def status? status
     self.status == STATUSES[status]
+  end
+
+  def level? level
+    self.level == level
   end
 
   private

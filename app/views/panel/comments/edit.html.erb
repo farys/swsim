@@ -1,14 +1,23 @@
+<% content_for :head do -%>
+  <%= javascript_include_tag 'jquery.rating.js' %>
+  <%= stylesheet_link_tag 'jquery.rating' %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $(".star").rating();
+    });
+  </script>
+<% end -%>
 <div class="prepend-1 append-1">
   <% form_for [:panel, @comment] do |f| -%>
 
     <%= render "layouts/error_messages", :target => @comment %>
-    <p>Proszę ocenić użytkownika <%= escape_user(@receiver) %> :</p>
+    <p>Proszę ocenić użytkownika <%= escape_user(@receiver) %> za <% if @comment.level?(:auction) %> aukcję <%= link_auction(@comment.auction) %><% else %> projekt <%= link_to @comment.project, project_info_path %><% end %>:</p>
     
     <% @values.each do |v| %>
     <%= render "layouts/error_messages", :target => v %>
       <%= fields_for "comment_value", v, :index => "#{v.keyword.id}" do |ff| %>
         <%= ff.hidden_field :keyword_id %>
-        <%= v.keyword.name.force_encoding("utf-8") %>
+    <div style="margin-bottom:5px"><%= v.keyword.name.force_encoding("utf-8") %>:</div>
         <% for i in 1..5 %>
           <%= ff.radio_button :rating, i, :class => "star inline", :title => i %>
         <% end %>

@@ -1,6 +1,4 @@
-class RatingsController < ApplicationController
-  before_filter :login_required
-  
+class RatingsController < ApplicationController  
   def create
     @auction = Auction.find(params[:auction_id])
   	if @auction.rated_by?(@current_user)
