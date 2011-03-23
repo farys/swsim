@@ -20,43 +20,71 @@ class Project < ActiveRecord::Base
 	
 	before_validation :set_default_status, :on => :create
 	after_create :add_default_users
-
+	
+	#zwraca date zakonczenia projektu
 	def deadline
 	  self.created_at + self.duration.days
 	end
 	
+	#zwraca czas ktory pozostal do zakonczenia projektu
 	def time_left
 	  self.deadline - DateTime.now
 	end
 	
-	def add_user(user_id, role_id)
-	 	unless member?(user_id)
-      memberships.create!(:project_id => self.id, :user_id => user_id, :role_id => role_id)
-    end
-  end
-  
+	#dodaje uzytkownika do projektu, domyslna rola gosc, zwraca true|false
+	def add_user(user_id = 0, role_id = 1)
+	 	if self.member?(user_id)
+	 		'uzytkownik jest juz czlonkiem projektu'
+	 	else
+      Membership.create!(:project_id => self.id,
+      											 :user_id => user_id,
+      											 :role_id => role_id) ? true : false
+	 	end
+	end
+	
+	#usuwa uzytkownika z projektu, zwraca true|false 	
   def remove_user(user_id)
-    memberships.find_by_user_id(user_id).destroy
+    if self.member? user_id
+    	if user_id == self.owner_id
+    		'nie mozna usunac wlasciciela projektu'
+    	elsif user_id == self.leader_id
+    		'nie mozna usunac lidera projektu'
+    	else
+    		memb = Membership.where("project_id = ? AND user_id = ?", self.id, user_id)
+    		memb.first.destroy ? true : false
+    	end
+   	else
+   	 	'uzytkownik nie uczestniczy w prjekcie'
+ 	 	end  
   end
   
-  def user_role(user_id)
-    membership = Membership.where("project_id = ? AND user_id = ?", self.id, user_id)
-    Role.find(membership.first.role_id)
+  #zwraca role uzytkownika w projekcie
+  def user_role(user_id = 0)
+  	if self.member? user_id
+  		memb = Membership.where("project_id = ? AND user_id = ?", self.id, user_id)
+  		Role.find(memb.first.role_id)
+  	else
+  		'uzytkownik nie uczestniczy w projekcie'
+  	end
   end
   
-  def user_role=(user_id, role_id)
-    membership = Membership.where("project_id = ? AND user_id = ?", self.id, user_id)
-    if membership.empty? && membership.count != 1
-      'error xD' #TODO
-    else
-      membership.first.role_id=role_id
-    end  
+  #ustawia role uzytkownika, domyslnie gosc, zwraca true|false
+  def user_role=(user_id = 0, role_id = 1)
+  	if self.member?(user_id)
+  		memb = Membership.where('project = ? AND user = ?', self, user_id)
+  		memb.first.role_id = role_id
+  		memb.save! ? true : false
+  	else
+  		'uzytkownik nie jest czlonkiem projketu'
+  	end 	
   end
   
-  def member? (user_id)
-    self.user_ids.include?(user_id)
+  #sprawdza czy uzytkownik jest czlonkiem projektu, zwraca (true|false)
+  def member? (user_id = 0)
+  	self.user_ids.include?(user_id)
   end
   
+  #sprawdza czy projekt jest aktywny, zwraca(true|false)
   def active?
     return self.status == STATUSES[:active] ? true : false
   end
@@ -64,8 +92,8 @@ class Project < ActiveRecord::Base
   private 
 	
 	def add_default_users
-	  Membership.create(:project_id => self.id, :user_id => self.owner_id, :role_id => 3)
-	  Membership.create(:project_id => self.id, :user_id => self.leader_id, :role_id => 2)
+		self.add_user(self.owner_id, 3)
+		self.add_user(self.leader_id, 2)
 	end
 	
 	def set_default_status

@@ -7,19 +7,19 @@
         <th>Login</th>
         <th>Kontakt</th>
         <th>Rola</th>
-        <%= raw "<th>Akcje</th>" if can_edit?('user') %>
+        <%= raw "<th>Akcje</th>" if can_edit?('user') && @project.active? %>
       </tr>
     </thead>
     <tbody>
       <% @members.each do |user| %>
         <tr>
-          <td><%= link_to user.login, user_path, :id => user.id %></td>
+          <td><%= link_to user.login, user_path(user) %></td>
           <td>
           	<%= link_to 'PW', :controller => 'panel/messages', :action => :new, :receiver_login => user.login %> | 
           	<%= mail_to user.email %>
           </td>
-          <td><%= escape_column(@project.user_role(user), "name").capitalize %></td>
-          <% if can_edit?('user') %>
+          <td><%= escape_column(@project.user_role(user.id), "name").capitalize %></td>
+          <% if can_edit?('user') && @project.active? %>
           	<td>
           		todo ;]
           	</td>
