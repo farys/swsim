@@ -1,6 +1,8 @@
 class Comment < ActiveRecord::Base
   STATUSES = {:active => 0, :pending => 1, :deleted => 2}
   LEVELS = {:auction => 0, :project => 1}
+
+  attr_accessor :allowed_points
   
   belongs_to :author, :class_name => "User"
   belongs_to :receiver, :class_name => "User"
@@ -15,11 +17,11 @@ class Comment < ActiveRecord::Base
   default_scope includes(:values)
 
   before_save :default_attributes
+  before_validation :check_points
 
   def self.create_from_auction(auction)
     owner = auction.owner
     offerer = auction.won_offer.offerer
-
     2.times do
       self.create(
         :auction => auction,
@@ -31,10 +33,25 @@ class Comment < ActiveRecord::Base
     end
   end
 
-  def self.create_from_project(project)
-    self.create_from_auction(project.auction)
-    users = project.user_ids - [project.leader_id, project.owner_id]
+  def self.create_from_project_for_owner(project)
+    self.create(
+      :project => project,
+      :author_id => project.owner_id,
+      :receiver_id => project.leader_id,
+      :level => LEVELS[:project]
+    )
+  end
 
+  def self.create_from_owner_comment(comment)
+    project = comment.project
+    self.create(
+      :project => project,
+      :author_id => project.leader_id,
+      :receiver_id => project.owner_id,
+      :level => LEVELS[:project]
+    )
+
+    users = project.user_ids - [project.leader_id, project.owner_id]
     users.each do |user_id|
       author_id = project.leader_id
       receiver_id = user_id
@@ -48,6 +65,16 @@ class Comment < ActiveRecord::Base
         author_id, receiver_id = receiver_id, author_id
       end
     end
+  end
+
+  def points_mode?
+    self.level?(:project) &&
+      self.project.owner_id != self.author_id &&
+      self.receiver_id != self.project.owner_id
+  end
+
+  def owner_comment?
+    self.project.owner_id == self.author_id
   end
 
   def activate!
@@ -66,5 +93,11 @@ class Comment < ActiveRecord::Base
   private
   def default_attributes
     self.status = STATUSES[:pending] if self.status.nil?
+  end
+
+  def check_points
+    #unless self.allowed_points.nil? && (self.allowed_points >= self.values.sum(:rating))
+     # self.values.each do |v| v.errors.add(:rating, "Przekroczono dozwolona ilosc punktow") end
+    #end
   end
 end

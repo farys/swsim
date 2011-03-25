@@ -20,6 +20,9 @@ class Panel::CommentsController < Panel::ApplicationController
   def update
     if @comment.save
       @comment.activate!
+      if @comment.owner_comment?
+        Comment.create_from_owner_comment(@comment)
+      end
       redirect_to queue_panel_comments_path, :notice => flash_t
     else
       title_t :edit
@@ -35,6 +38,16 @@ class Panel::CommentsController < Panel::ApplicationController
   private
   def comment_and_form_data
     @comment = current_user.written_comments.pending.find(params[:id])
+
+    if @comment.points_mode?
+      @leader_comment = Comment.
+        where(:project_id => @comment.project.id).
+        where(:receiver_id => @comment.project.leader_id).
+        first
+      @allowed_points = @leader_comment.values.sum(:rating);
+      @comment.allowed_points = @allowed_points
+    end
+
     @keywords = CommentKeyword.all
     @receiver = @comment.receiver
     @values = (params[:comment_value].nil?)?
