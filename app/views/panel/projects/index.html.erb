@@ -14,7 +14,7 @@
 	    <tbody>
 	      <% @projects.each do |proj| %>
 	        <tr>
-	          <td><%= link_to proj.name, project_info_path(proj) %></td>
+	          <td><%= link_to proj.name, project_info_path(proj.id) %></td>
 	          <td><%= escape_column(proj.user_role(current_user.id), "name").capitalize %></td>
 	          <td>
 	          	<% if proj.active? %>

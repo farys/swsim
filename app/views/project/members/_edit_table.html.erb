@@ -1,0 +1,40 @@
+<div class="span-2 prepend-8" style="margin-bottom: 5px">
+	<%= button('Dodaj użytkownika', :action => :new, :id => @project.id) %>
+</div>
+<table class="list">
+  <thead>
+    <tr>
+      <th>Login</th>
+      <th>Kontakt</th>
+      <th>Rola</th>
+      <th>Akcje</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @members.each do |user| %>
+	      <tr>
+	        <td><%= link_to user.login, user_path(user) %></td>
+	        <td>
+	        	<%= link_to 'PW', :controller => 'panel/messages',
+															 :action => :new,
+	        									   :receiver_login => user.login %>
+	         	<%= mail_to user.email %>
+	        </td>
+	        <td>
+	      		<% if user.id == @project.owner_id || user.id == @project.leader_id %>
+	       			<%= escape_column(@project.user_role(user.id), "name").capitalize %>
+	       		<% else %>
+	       			TODO
+	       		<% end %>         	
+	        </td>
+	       	<td>
+	       		<% if user.id == @project.owner_id || user.id == @project.leader_id %>
+	       			brak
+	       		<% else %>
+	       		  <%= button 'Usuń' %>
+	       		<% end %>
+	       	</td>
+	      </tr>
+	    <% end %>
+  </tbody>
+</table>

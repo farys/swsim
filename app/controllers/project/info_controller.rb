@@ -13,7 +13,7 @@ class Project::InfoController < Project::ApplicationController
 	      title_t :show
 	      render :show
 	    end
-  	elsif @project.active? && can_edit?('info')
+  	elsif can_edit?('info')
 	    @project.description = params[:project][:description]
 	    if @project.save
 	      flash_t :success

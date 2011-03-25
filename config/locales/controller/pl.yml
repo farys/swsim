@@ -110,3 +110,4 @@ pl:
         show: "{@project.name}"
       members:
         show: "{@project.name}"
+        new: "{@project.name}"

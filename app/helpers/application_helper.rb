@@ -18,10 +18,6 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
     t("#{model.class.name.downcase}.statuses.#{status.to_s}")
   end
 
-  def escape_column(model, column)
-    t("#{model.class.name.downcase}.#{column}.#{model.send(column)}")
-  end
-
   # Metoda tworzy pola wyboru dla kolumny status
   # wymogiem jest hash STATUSES o zawartosci np. {:active => 0, :hidden => 1}
   # metoda zaglada do slownika po nazwy statusow
@@ -33,12 +29,31 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
     options_for_select(options, model.status)
   end
   
+  def escape_column(model, column)
+    t("#{model.class.name.downcase}.#{column}.#{model.send(column)}")
+  end
+
+  def column_for_select(model, column)
+  	options = []
+  	model.class.all.each do |n|
+  		unless n.name == 'owner' || n.name == 'leader'
+  			options += [[escape_column(n, column).capitalize, n.id]]
+  		end
+  	end
+  	options_for_select(options, model.send(column))
+  end
+  
   def flash_t(type=nil)
     params = request.parameters.clone
     params["controller"]["/"] = "." if params["controller"].include?("/")
     translation = t("flash.#{params["controller"]}.#{params[:action]}")
     text = "<div class=\"#{type}\">#{translation}</div>"
     return text unless type.nil?
+  end
+  
+  #Dodaje link w postaci buttona, domyslnie nazwa: test, url: '#'
+  def button(name = 'test', url = '#')
+  	content_tag(:button, name, :onclick => "window.location.href=\"#{url_for(url)}\"")
   end
   
   def include_active_link_mechanism urls=Array.new

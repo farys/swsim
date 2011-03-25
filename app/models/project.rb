@@ -34,7 +34,7 @@ class Project < ActiveRecord::Base
 	#dodaje uzytkownika do projektu, domyslna rola gosc, zwraca true|false
 	def add_user(user_id = 0, role_id = 1)
 	 	if self.member?(user_id)
-	 		'uzytkownik jest juz czlonkiem projektu'
+	 		'uzytkownik jest juz czlonkiem projektu' #TODO obluga bledow !
 	 	else
       Membership.create!(:project_id => self.id,
       											 :user_id => user_id,
@@ -50,8 +50,7 @@ class Project < ActiveRecord::Base
     	elsif user_id == self.leader_id
     		'nie mozna usunac lidera projektu'
     	else
-    		memb = Membership.where("project_id = ? AND user_id = ?", self.id, user_id)
-    		memb.first.destroy ? true : false
+    		self.find_membership(user_id).destroy ? true : false
     	end
    	else
    	 	'uzytkownik nie uczestniczy w prjekcie'
@@ -61,22 +60,30 @@ class Project < ActiveRecord::Base
   #zwraca role uzytkownika w projekcie
   def user_role(user_id = 0)
   	if self.member? user_id
-  		memb = Membership.where("project_id = ? AND user_id = ?", self.id, user_id)
-  		Role.find(memb.first.role_id)
+  		Role.find(self.find_membership(user_id).role_id)
   	else
   		'uzytkownik nie uczestniczy w projekcie'
   	end
   end
   
   #ustawia role uzytkownika, domyslnie gosc, zwraca true|false
-  def user_role=(user_id = 0, role_id = 1)
+  def set_user_role(user_id = 0, role_id = 1)
   	if self.member?(user_id)
-  		memb = Membership.where('project = ? AND user = ?', self, user_id)
-  		memb.first.role_id = role_id
-  		memb.save! ? true : false
+  		if Role.exists? role_id
+  			memb = self.find_membership(user_id)
+  			memb.role_id = role_id
+  			memb.save! ? true : false
+  		else
+  			'nie ma takiej roli'
+  		end
   	else
   		'uzytkownik nie jest czlonkiem projketu'
   	end 	
+  end
+  
+  #zwraca obiekt membership
+  def find_membership(user_id = 0)
+  	Membership.where("project_id = ? AND user_id = ?", self, user_id).first
   end
   
   #sprawdza czy uzytkownik jest czlonkiem projektu, zwraca (true|false)
