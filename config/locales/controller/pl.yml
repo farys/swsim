@@ -54,7 +54,7 @@ pl:
         update: Opis został pomyślnie zaktualizowany
         finishing_update: Projekt został zakończony, wystaw teraz ocenę liderowi zespołu.
       members:
-        show: Nie bierzesz udziału w tym projekcie
+        index: Nie bierzesz udziału w tym projekcie
         create: Użytkownik {@user.name} został pomyślnie dodany do projektu z rolą {@role.name}
         destroy:  Użytkownik {@user.name} został pomyślnie usunięty z projektu
         
@@ -112,5 +112,5 @@ pl:
       info:
         show: "{@project.name}"
       members:
-        show: "{@project.name}"
+        index: "{@project.name}"
         new: "{@project.name}"
