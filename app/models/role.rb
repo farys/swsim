@@ -8,4 +8,8 @@ class Role < ActiveRecord::Base
   #validates :forum, :presence => true
   #validates :info, :presence => true
   #validates :user, :presence => true
+  
+  def self.get_id(name)
+  	Role.where(:name => name).first.id
+  end
 end

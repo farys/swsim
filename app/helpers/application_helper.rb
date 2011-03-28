@@ -29,18 +29,29 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
     options_for_select(options, model.status)
   end
   
+  #Metoda tlumaczy zawartosc kolumny w modelu
   def escape_column(model, column)
     t("#{model.class.name.downcase}.#{column}.#{model.send(column)}")
   end
 
+	#chyba juz nie potrzebne ;]
   def column_for_select(model, column)
   	options = []
   	model.class.all.each do |n|
-  		unless n.name == 'owner' || n.name == 'leader'
-  			options += [[escape_column(n, column).capitalize, n.id]]
+  		options += [[escape_column(n, column).capitalize, n.id]]
+  	end
+  	options_for_select(options, model.send('id'))
+  end
+  
+  #Metoda tworzy pola wyboru dla dostepnych rol
+  def roles_for_select(model)
+  	options = []
+  	Role.find(:all, :select => 'id, name').each do |r|
+  		unless r.name == 'owner' || r.name == 'leader'
+  			options += [[escape_column(r, 'name').capitalize, r.id]]
   		end
   	end
-  	options_for_select(options, model.send(column))
+  	options_for_select(options, model.send('id'))
   end
   
   def flash_t(type=nil)

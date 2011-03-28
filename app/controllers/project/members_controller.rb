@@ -10,6 +10,9 @@ class Project::MembersController < Project::ApplicationController
   end
   
   def update
+  	memb = Membership.find(params[:membership][:user_id])
+  	memb.role_id = params[:membership][:role_id]
+  	memb.save!
   	title_t :show
   	render :show
   end

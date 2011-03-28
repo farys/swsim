@@ -99,8 +99,8 @@ class Project < ActiveRecord::Base
   private 
 	
 	def add_default_users
-		self.add_user(self.owner_id, 3)
-		self.add_user(self.leader_id, 2)
+		self.add_user(self.owner_id, Role.get_id('owner'))
+		self.add_user(self.leader_id, Role.get_id('leader'))
 	end
 	
 	def set_default_status
