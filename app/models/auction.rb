@@ -1,7 +1,7 @@
 class Auction < ActiveRecord::Base
   attr_protected :status
   
-  STATUSES = {:active => 0, :finished => 1, :canceled => 2}
+  STATUSES = {:active => 0, :finished => 1, :canceled => 2, :waiting_for_offer => 3}
   MAX_EXPIRED_AFTER = 14
   ORDER_MODES = [
     ["po nazwie", "title DESC", 0],
@@ -56,6 +56,17 @@ class Auction < ActiveRecord::Base
   def cancel!
     self.expired_at = DateTime.now
     self.status = STATUSES[:canceled]
+    self.save
+  end
+
+  def finish!
+    self.expired_at = DateTime.now
+    self.status = STATUSES[:finished]
+    self.save
+  end
+
+  def waiting_for_offer!
+    self.status = STATUSES[:waiting_for_offer]
     self.save
   end
 

@@ -2,20 +2,34 @@
   <%= javascript_include_tag 'jquery.rating.js' %>
   <%= stylesheet_link_tag 'jquery.rating' %>
   <script type="text/javascript">
-    $(document).ready(function(){
-      $(".star").rating();
-    });
-    var allowed_points = <%= (@allowed_points.nil?)? true : @allowed_points %>;
-
-    function checkForm(form){
-      var sum = 0;
-      $(".star:checked").each(function(){
-        sum += $(this).val();
+    function count_stars(){
+      var count = 0;
+      $(".star").each(function(){
+        if($(this).attr("checked")) count += parseInt($(this).val());
       });
+      var pointsSpan = $("#points").html(count);
+      if(allowed_points > 0 && count > allowed_points) {
+        pointsSpan.toggleClass("error", true);
+        pointsSpan.toggleClass("notice", false);
+      } else {
+        pointsSpan.toggleClass("error", false);
+        pointsSpan.toggleClass("notice", true);
+      }
+      
+      return count;
+    }
 
-      if (allowed_points < sum){
+    $(document).ready(function(){
+      $(".star").rating({required: false, callback: count_stars});
+      count_stars();
+      $("form.edit_comment").submit(check_stars);
+    });
+    var allowed_points = <%= (@allowed_points.nil?)? 0 : @allowed_points %>;
+
+    function check_stars(event){
+      if (allowed_points > 0 && allowed_points < count_stars()){
         alert("Punkty przeznaczone na ocenę zostały przekroczone.");
-        return false
+        return false;
       }
       else
         return true;
@@ -23,11 +37,14 @@
   </script>
 <% end -%>
 <div class="prepend-1 append-1">
-  <% form_for [:panel, @comment], :onsubmit => "return checkForm(this)" do |f| -%>
+  <% form_for [:panel, @comment] do |f| -%>
 
     <%= render "layouts/error_messages", :target => @comment %>
     <p>Proszę ocenić użytkownika <%= escape_user(@receiver) %> za <% if @comment.level?(:auction) %> aukcję <%= link_auction(@comment.auction) %><% else %> projekt <%= link_to @comment.project.name, project_info_path %><% end %>:</p>
-    <p>Dozwolona ilość punktów do rozdania: <%= @allowed_points %></p>
+    <% unless @allowed_points.nil? %>
+    <p>Dozwolona ilość punktów do rozdania: <span id="maxPoints" class="bold notice"><%= @allowed_points %></span></p>
+  <% end %>
+    <p>Rozdano punkty: <span id="points" class="bold notice">0</span></p>
     <% @values.each do |v| %>
       <%= render "layouts/error_messages", :target => v %>
       <%= fields_for "comment_value", v, :index => "#{v.keyword.id}" do |ff| %>

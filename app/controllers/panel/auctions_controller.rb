@@ -18,8 +18,16 @@ class Panel::AuctionsController < Panel::ApplicationController
     title_t
   end
 
-  def create    
+  def create
     if @auction.save
+      Sender.auction_created(@auction).deliver
+
+      unless @auction.invitations.empty?
+        @auction.invitations.each do |inv|
+          Sender.auction_invited_user(@auction, inv.user).deliver
+        end
+      end
+
       redirect_to auction_path(@auction), :notice => flash_t
     else
       title_t :new
@@ -49,6 +57,9 @@ class Panel::AuctionsController < Panel::ApplicationController
         Comment.create_from_auction(@auction)
         redirect_to auction_path(@auction), :notice => flash_t
       end
+      Sender.auction_finished(@auction).deliver
+      Sender.auction_won_offer(@auction).deliver
+
     else
       title_t :offers
       render :offers
@@ -57,6 +68,7 @@ class Panel::AuctionsController < Panel::ApplicationController
 
   def destroy
     @auction.cancel!
+    Sender.auction_canceled(@auction).deliver
     redirect_to panel_auctions_path, :notice => flash_t
   end
   

@@ -23,6 +23,7 @@ class Panel::CommentsController < Panel::ApplicationController
       if @comment.owner_comment?
         Comment.create_from_owner_comment(@comment)
       end
+      Sender.user_commented(@comment).deliver
       redirect_to queue_panel_comments_path, :notice => flash_t
     else
       title_t :edit

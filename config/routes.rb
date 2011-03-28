@@ -58,9 +58,11 @@ Inz::Application.routes.draw do
   end
   
   #PROJECT
-  namespace :project do
-    resources :info, :only => [:show, :update]
-    resources :members
+  scope :module => "project" do
+    resources :projects do
+      resource :info, :only => [:show, :update], :controller => "info"
+      resources :members
+    end
   end
     
   resources :alerts, :only => [:create]

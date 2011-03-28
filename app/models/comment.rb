@@ -36,6 +36,12 @@ class Comment < ActiveRecord::Base
   def self.create_from_project_for_owner(project)
     self.create(
       :project => project,
+      :author_id => project.leader_id,
+      :receiver_id => project.owner_id,
+      :level => LEVELS[:project]
+    )
+    self.create(
+      :project => project,
       :author_id => project.owner_id,
       :receiver_id => project.leader_id,
       :level => LEVELS[:project]
@@ -44,12 +50,6 @@ class Comment < ActiveRecord::Base
 
   def self.create_from_owner_comment(comment)
     project = comment.project
-    self.create(
-      :project => project,
-      :author_id => project.leader_id,
-      :receiver_id => project.owner_id,
-      :level => LEVELS[:project]
-    )
 
     users = project.user_ids - [project.leader_id, project.owner_id]
     users.each do |user_id|
@@ -68,13 +68,11 @@ class Comment < ActiveRecord::Base
   end
 
   def points_mode?
-    self.level?(:project) &&
-      self.project.owner_id != self.author_id &&
-      self.receiver_id != self.project.owner_id
+    self.level?(:project) && ![self.author_id, self.receiver_id].include?(self.project.owner_id)
   end
 
   def owner_comment?
-    self.project.owner_id == self.author_id
+    !self.project.nil? && self.project.owner_id == self.author_id
   end
 
   def activate!
@@ -87,7 +85,7 @@ class Comment < ActiveRecord::Base
   end
 
   def level? level
-    self.level == level
+    self.level == LEVELS[level]
   end
 
   private
@@ -97,7 +95,7 @@ class Comment < ActiveRecord::Base
 
   def check_points
     #unless self.allowed_points.nil? && (self.allowed_points >= self.values.sum(:rating))
-     # self.values.each do |v| v.errors.add(:rating, "Przekroczono dozwolona ilosc punktow") end
+    # self.values.each do |v| v.errors.add(:rating, "Przekroczono dozwolona ilosc punktow") end
     #end
   end
 end

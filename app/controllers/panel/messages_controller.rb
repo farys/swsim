@@ -17,7 +17,7 @@ class Panel::MessagesController < Panel::ApplicationController
 		@message = current_user.messages.find(params[:id])
 
 		if @message.status == Message::STATUS_UNREAD
-		@message.read!
+      @message.read!
 		end
 	end
 
@@ -26,10 +26,10 @@ class Panel::MessagesController < Panel::ApplicationController
 
 	def create
 		if @message.send_to_receiver
-
+      Sender.user_received_message(@message).deliver
 			if params.has_key?(:reply_message_id)
 				@msg = current_user.messages.received.find(params[:reply_message_id])
-			@msg.replied!
+        @msg.replied!
 			end
 			flash_t :notice
 			redirect_to sent_panel_messages_path

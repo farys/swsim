@@ -20,7 +20,7 @@ class Project::ApplicationController < ApplicationController
   
   private
   def get_project
-    @project = Project.find(params[:id])
+    @project = Project.find(params[:project_id])
     unless @project.member?(current_user.id)
       flash_t :notice
       redirect_to :controller => '/panel/projects', :action => :index

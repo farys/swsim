@@ -24,7 +24,8 @@
 	      	<td><%= escape_column(@project.user_role(user.id), "name").capitalize %></td>
 	      	<td>brak</td>
 	    	<% else %>
-	    		<%= form_for @project.find_membership(user.id), :url => project_members_path(@project) do |f| %>
+          <% membership = @project.find_membership(user.id) %>
+	    		<%= form_for membership, :url => project_member_path(@project, membership) do |f| %>
 	    			<%= f.hidden_field :user_id %>
 		    		<td><%= link_to user.login, user_path(user) %></td>
 		      	<td>

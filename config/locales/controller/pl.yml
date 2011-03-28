@@ -72,6 +72,8 @@ pl:
         canceled: Twoje anulowane aukcje
         finished: Twoje zakończone aukcje
         offers: Formularz wyboru zwycięzcy
+      communications:
+        new: "nowy komunikat dla {@auction.title} (id {@auction.id})"
       messages:
         new: Nowa wiadomość
         received: Odebrane wiadomości

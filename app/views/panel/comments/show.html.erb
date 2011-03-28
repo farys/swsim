@@ -4,9 +4,9 @@
   </tr>
   <tr>
     <td colspan="2"><% @comment.values.each do |v| %>
-        <p><%= v.keyword.name.force_encoding("utf-8") %>: <%= v.rating %>
-          <span class="bold"><%= v.extra %></span>
-        </p>
+        <div><%= v.keyword.name.force_encoding("utf-8") %>: <%= v.rating %>
+          <p class="bold"><%= v.extra %></p>
+        </div>
       <% end %></td>
   </tr>
   <% unless @comment.auction.nil? %>

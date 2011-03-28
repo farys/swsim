@@ -1,7 +1,7 @@
 class Project::MembersController < Project::ApplicationController 
   before_filter :check_privileges, :except => :show
    
-  def show
+  def index
     title_t :show
   end
   
@@ -10,11 +10,11 @@ class Project::MembersController < Project::ApplicationController
   end
   
   def update
-  	memb = Membership.find(params[:membership][:user_id])
-  	memb.role_id = params[:membership][:role_id]
+  	memb = Membership.where(:user_id => params[:membership][:user_id], :project_id => params[:project_id]).first
+  	memb.role_id = params[:membership][:role_id].to_i
   	memb.save!
   	title_t :show
-  	render :show
+  	render :index
   end
   
   private

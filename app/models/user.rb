@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   end
   
   def find_messages folder, page
-    unless folder.eql?(:received) || folder.eql?(:sent)
+    unless [:received, :sent].include? folder
       raise Exception.new('Niepoprawny typ wiadomosci')
     end
     

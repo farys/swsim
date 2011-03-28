@@ -1,0 +1,7 @@
+Twoja aukcja właśnie się zakończyła.<br />
+<% unless @auction.offers.empty? %>
+  Masz dobę na wybranie wygranej oferty, w przeciwnym razie aukcja zostanie anulowana.<br />
+
+  <%= auction_url(@auction) %>
+
+<% end %>

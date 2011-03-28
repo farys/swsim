@@ -17,11 +17,28 @@ namespace :auction do
     expired = ExpiredAuction.where("expired_at < ?", Time.now.to_s).all
     auction_ids = expired.map{|a| a.auction_id}
 
-    Auction.where(:id => auction_ids).each { |a|
-      a.status = Auction::STATUSES[:finished]
+    Auction.where(:id => auction_ids).where(:status => Auction::STATUSES[:active]).each { |a|
+      if a.offers.empty?
+        a.finish!
+        Sender.auction_finished(a).deliver
+      else
+        a.waiting_for_offer!
+        Sender.auction_waiting_for_offer(a).deliver
+      end
       a.save
     }
     ExpiredAuction.where(:auction_id => auction_ids).delete_all
     puts "\nExpired auctions: #{auction_ids.size}\n"
+  end
+
+  desc "Checks for auctions with status 'waiting_for_offer'"
+  task :offers => :environment do
+    auctions = Auction.
+      where("(expired_at + INTERVAL 1 DAY) < ?", Time.now.to_s).
+      where(:status => Auction::STATUSES[:waiting_for_offer]).
+      all.each do |a|
+      a.canceled!
+      Sender.auction_canceled(a).deliver
+    end
   end
 end

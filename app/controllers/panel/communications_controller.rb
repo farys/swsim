@@ -2,6 +2,7 @@ class Panel::CommunicationsController < Panel::ApplicationController
   before_filter :load_auction_and_form_data
   
   def new
+    title_t
   end
 
   def create
@@ -9,6 +10,7 @@ class Panel::CommunicationsController < Panel::ApplicationController
       flash_t :notice
       redirect_to auction_path(@auction)
     else
+      title_t
       render :new
     end
   end
