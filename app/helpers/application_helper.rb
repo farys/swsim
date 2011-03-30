@@ -32,15 +32,6 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
   def escape_column(model, column)
     t("#{model.class.name.downcase}.#{column}.#{model.send(column)}")
   end
-
-	#chyba juz nie potrzebne ;]
-  def column_for_select(model, column)
-  	options = []
-  	model.class.all.each do |n|
-  		options += [[escape_column(n, column).capitalize, n.id]]
-  	end
-  	options_for_select(options, model.send('id'))
-  end
   
   #Metoda tworzy pola wyboru dla dostepnych rol
   def roles_for_select(model)
@@ -62,8 +53,11 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
   end
   
   #Dodaje link w postaci buttona, domyslnie nazwa: test, url: '#'
-  def button(name = 'test', url = '#')
-  	content_tag(:button, name, :onclick => "window.location.href=\"#{url_for(url)}\"")
+  def button(name = 'test', url = '#', method = :get)
+  	content_tag(:button,
+  							name,
+  							:onclick => "window.location.href=\"#{url_for(url)}\"",
+  							:method => method)
   end
   
   def include_active_link_mechanism urls=Array.new

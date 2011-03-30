@@ -17,7 +17,7 @@ class Project::InfoController < Project::ApplicationController
 	    @project.description = params[:project][:description]
 	    if @project.save
 	      flash_t :success
-	      redirect_to project_info_path(@project)
+	      redirect_to project_info_path
 	    else
 	      title_t :show
 	      render :show
