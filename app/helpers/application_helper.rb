@@ -53,11 +53,10 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
   end
   
   #Dodaje link w postaci buttona, domyslnie nazwa: test, url: '#'
-  def button(name = 'test', url = '#', method = :get)
+  def button(name = 'test', url = '#')
   	content_tag(:button,
   							name,
-  							:onclick => "window.location.href=\"#{url_for(url)}\"",
-  							:method => method)
+  							:onclick => "window.location.href=\"#{url_for(url)}\"")
   end
   
   def include_active_link_mechanism urls=Array.new

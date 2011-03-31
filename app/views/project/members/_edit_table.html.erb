@@ -36,10 +36,10 @@
 		      	</td>
 		      	<td><%= f.select('role_id',roles_for_select(@project.user_role(user.id)))%></td>
 		      	<td>
-		      		<%= f.submit "Zapisz" %>
-		      		<%= button 'Usuń', project_member_path(@project, membership), :delete %>
+		      		<%= f.submit "Zapisz" %>		      		
+		      		<%= link_to 'Usuń', project_member_path(@project, membership), :method =>:delete %>
 		      	</td>
-		      <% end %>
+		      <% end %>		      
 	    	<% end %>	      
 	    </tr>
 	  <% end %>

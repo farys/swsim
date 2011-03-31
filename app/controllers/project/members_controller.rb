@@ -7,10 +7,21 @@ class Project::MembersController < Project::ApplicationController
   
   def new
   	title_t :new
-  	@memb = Membership.new(:project_id => @project.id)	
+  	@memb = Membership.new	
   end
   
   def create
+  	@memb = Membership.new(:project_id => @project.id,
+  												 :user_id => params[:membership][:user_id],
+  												 :role_id => params[:membership][:role_id])
+  	unless @project.user_ids.include? @memb.user_id
+  		unless @memb.role_id == Role.get_id('owner') ||
+    			   @memb.role_id == Role.get_id('leader')
+    		if @memb.save
+    			flash_t :success
+    		end
+    	end
+  	end
   	redirect_to project_members_path
   end
   
