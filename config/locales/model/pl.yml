@@ -54,6 +54,11 @@ pl:
       active: aktywna
       hidden: ukryta
 
+  comment:
+    statuses:
+      pending: oczekujący na wystawienie
+      active: aktywny
+      deleted: usunięty - nieaktywny
   offer:
     statuses:
       active: aktywna
@@ -65,6 +70,7 @@ pl:
       active: Aktywna
       finished: Zakończona
       canceled: Anulowana
+      waiting_for_offer: Oczekująca na wybranie oferty
 
   project:
     statuses:

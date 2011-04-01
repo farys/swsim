@@ -55,6 +55,9 @@ Inz::Application.routes.draw do
     resources :groups, :except => [:show]
     resources :tags, :except => [:show]
     resources :communications, :only => [:destroy]
+    resources :users do
+      resources :comments, :only => [:index, :edit, :update]
+    end
   end
   
   #PROJECT
