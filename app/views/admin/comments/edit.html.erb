@@ -37,16 +37,20 @@
   </script>
 <% end -%>
 <div class="prepend-1 append-1">
-  <% form_for [:panel, @comment] do |f| -%>
+  <% form_for [:admin, @comment.author, @comment] do |f| -%>
 
     <%= render "layouts/error_messages", :target => @comment %>
-    <p>Proszę ocenić użytkownika <%= escape_user(@receiver) %> za
+  <p>Od: <%= escape_user(@author) %></p>
+    <p>Do: <%= escape_user(@receiver) %> za
 <% if @comment.level?(:auction) %> aukcję <%= link_auction(@comment.auction) %>
 <% else %> projekt <%= link_to @comment.project.name, project_info_path(@comment.project) %><% end %>
 :</p>
     <% unless @allowed_points.nil? %>
     <p>Dozwolona ilość punktów do rozdania: <span id="maxPoints" class="bold notice"><%= @allowed_points %></span></p>
   <% end %>
+    <p>
+<%= f.label :status %>
+      <%= select :comment, :status, statuses_for_select(@comment) %></p>
     <p>Rozdano punkty: <span id="points" class="bold notice">0</span></p>
     <% @values.each do |v| %>
       <%= render "layouts/error_messages", :target => v %>

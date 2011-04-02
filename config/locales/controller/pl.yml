@@ -36,6 +36,8 @@ pl:
         destroy: Aukcja została anulowana
       communications:
         destroy: Komunikat został usunięty
+      comments:
+        update: Komentarz został zaktualizowany
       offers:
         recovery: Oferta została przywrócona
         destroy: Oferta została anulowana
@@ -98,6 +100,8 @@ pl:
         new: Nowa wiadomość
         received: Odebrane wiadomości
         sent: Wysłane wiadomości
+      comments:
+        edit: Edycja komentarza
       auctions:
         index: Aukcje użytkowników
         edit: Edycja aukcji numer {@auction.id}

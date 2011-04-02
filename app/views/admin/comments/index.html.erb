@@ -1,0 +1,31 @@
+<% unless @comments.empty? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>od</td>
+        <td>do</td>
+        <td>oceny</td>
+        <td>za aukcję</td>
+        <td>za projekt</td>
+        <td>opcje</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @comments.each do |c| %>
+        <tr>
+          <td><%= link_to escape_user(c.author), c.author %></td>
+          <td><%= link_to escape_user(c.receiver), c.receiver %></td>
+          <td><% c.values.each do |v| %> <%= v.rating %><% end %></td>
+          <td><%= link_auction(c.auction) unless c.auction.nil? %></td>
+          <td><%= c.project.name unless c.project.nil? %></td>
+          <td>
+            <%= link_to "edytuj komentarz", edit_admin_user_comment_path(c.author, c) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate %>
+<% else %>
+  <div class="notice">Nie znaleziono żadnych aukcji.</div>
+<% end %>

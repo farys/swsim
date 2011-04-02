@@ -80,6 +80,11 @@ class Comment < ActiveRecord::Base
     self.save
   end
 
+  def delete!
+    self.status = STATUSES[:deleted]
+    self.save
+  end
+
   def status? status
     self.status == STATUSES[status]
   end
