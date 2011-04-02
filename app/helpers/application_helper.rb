@@ -16,7 +16,23 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
     status = model.class::STATUSES.invert[(status || model.status)]
     t("#{model.class.name.downcase}.statuses.#{status.to_s}")
   end
-
+	
+	#Metoda tlumaczy zawartosc kolumny w modelu
+  def escape_column(model, column)
+    t("#{model.class.name.downcase}.#{column}.#{model.send(column)}")
+  end
+  
+  #konwetuje rozmiar pliku w bajtach
+  def escape_file_size(size = 1)
+  	case size
+  	when 1..1023
+  		"#{size} bytes"
+  	when 1024..1048575
+  		"#{(size/1024.0).round(2)} KiB"
+  	else
+  		"#{(size/1024.0**2).round(2)} MiB"
+  	end
+  end
   # Metoda tworzy pola wyboru dla kolumny status
   # wymogiem jest hash STATUSES o zawartosci np. {:active => 0, :hidden => 1}
   # metoda zaglada do slownika po nazwy statusow
@@ -26,11 +42,6 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
       options += [[escape_status(model, v), v]]
     end
     options_for_select(options, model.status)
-  end
-  
-  #Metoda tlumaczy zawartosc kolumny w modelu
-  def escape_column(model, column)
-    t("#{model.class.name.downcase}.#{column}.#{model.send(column)}")
   end
   
   #Metoda tworzy pola wyboru dla dostepnych rol

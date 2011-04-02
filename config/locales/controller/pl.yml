@@ -118,5 +118,8 @@ pl:
       info:
         show: "{@project.name}"
       members:
-        index: "{@project.name}"
-        new: "{@project.name}"
+        index: "{@project.name} | Członkowie"
+        new: "{@project.name} | Dodaj użytkowika"
+      files:
+        index: "{@project.name} | Pliki"
+        show: "{@project.name} | Pliki | {@file.name}.{@file.extension}"

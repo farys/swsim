@@ -3,6 +3,13 @@ require 'faker'
 I18n.locale = :en
 #wypelnianie bazy development danymi => rake db:populate
 
+#ilosc generowoanych danych
+USERS = 15
+PROJECTS = USERS*3
+FILES = PROJECTS*3
+TOPICS = PROJECTS*3
+POSTS = TOPICS*3
+
 namespace :db do
 
   desc "Reset the base after changes in migration"
@@ -19,19 +26,19 @@ namespace :db do
     Rake::Task['db:reset'].invoke
     make_users
     make_roles
-    make_projects
-    #make_files
     make_groups_and_tags
     make_auctions
+    make_projects
+    make_files
     make_offers
     make_comments_keywords
-    make_topics
-    make_posts
+    #make_topics
+    #make_posts
   end
 end
 
 def make_users #zmieniony format emailu dla latwiejszego logowania
-  100.times do |i|
+  USERS.times do |i|
   	description = Faker::Lorem.sentence(12)
     firstname = Faker::Name.first_name
     country = Carmen.default_country
@@ -50,13 +57,14 @@ def make_users #zmieniony format emailu dla latwiejszego logowania
 end
 
 def make_projects
-  100.times do
+  PROJECTS.times do
     name = Faker::Company.name
     description = Faker::Lorem.sentences(12)
     Project.create!(
     	:name => name,
-    	:owner_id => rand(99)+1,
-    	:leader_id => rand(99)+1,
+    	:owner_id => rand(User.count-1)+1,
+    	:leader_id => rand(User.count-1)+1,
+    	:auction_id => rand(Auction.count-1)+1,
     	:duration => rand(370),
     	:description => description
     )
@@ -98,14 +106,13 @@ end
 
 def make_files
   types = %w[pdf zip rar 7z doc docx jpg jpeg tar tar.bz2 png]
-  100.times do
+  FILES.times do
   	name = Faker::Lorem.words(2).join(' ')
   	description = Faker::Lorem.sentence(4)
-  	ProjectFile.create!(:project_id => rand(99)+1,
-  											:user_id => rand(99)+1,
+  	ProjectFile.create!(:project_id => rand(Project.count-1)+1,
   											:name => name,
   											:size => rand(10**7),
-  											:type => types[rand(types.length-1)],
+  											:extension => types[rand(types.length-1)],
   											:description => description)
 	end
 end
@@ -145,19 +152,19 @@ def make_comments_keywords
 end
 
 def make_topics
-	100.times do
+	TOPICS.times do
 		title = Faker::Lorem.words(3).join(' ')
-		Topic.create!(:project_id => rand(99)+1,
-									:author_id => rand(99)+1,
+		Topic.create!(:project_id => rand(Project.count-1)+1,
+									:author_id => rand(User.count-1)+1,
 									:title => title)
 	end
 end
 
 def make_posts
-	100.times do
+	POSTS.times do
 		content = Faker::Lorem.sentences(12)
-		Post.create!(:topic_id => rand(99)+1,
-								 :author_id => rand(99)+1,
+		Post.create!(:topic_id => rand(Topic.count-1)+1,
+								 :author_id => rand(User.count-1)+1,
 								 :content => content)
 	end
 end

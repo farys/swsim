@@ -42,7 +42,7 @@
       </tr>
       <tr>
       	<td>Aukcja</td>
-      	<td><%= link_to(Auction.find(12).title, auction_path(12)) %></td>
+      	<td><%= link_to(Auction.find(@project.auction_id).title, auction_path(@project.auction_id)) %></td>
       </tr>
       <% if @project.owner_id == current_user.id && @project.status == Project::STATUSES[:active] %>
       	<tr>

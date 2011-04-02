@@ -68,7 +68,7 @@ Inz::Application.routes.draw do
       resources :files
     end
   end
-    
+  	
   resources :alerts, :only => [:create]
   
   root :to =>  "auctions#index"

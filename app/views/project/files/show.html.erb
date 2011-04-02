@@ -1,0 +1,40 @@
+<%= render 'project/shared/menu' %>
+
+<div class="span-22 last">
+  <div class="prepend-1 span-7">
+    <table class="list">
+      <tr>
+        <td>Nazwa</td>
+        <td><%= @project.name %></td>
+      </tr>
+      <tr>
+        <td>Rozmiar</td>
+        <td><%= escape_file_size @file.size %></td>
+      </tr>
+      <tr>
+        <td>Typ</td>
+        <td><%= @file.extension %></td>
+      </tr>
+      <% if can_edit? 'file' %>
+      	<tr>
+      		<td>Akcje</td>
+      		<td><%= button 'Usuń' %></td>
+      	</tr>
+      <% end %>
+    </table>
+  </div>
+  <div class="span-12 last append-1 prepend-1">
+    <% if can_edit?('file') %>
+    <%= render :partial => 'edit' %>
+    <% else %>
+      <table>
+        <tr>
+          <td>Opis</td>
+        </tr>
+        <tr>
+          <td><%= @file.description %></td>
+        </tr>
+      </table>
+    <% end %>
+  </div>
+</div>

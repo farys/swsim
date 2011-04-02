@@ -1,0 +1,17 @@
+<% if can_edit?('file') %>
+	<table>
+	  <%= form_for @file, :url => project_file_path(@project, @file) do |f| %>
+	  <%= render "layouts/error_messages", :target => @file %>
+	  <tr>
+	    <td>Opis <%= f.submit "Zapisz" %></td>
+	  </tr>
+	  <tr style="background:none">
+	    <td>
+	      <%= f.text_area :description, :class => "span-14", :style => "height: 150px" %><br />
+	    </td>
+	  </tr>
+	  <% end %>
+	</table>
+<% else %>
+	<%= render :action => :show %>
+<% end %>
