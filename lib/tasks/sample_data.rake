@@ -25,11 +25,13 @@ namespace :db do
     make_auctions
     make_offers
     make_comments_keywords
+    make_topics
+    make_posts
   end
 end
 
 def make_users #zmieniony format emailu dla latwiejszego logowania
-  96.times do |i|
+  100.times do |i|
   	description = Faker::Lorem.sentence(12)
     firstname = Faker::Name.first_name
     country = Carmen.default_country
@@ -53,8 +55,8 @@ def make_projects
     description = Faker::Lorem.sentences(12)
     Project.create!(
     	:name => name,
-    	:owner_id => rand(20),
-    	:leader_id => rand(100),
+    	:owner_id => rand(99)+1,
+    	:leader_id => rand(99)+1,
     	:duration => rand(370),
     	:description => description
     )
@@ -95,10 +97,17 @@ def make_roles
 end
 
 def make_files
-  name = Faker::Lorem.words(2)
-  type = Faker::Lorem.words(1)
-  description = Faker::Lorem.sentence(4)
-  ProjectFile.create!(:project_id => rand(50), :user_id => rand(30), :name => name, :size => rand(10**7), :type => type, :description => description)
+  types = %w[pdf zip rar 7z doc docx jpg jpeg tar tar.bz2 png]
+  100.times do
+  	name = Faker::Lorem.words(2).join(' ')
+  	description = Faker::Lorem.sentence(4)
+  	ProjectFile.create!(:project_id => rand(99)+1,
+  											:user_id => rand(99)+1,
+  											:name => name,
+  											:size => rand(10**7),
+  											:type => types[rand(types.length-1)],
+  											:description => description)
+	end
 end
 
 def make_auctions
@@ -133,4 +142,22 @@ def make_comments_keywords
     { :name => "Stosunek do użytkownika" }
     ])
 
+end
+
+def make_topics
+	100.times do
+		title = Faker::Lorem.words(3).join(' ')
+		Topic.create!(:project_id => rand(99)+1,
+									:author_id => rand(99)+1,
+									:title => title)
+	end
+end
+
+def make_posts
+	100.times do
+		content = Faker::Lorem.sentences(12)
+		Post.create!(:topic_id => rand(99)+1,
+								 :author_id => rand(99)+1,
+								 :content => content)
+	end
 end

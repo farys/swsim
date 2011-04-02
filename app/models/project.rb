@@ -4,17 +4,15 @@ class Project < ActiveRecord::Base
 	has_many :memberships
   has_many :users, :through => :memberships
   has_many :project_files, :dependent => :destroy
+  has_many :topics, :dependent => :destroy
   belongs_to :auction
 	
-	validates :name, :presence => true,
-	                 :length => { :in => 5..50}
+	validates :name, :length => { :in => 5..50}
 	validates :owner_id, :presence => true
 	validates :leader_id, :presence => true
 	validates :duration, :presence => true
-	validates :status, :presence => true,
-	                   :inclusion => { :in => STATUSES.values }
-	validates :description, :presence => true,
-	                        :length => { :in => 10..2000}
+	validates :status, :inclusion => { :in => STATUSES.values }
+	validates :description, :length => { :in => 10..2000}
 		
 	default_scope :order => 'projects.id DESC'
 	

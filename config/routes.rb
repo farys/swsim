@@ -62,6 +62,7 @@ Inz::Application.routes.draw do
     resources :projects do
       resource :info, :only => [:show, :update], :controller => "info"
       resources :members
+      resources :files
     end
   end
     
