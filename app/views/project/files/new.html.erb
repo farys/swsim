@@ -1,0 +1,21 @@
+<%= render 'project/shared/menu' %>
+
+<div class="span-3 prepend-1">
+	<%= form_for @file, :url => project_files_path(@project, @file),
+											:html => {:multipart => true} do |f| %>
+		<%= render "layouts/error_messages", :target => @file %>
+		<%= f.hidden_field :project_id, :value => @project.id %>
+    <p>
+      <%= f.label :project_file %><br />
+      <%= f.file_field :project_file %>
+    </p>
+    <p>
+      <%= f.label :description %><br />
+      <%= f.text_area :description %>
+    </p>   
+    <p>
+      <%= f.submit "Dodaj plik" %>
+    </p>
+	<% end %>
+</div>
+

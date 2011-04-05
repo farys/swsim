@@ -1,4 +1,6 @@
 class Project::InfoController < Project::ApplicationController
+	before_filter :check_privileges, :only => :update
+	
   def show
     title_t :show
   end
@@ -13,7 +15,7 @@ class Project::InfoController < Project::ApplicationController
 	      title_t :show
 	      render :show
 	    end
-  	elsif can_edit?('info')
+  	else
 	    @project.description = params[:project][:description]
 	    if @project.save
 	      flash_t :success
@@ -23,5 +25,13 @@ class Project::InfoController < Project::ApplicationController
 	      render :show
 	    end
     end
+  end
+  
+  private
+  
+  def check_privileges
+  	unless can_edit?('info')
+  		redirect_to project_members_path
+  	end
   end
 end

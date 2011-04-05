@@ -5,15 +5,11 @@
     <table class="list">
       <tr>
         <td>Nazwa</td>
-        <td><%= @project.name %></td>
+        <td><%= @file.name %></td>
       </tr>
       <tr>
         <td>Rozmiar</td>
         <td><%= escape_file_size @file.size %></td>
-      </tr>
-      <tr>
-        <td>Typ</td>
-        <td><%= @file.extension %></td>
       </tr>
       <% if can_edit? 'file' %>
       	<tr>

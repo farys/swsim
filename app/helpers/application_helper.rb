@@ -25,9 +25,9 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
   #konwetuje rozmiar pliku w bajtach
   def escape_file_size(size = 1)
   	case size
-  	when 1..1023
+  	when 1..1.kilobyte - 1
   		"#{size} bytes"
-  	when 1024..1048575
+  	when 1.kilobyte..1.megabyte - 1
   		"#{(size/1024.0).round(2)} KiB"
   	else
   		"#{(size/1024.0**2).round(2)} MiB"

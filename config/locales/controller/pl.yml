@@ -61,6 +61,10 @@ pl:
         	member: Użytkownik uczestniczy już w projekcie
         destroy: Użytkownik został pomyślnie usunięty z projektu
         update: Rola została pomyślnie zaktualizowana.
+      files:
+        update: Opis został zaktualizowany.
+        create: Plik został pomyślnie dodany.
+        destroy: Plik został pomyślnie usunięty.
         
   title:
     auctions:
@@ -122,4 +126,5 @@ pl:
         new: "{@project.name} | Dodaj użytkowika"
       files:
         index: "{@project.name} | Pliki"
-        show: "{@project.name} | Pliki | {@file.name}.{@file.extension}"
+        show: "{@project.name} | Pliki | {@file.name}"
+        new: "{@project.name} | Pliki | Dodaj plik"

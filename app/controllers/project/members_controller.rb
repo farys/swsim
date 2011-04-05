@@ -50,10 +50,10 @@ class Project::MembersController < Project::ApplicationController
   end
   
   private
+  
   def check_privileges
   	unless can_edit?('user')
-  		title_t :index
-  		render :index
+  		redirect_to project_members_path
   	end
   end
 end

@@ -6,7 +6,6 @@ I18n.locale = :en
 #ilosc generowoanych danych
 USERS = 15
 PROJECTS = USERS*3
-FILES = PROJECTS*3
 TOPICS = PROJECTS*3
 POSTS = TOPICS*3
 
@@ -29,7 +28,6 @@ namespace :db do
     make_groups_and_tags
     make_auctions
     make_projects
-    make_files
     make_offers
     make_comments_keywords
     #make_topics
@@ -102,19 +100,6 @@ def make_roles
   Role.create!(:name => 'leader', :file => true, :forum => true, :user => true, :info => true)
   Role.create!(:name => 'owner', :info => true)
   Role.create!(:name => 'info_mod', :info => true)
-end
-
-def make_files
-  types = %w[pdf zip rar 7z doc docx jpg jpeg tar tar.bz2 png]
-  FILES.times do
-  	name = Faker::Lorem.words(2).join(' ')
-  	description = Faker::Lorem.sentence(4)
-  	ProjectFile.create!(:project_id => rand(Project.count-1)+1,
-  											:name => name,
-  											:size => rand(10**7),
-  											:extension => types[rand(types.length-1)],
-  											:description => description)
-	end
 end
 
 def make_auctions

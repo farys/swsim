@@ -32,6 +32,9 @@ pl:
       comment_value:
         extra: Pole opis
         rating: Pole ocena
+      projectfile:
+      	description: Opis
+      	file: Plik
     errors:
       models:
         auction:
