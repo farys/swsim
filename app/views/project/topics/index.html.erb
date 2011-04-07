@@ -1,0 +1,32 @@
+<%= render 'project/shared/menu' %>
+
+<div class="span-12 prepend-1">
+	<div class="span-3 prepend-10" style="margin-bottom: 5px">
+		<%= link_to 'Dodaj temat', :action => :new %>
+	</div>
+	<table class="list">
+	  <thead>
+	    <tr>
+	      <th>Tytuł</th>
+	      <th>Autor</th>
+	      <th>Ostatni post</th>
+	      <th>Akcje</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <% @topics.each do |topic| %>
+	    	<% user = User.find(topic.user_id) %>
+	      	<% if can_edit?('forum') ||
+	    			    ( current_user.topic_ids.include?(topic.id) &&
+	    			    @project.active? ) %>
+	    	    <%= render :partial => 'edit_table', :locals => { :topic => topic,
+	    	    																									:user => user } %>
+	    		<% else %>
+	    		  <%= render :partial => 'normal_table', :locals => { :topic => topic,
+	    	    																									:user => user } %>
+	    		<% end %>
+	    	</tr>
+	    <% end %>
+	  </tbody>
+	</table>
+</div>

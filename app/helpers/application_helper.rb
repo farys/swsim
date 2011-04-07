@@ -62,7 +62,7 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
     text = "<div class=\"#{type}\">#{translation}</div>"
     return text unless type.nil?
   end
-  
+    
   #Dodaje link w postaci buttona, domyslnie nazwa: test, url: '#'
   def button(name = 'test', url = '#')
   	content_tag(:button,

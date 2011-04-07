@@ -1,5 +1,9 @@
 pl:
   flash:
+    general:
+      error: Wystąpił nieznany bład, wszystkie zmniany zostały cofnięte
+      project:
+        not_participating: Nie bierzesz udziału w tym projekcie
     users:
       create: Witaj nowy użytkowniku
       update: Profil zaktualizowany
@@ -59,12 +63,16 @@ pl:
         index: Nie bierzesz udziału w tym projekcie
         create: Użytkownik został pomyślnie dodany do projektu
         	member: Użytkownik uczestniczy już w projekcie
+        	role: Nie można nadać uzytkownikowi takiej roli
         destroy: Użytkownik został pomyślnie usunięty z projektu
-        update: Rola została pomyślnie zaktualizowana.
+        update: Rola została pomyślnie zaktualizowana
       files:
-        update: Opis został zaktualizowany.
-        create: Plik został pomyślnie dodany.
-        destroy: Plik został pomyślnie usunięty.
+        update: Opis został zaktualizowany
+        create: Plik został pomyślnie dodany
+        destroy: Plik został pomyślnie usunięty
+      topics:
+        destroy: Temat został pomyślnie usunięty
+        create: Nowy temat został pomyślnie dodany
         
   title:
     auctions:
@@ -128,3 +136,7 @@ pl:
         index: "{@project.name} | Pliki"
         show: "{@project.name} | Pliki | {@file.name}"
         new: "{@project.name} | Pliki | Dodaj plik"
+      topics:
+        index: "{@project.name} | Forum"
+        show: "{@project.name} | Forum | {@topic.title}"
+        new: "{@project.name} | Forum | Nowy temat"

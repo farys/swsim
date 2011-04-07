@@ -64,8 +64,11 @@ Inz::Application.routes.draw do
   scope :module => "project" do
     resources :projects do
       resource :info, :only => [:show, :update], :controller => "info"
-      resources :members
-      resources :files
+      resources :members, :except => [:show, :edit]
+      resources :files, :except => [:edit]
+      resources :topics do
+      	resource :posts
+      end
     end
   end
   	

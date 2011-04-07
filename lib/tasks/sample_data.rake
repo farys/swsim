@@ -5,9 +5,9 @@ I18n.locale = :en
 
 #ilosc generowoanych danych
 USERS = 15
-PROJECTS = USERS*3
-TOPICS = PROJECTS*3
-POSTS = TOPICS*3
+PROJECTS = USERS*4
+TOPICS = PROJECTS*5
+POSTS = TOPICS*5
 
 namespace :db do
 
@@ -30,8 +30,8 @@ namespace :db do
     make_projects
     make_offers
     make_comments_keywords
-    #make_topics
-    #make_posts
+    make_topics
+    make_posts
   end
 end
 
@@ -139,9 +139,11 @@ end
 def make_topics
 	TOPICS.times do
 		title = Faker::Lorem.words(3).join(' ')
-		Topic.create!(:project_id => rand(Project.count-1)+1,
-									:author_id => rand(User.count-1)+1,
-									:title => title)
+		content = Faker::Lorem.sentences(12)
+		topic = Topic.create!(:project_id => rand(Project.count-1)+1,
+													:user_id => rand(User.count-1)+1,
+													:title => title,
+													:content => content)
 	end
 end
 
@@ -149,7 +151,7 @@ def make_posts
 	POSTS.times do
 		content = Faker::Lorem.sentences(12)
 		Post.create!(:topic_id => rand(Topic.count-1)+1,
-								 :author_id => rand(User.count-1)+1,
+								 :user_id => rand(User.count-1)+1,
 								 :content => content)
 	end
 end

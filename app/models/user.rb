@@ -18,8 +18,8 @@ class User < ActiveRecord::Base
   has_many :projects, :through => :memberships
   has_many :roles, :through => :memberships
   has_one :emailver
-  has_many :topics, :dependent => :destroy, :foreign_key => :author
-  has_many :posts, :dependent => :destroy, :foreign_key => :author
+  has_many :topics, :dependent => :destroy
+  has_many :posts, :dependent => :destroy
   
   email_regex = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃ\-.]+@[a-zżźćńółęąś\d\-.]+\.[a-z]+\z/i
   string = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃß\-.]+\z/

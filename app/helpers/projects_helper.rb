@@ -15,4 +15,24 @@ module ProjectsHelper
 	  	false
   	end
   end
+  
+  def edit_topic?(topic_id)
+  	if can_edit?('forum')
+  		true
+  	elsif current_user.topic_ids.include?(topic_id) && @project.active?
+  		true
+  	else
+  		false
+  	end
+  end
+  
+  def edit_topic?(post_id)
+  	if can_edit?('forum')
+  		true
+  	elsif current_user.post_ids.include?(post_id) && @project.active?
+  		true
+  	else
+  		false
+  	end
+  end
 end

@@ -1,0 +1,7 @@
+<% if topic.posts.empty? %>
+	<p><%= User.find(topic.user_id).login %></p>
+	<p><%= escape_time topic.created_at %></p>
+<% else %>
+	<p><%= User.find(topic.posts.last.user_id).login %></p>
+	<p><%= escape_time topic.posts.last.created_at %></p>
+<% end %>

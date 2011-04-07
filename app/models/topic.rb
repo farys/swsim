@@ -4,4 +4,5 @@ class Topic < ActiveRecord::Base
 	has_many :posts, :dependent => :destroy
 	
 	validates :title, :length => { :in => 5..50}
+	validates :content, :length => { :in => 1..1000}
 end
