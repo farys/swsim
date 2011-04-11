@@ -52,20 +52,20 @@ class Project::MembersController < Project::ApplicationController
   end
   
   def update
-  	memb = Membership.where(:user_id => params[:membership][:user_id],
+  	@memb = Membership.where(:user_id => params[:membership][:user_id],
   													:project_id => @project.id).first
     role = params[:membership][:role_id]
   	  	
   	#weryfikacja czlonkostwa
-  	if memb.nil?
+  	if @memb.nil?
   	  flash.now[:error] = t('general.membership.dont_exists')
   	  render_index
   	  return
   	end
   	
   	#weryfikacja uzytkownika
-  	if memb.role_id == Role.get_id('owner') ||
-  		 memb.role_id == Role.get_id('leader')
+  	if @memb.role_id == Role.get_id('owner') ||
+  		 @memb.role_id == Role.get_id('leader')
   	  flash_t :notice, 'cant_change_role'
   	  render_index
   	  return
@@ -80,8 +80,8 @@ class Project::MembersController < Project::ApplicationController
     end      
     
     #uaktualnienie roli uzytkownika
-  	memb.role_id = role
-  	if memb.save
+  	@memb.role_id = role
+  	if @memb.save
   	  flash_t :success
   	  redirect_to project_members_path
 		else

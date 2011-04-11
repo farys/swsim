@@ -155,4 +155,4 @@ pl:
         index: "{@project.name} | Forum"
         show: "{@project.name} | Forum | {@topic.title}"
         new: "{@project.name} | Forum | Nowy temat"
-        edit: "{@project.name} | Forum | Edycja {@topic.title}
+        edit: "{@project.name} | Forum | Edycja {@topic.title}"

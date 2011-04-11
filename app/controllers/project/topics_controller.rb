@@ -25,13 +25,13 @@ class Project::TopicsController < Project::ApplicationController
 	
 	def create
 	  
-		topic = Topic.new
-		topic.project_id = @project.id
-		topic.user_id = current_user.id
-		topic.title = params[:topic][:title]
-		topic.content = params[:topic][:content]
+		@topic = Topic.new
+		@topic.project_id = @project.id
+		@topic.user_id = current_user.id
+		@topic.title = params[:topic][:title]
+		@topic.content = params[:topic][:content]
 		
-		if topic.save
+		if @topic.save
 			flash_t :success
 			redirect_to project_topics_path
 		else
@@ -46,11 +46,11 @@ class Project::TopicsController < Project::ApplicationController
 	end
 	
 	def update
-	  topic = Topic.find(params[:topic][:id])
-	  topic.title = params[:topic][:title]
-		topic.content = params[:topic][:content]
+	  @topic = Topic.find(params[:topic][:id])
+	  @topic.title = params[:topic][:title]
+		@topic.content = params[:topic][:content]
 		
-		if topic.save
+		if @topic.save
 		  flash_t :success
 		  redirect_to project_topics_path
 		else
@@ -61,12 +61,11 @@ class Project::TopicsController < Project::ApplicationController
 	
 	def destroy	  
 		topic = Topic.find(params[:id])
-		if edit_topic? topic
-			if topic.destroy
-				flash_t :success
-			else
-			  flash_t_general :error, 'error.unknown'
-			end
+		
+		if topic.destroy
+			flash_t :success
+		else
+		  flash_t_general :error, 'error.unknown'
 		end
 		redirect_to project_topics_path
 	end
@@ -83,7 +82,7 @@ class Project::TopicsController < Project::ApplicationController
 	  
   	if can_edit?('forum')
   		true
-  	elsif current_user.topic_ids.include?(params[:id]) && @project.active?
+  	elsif current_user.topic_ids.include?(params[:id] || params[:topic][:id]) && @project.active?
   		true
   	else
   		false

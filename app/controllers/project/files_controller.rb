@@ -23,10 +23,10 @@ class Project::FilesController < Project::ApplicationController
 	end
 	
 	def create
-		file = ProjectFile.new(params[:project_file])
-		file.project_id = @project.id
+		@file = ProjectFile.new(params[:project_file])
+		@file.project_id = @project.id
 		
-		if file.save
+		if @file.save
 			flash_t :success
 			redirect_to project_files_path
 		else
@@ -42,12 +42,12 @@ class Project::FilesController < Project::ApplicationController
 	    return
 	  end
 	  
-		file = ProjectFile.find(params[:id])
+		@file = ProjectFile.find(params[:id])
 		project = file.project_id
-		file.description = params[:project_file][:description]
-		file.project_id = project
+		@file.description = params[:project_file][:description]
+		@file.project_id = project
 		
-		if file.save
+		if @file.save
 			flash_t :success
 			redirect_to project_file_path(@project, file)
 		else
