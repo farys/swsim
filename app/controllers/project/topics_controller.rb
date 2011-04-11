@@ -41,11 +41,12 @@ class Project::TopicsController < Project::ApplicationController
 	end
 	
 	def edit
-	  title_t :edit	    
-	  @topic = Topic.find(params[:id])	  
+	  @topic = Topic.find(params[:id])
+    title_t :edit
 	end
 	
 	def update
+
 	  @topic = Topic.find(params[:topic][:id])
 	  @topic.title = params[:topic][:title]
 		@topic.content = params[:topic][:content]

@@ -1,9 +1,9 @@
 <%= render 'project/shared/menu' %>
 <div class="span-10 prepend-1">
-	<%= form_for @topic, :url => project_topics_path(@project, @topic) do |f| %>
+	<%= form_for @topic, :url => project_topic_path(@project, @topic) do |f| %>
 		<%= render "layouts/error_messages", :target => @topic %>
 		<div class="field">
-			<%= f.label :title%><br />
+			<%= f.label :title %><br />
 			<%= f.text_field :title %>
 		</div>
 		<div class="field">
