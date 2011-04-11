@@ -7,7 +7,7 @@ pl:
       project:
         not_participating: Nie bierzesz udziału w tym projekcie
         dont_exists: Projekt nie istnieje
-        not_active: Projekt nie jest już aktywny, akcja nie może być przeprowadzona
+        not_active: Projekt jest zakończony, edycja nie jest już możliwa
       project_file:
         dont_exists: Plik nie istnieje
       user:

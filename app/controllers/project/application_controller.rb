@@ -15,7 +15,8 @@ class Project::ApplicationController < ApplicationController
 	  			@project.user_role(current_user.id).file	
 	  	end
 	  else
-	  	false
+	  	flash_t_general :notice, 'project.not_active'
+	  	redirect_to project_info_path(@project)
   	end
   end
   

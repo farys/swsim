@@ -14,7 +14,7 @@ class Project::InfoController < Project::ApplicationController
 	  	if @project.save
         @comment = Comment.create_from_project_for_owner(@project)
 	      redirect_to edit_panel_comment_path(@comment),
-	                  t("flash.project.info.finishing_update")
+	                  flash_t(:success, 'finishing_update')
 	    else
 	      title_t :show
 	      render :show

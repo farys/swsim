@@ -47,7 +47,7 @@ class Project::TopicsController < Project::ApplicationController
 	
 	def update
 
-	  @topic = Topic.find(params[:topic][:id])
+	  @topic = Topic.find(params[:id])
 	  @topic.title = params[:topic][:title]
 		@topic.content = params[:topic][:content]
 		
@@ -83,7 +83,7 @@ class Project::TopicsController < Project::ApplicationController
 	  
   	if can_edit?('forum')
   		true
-  	elsif current_user.topic_ids.include?(params[:id] || params[:topic][:id]) && @project.active?
+  	elsif current_user.topic_ids.include?(params[:id]) && @project.active?
   		true
   	else
   		false
