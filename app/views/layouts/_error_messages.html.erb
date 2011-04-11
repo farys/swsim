@@ -1,11 +1,11 @@
 <% if target.errors.any? %>   
-<div class="error">
-  <h2>
-<%= t("activerecord.errors.template.header", :count => target.errors.count, :model => target) %>:</h2>
-  <ul>   
-  <% target.errors.full_messages.each do |msg| %>   
-    <li><%= msg %></li>   
-  <% end %>   
-  </ul>   
-</div>   
+  <div class="error">
+    <h2>
+      <%= t("activerecord.errors.template.header", :count => target.errors.count) %>:</h2>
+    <ul>
+      <% target.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>   

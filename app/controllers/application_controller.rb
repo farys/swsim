@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     if action.nil?
     	text = t("flash.#{params["controller"]}.#{params[:action]}")
     else
-    	text = t("flash.#{params["controller"]}.#{action}")
+    	text = t("flash.#{params["controller"]}.#{action.to_s}")
     end
     return text if type.nil?
     flash[type] = text
