@@ -1,8 +1,22 @@
-# Polish translations for Ruby on Rails
-# by Jacek Becela (jacek.becela@gmail.com, http://github.com/ncr)
-# Minor changes and adjustments for Rails 3 by Piotrek Okoński (http://github.com/pokonski)
-
 pl:
+  general:
+    left: Pozostało
+    created_at: Utworzony
+    users: Użytkownicy
+    actions: Akcje
+    save: Zapisz
+    delete: Usuń
+    edit: Edytuj
+    download: Pobierz
+    pm: PW
+    contact: Kontakt
+    project:
+      ended: Projekt zakończony
+      end: Zakończ projekt
+      add_user: Dodaj użytkowika
+      add_file: Dodaj plik
+    topic:
+      last_post: Ostatni post	
   date:
     formats:
       default: "%d-%m-%Y"

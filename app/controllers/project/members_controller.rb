@@ -14,46 +14,126 @@ class Project::MembersController < Project::ApplicationController
   	@memb = Membership.new(:project_id => @project.id,
   												 :user_id => params[:membership][:user_id],
   												 :role_id => params[:membership][:role_id])
-  	unless @project.user_ids.include? @memb.user_id
-  		unless @memb.role_id == Role.get_id('owner') ||
-    			   @memb.role_id == Role.get_id('leader')
-    		if @memb.save
-    			flash_t :success
-    		end
-    	end
+  	
+  	#weryfikacja uzytkownika
+  	unless User.exists? @memb.user_id
+  	  flash.now[:error] = t('flash.general.user.dont_exists')
+  	  render_new
+  	  return
   	end
-  	redirect_to project_members_path
+  	
+  	if @project.user_ids.include? @memb.user_id
+  		flash.now[:notice] = t('flash.project.members.member_exists')
+  		render_new
+  	  return 
+  	end
+  	
+  	#weryfikacja roli
+  	unless Role.exists? @memb.role_id
+  	  flash.now[:error] = t('flash.general.role.dont_exists')
+  	  render_new
+  	  return
+  	end
+  	
+  	if @memb.role_id == Role.get_id('owner') ||
+    	 @memb.role_id == Role.get_id('leader')
+    	flash.now[:notice] = t('flash.project.members.invalid_role')
+    	render_new
+  	  return
+    end
+    
+    #dodanie nowego uzytkownika
+    if @memb.save
+    	flash_t :success
+    	redirect_to project_members_path
+    else
+      render_new
+    end   		
   end
   
   def update
   	memb = Membership.where(:user_id => params[:membership][:user_id],
   													:project_id => @project.id).first
-  	unless memb.role_id == Role.get_id('owner') ||
-  		     memb.role_id == Role.get_id('leader')
-  		memb.role_id = params[:membership][:role_id]
-  		if memb.save!
-  			flash_t :success
-  		end
+    role = params[:membership][:role_id]
+  	  	
+  	#weryfikacja czlonkostwa
+  	if memb.nil?
+  	  flash.now[:error] = t('general.membership.dont_exists')
+  	  render_index
+  	  return
   	end
-  	redirect_to project_members_path
+  	
+  	#weryfikacja uzytkownika
+  	if memb.role_id == Role.get_id('owner') ||
+  		 memb.role_id == Role.get_id('leader')
+  	  flash_t :notice, 'cant_change_role'
+  	  render_index
+  	  return
+  	end
+  	
+  	#weryfikacja roli	 
+    if role == Role.get_id('owner') ||
+       role == Role.get_id('leader')
+      flash_t :notice, 'invalid_role'
+      render_index
+      return
+    end      
+    
+    #uaktualnienie roli uzytkownika
+  	memb.role_id = role
+  	if memb.save
+  	  flash_t :success
+  	  redirect_to project_members_path
+		else
+		  render_index
+  	end
   end
   
   def destroy
-		memb = Membership.find(params[:id])													
-    unless memb.role_id == Role.get_id('owner') ||
-    			 memb.role_id == Role.get_id('leader')
-    	if memb.destroy
-    		flash_t :success
-    	end
+		memb = Membership.find(params[:id])
+		
+		#weryfikacja czlonkostwa
+  	if memb.nil?
+  	  flash.now[:error] = t('general.membership.dont_exists')
+  	  render_index
+  	  return
+  	end
+  	
+  	#weryfikacja roli	 
+    if memb.role == Role.get_id('owner') ||
+       memb.role == Role.get_id('leader')
+      flash_t :notice, 'cant_delete'
+      render_index
+      return
+    end 													
+	  
+	  #usuwanie uzytkownika
+    if memb.destroy
+    	flash_t :success
+    	redirect_to project_members_path
+  	else
+  	  flash_t_general :error, 'error.unknown'
+  	  redirect_to project_members_path
     end
-    redirect_to project_members_path
   end
   
   private
   
+  #sprawdzenie uprawnien do edycji
   def check_privileges
   	unless can_edit?('user')
+  	  flash_t_general :errors, 'error.privileges'
   		redirect_to project_members_path
   	end
+  end
+  
+  def render_new
+    title_t :new
+  	render :action => :new
+  end
+  
+  def render_index
+    title_t :index
+    render :action => :index
   end
 end

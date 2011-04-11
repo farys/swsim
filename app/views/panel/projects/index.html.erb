@@ -5,23 +5,26 @@
 	  <table class="list">
 	    <thead>
 	      <tr>
-	        <th>Nazwa</th>
-	        <th>Rola</th>
-	        <th>Termin</th>
-	        <th>Status</th>
+	        <th><%= attribute_t 'project.name' %></th>
+	        <th><%= model_t 'role' %></th>
+	        <th><%= t('project.deadline' )%></th>
+	        <th><%= attribute_t 'project.status' %></th>
 	      </tr>
 	    </thead>
 	    <tbody>
 	      <% @projects.each do |proj| %>
 	        <tr>
 	          <td><%= link_to proj.name, project_info_path(proj) %></td>
-	          <td><%= escape_column(proj.user_role(current_user.id), "name").capitalize %></td>
+	          <td>
+	          	<%= escape_column(proj.user_role(current_user.id),
+	          									  "name").capitalize %>	          	
+	          </td>
 	          <td>
 	          	<% if proj.active? %>
 	          		<%= escape_date(proj.deadline) %>
-	            	(Pozostało <%= time_ago_in_words(proj.deadline) %>)
+	            	(<%= t('general.left') %> <%= time_ago_in_words(proj.deadline) %>)
 	          	<% else %>
-	          		Projekt zakończony (<%= escape_date(proj.updated_at) %>)
+	          		<%= t('general.project.ended') %> (<%= escape_date(proj.updated_at) %>)
 	          	<% end %>            
 	          </td>
 	          <td><%= escape_status(proj) %></td>

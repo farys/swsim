@@ -7,10 +7,10 @@
 	<table class="list">
 	  <thead>
 	    <tr>
-	      <th>Tytuł</th>
-	      <th>Autor</th>
-	      <th>Ostatni post</th>
-	      <th>Akcje</th>
+	      <th><%= attribute_t 'topic.title' %></th>
+	      <th><%= attribute_t 'topic.user_id' %></th>
+	      <th><%= t('general.topic.last_post') %></th>
+	      <th><%= t('general.actions') %></th>
 	    </tr>
 	  </thead>
 	  <tbody>

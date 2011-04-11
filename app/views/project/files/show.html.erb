@@ -4,17 +4,20 @@
   <div class="prepend-1 span-7">
     <table class="list">
       <tr>
-        <td>Nazwa</td>
+        <td><%= attribute_t 'project_file.name' %></td>
         <td><%= @file.name %></td>
       </tr>
       <tr>
-        <td>Rozmiar</td>
+        <td><%= attribute_t 'project_file.size' %></td>
         <td><%= escape_file_size @file.size %></td>
       </tr>
       <% if can_edit? 'file' %>
       	<tr>
-      		<td>Akcje</td>
-      		<td><%= button 'Usuń' %></td>
+      		<td><%= t('general.actions') %></td>
+      		<td>
+      		  <%= link_to t('general.delete'), project_file_path(@project,@file),
+      		                                   :method => :delete %>
+      		</td>
       	</tr>
       <% end %>
     </table>
@@ -25,7 +28,7 @@
     <% else %>
       <table>
         <tr>
-          <td>Opis</td>
+          <td><%= attribute_t 'project_file.description' %></td>
         </tr>
         <tr>
           <td><%= @file.description %></td>

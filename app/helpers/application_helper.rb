@@ -22,6 +22,18 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
     t("#{model.class.name.downcase}.#{column}.#{model.send(column)}")
   end
   
+  #Metoda tlumaczy nazwe modelu
+  def model_t(model = nil)
+    translation = t("activerecord.models.#{model}")
+    return translation unless model.nil?    
+  end
+  
+  #Metoda tlumaczy atrybut modelu
+  def attribute_t(attribute = nil)
+    translation = t("activerecord.attributes.#{attribute}")
+    return translation unless attribute.nil?
+  end
+  
   #konwetuje rozmiar pliku w bajtach
   def escape_file_size(size = 1)
   	case size

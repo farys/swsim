@@ -7,7 +7,7 @@
 			<p><%= image_tag user.avatar.url(:thumb) %></p>
 			<p><%= link_to user.login, user_path(user.id) %></p>
 			<p>
-				<%= link_to 'PW', :controller => 'panel/messages',
+				<%= link_to t('general.pm'), :controller => 'panel/messages',
 													:action => :new, 
 													:receiver_login => user.login %> | 
        	<%= mail_to user.email %>
@@ -22,7 +22,7 @@
 				<p><%= image_tag user.avatar.url(:thumb) %></p>
 				<p><%= link_to user.login, user_path(user.id) %></p>
 				<p>
-					<%= link_to 'PW', :controller => 'panel/messages',
+					<%= link_to t('general.pm'), :controller => 'panel/messages',
 														:action => :new, 
 														:receiver_login => user.login %> | 
         	<%= mail_to user.email %>

@@ -1,9 +1,23 @@
 pl:
   flash:
     general:
-      error: Wystąpił nieznany bład, wszystkie zmniany zostały cofnięte
+      error:
+        unknown: Wystąpił nieznany bład, wszystkie zmniany zostały cofnięte
+        privileges: Nie posiadasz wystarczających uprawnień
       project:
         not_participating: Nie bierzesz udziału w tym projekcie
+        dont_exists: Projekt nie istnieje
+        not_active: Projekt nie jest już aktywny, akcja nie może być przeprowadzona
+      project_file:
+        dont_exists: Plik nie istnieje
+      user:
+        dont_exists: Użytkownik nie istnieje
+      role:
+        dont_exists: Rola nie istnieje
+      membership:
+        dont_exists: Członkostwo nie istnieje
+      topic:
+        dont_exists: Temat nie istnieje
     users:
       create: Witaj nowy użytkowniku
       update: Profil zaktualizowany
@@ -56,16 +70,16 @@ pl:
    
     project:
       info:
-        show: Nie bierzesz udziału w tym projekcie
         update: Opis został pomyślnie zaktualizowany
         finishing_update: Projekt został zakończony, wystaw teraz ocenę liderowi zespołu.
       members:
-        index: Nie bierzesz udziału w tym projekcie
         create: Użytkownik został pomyślnie dodany do projektu
-        	member: Użytkownik uczestniczy już w projekcie
-        	role: Nie można nadać uzytkownikowi takiej roli
+        member_exists: Użytkownik uczestniczy już w projekcie
+        invalid_role: Nie można nadać uzytkownikowi takiej roli
         destroy: Użytkownik został pomyślnie usunięty z projektu
         update: Rola została pomyślnie zaktualizowana
+        cant_change_role: Nie możesz zmienić roli tego użytkowika
+        cant_delete: Nie możesz usunąć tego użytkowika
       files:
         update: Opis został zaktualizowany
         create: Plik został pomyślnie dodany
@@ -73,6 +87,7 @@ pl:
       topics:
         destroy: Temat został pomyślnie usunięty
         create: Nowy temat został pomyślnie dodany
+        edit: Temat został pomyślnie zaktualizowany
         
   title:
     auctions:
@@ -140,3 +155,4 @@ pl:
         index: "{@project.name} | Forum"
         show: "{@project.name} | Forum | {@topic.title}"
         new: "{@project.name} | Forum | Nowy temat"
+        edit: "{@project.name} | Forum | Edycja {@topic.title}

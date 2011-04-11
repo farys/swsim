@@ -5,6 +5,6 @@
 	    	    																							 :user => user } %>
 </td>
 <td>
-	<%= link_to 'Usuń', project_topic_path(@project, topic), :method => :delete %>
-	 | <%= link_to 'Edytuj', '#' %>	
+	<%= link_to t('general.delete'), project_topic_path(@project, topic), :method => :delete %>
+	 | <%= link_to t('general.edit'), '#' %>	
 </td>

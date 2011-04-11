@@ -1,9 +1,9 @@
 <table class="list">
   <thead>
     <tr>
-      <th>Login</th>
-      <th>Kontakt</th>
-      <th>Rola</th>
+      <th><%= attribute_t 'user.login' %></th>
+      <th><%= t('general.contact') %></th>
+      <th><%= model_t 'role' %></th>
     </tr>
   </thead>
   <tbody>
@@ -11,7 +11,7 @@
       <tr>
         <td><%= link_to user.login, user_path(user) %></td>
         <td>
-        	<%= link_to 'PW', :controller => 'panel/messages', :action => :new, :receiver_login => user.login %> | 
+        	<%= link_to t('general.pm'), :controller => 'panel/messages', :action => :new, :receiver_login => user.login %> | 
         	<%= mail_to user.email %>
         </td>
       	<td>
@@ -21,3 +21,4 @@
     <% end %>
   </tbody>
 </table>
+<%= will_paginate %>

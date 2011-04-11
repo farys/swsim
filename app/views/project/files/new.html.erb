@@ -4,9 +4,8 @@
 	<%= form_for @file, :url => project_files_path(@project, @file),
 											:html => {:multipart => true} do |f| %>
 		<%= render "layouts/error_messages", :target => @file %>
-		<%= f.hidden_field :project_id, :value => @project.id %>
     <p>
-      <%= f.label :project_file %><br />
+      <%= f.label attribute_t 'project_file.file' %><br />
       <%= f.file_field :project_file %>
     </p>
     <p>
@@ -14,7 +13,7 @@
       <%= f.text_area :description %>
     </p>   
     <p>
-      <%= f.submit "Dodaj plik" %>
+      <%= f.submit t('general.project.add_file') %>
     </p>
 	<% end %>
 </div>

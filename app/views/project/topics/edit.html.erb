@@ -1,0 +1,17 @@
+<%= render 'project/shared/menu' %>
+<div class="span-10 prepend-1">
+	<%= form_for @topic, :url => project_topics_path(@project, @topic) do |f| %>
+		<%= render "layouts/error_messages", :target => @topic %>
+		<div class="field">
+			<%= f.label :title%><br />
+			<%= f.text_field :title %>
+		</div>
+		<div class="field">
+			<%= f.label :content %><br />
+			<%= f.text_area :content %>
+		</div>
+		<div class="actions">
+			<%= f.submit t('general.save') %>
+		</div>
+	<% end %>
+</div>

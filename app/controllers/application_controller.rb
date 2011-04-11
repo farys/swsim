@@ -33,11 +33,21 @@ class ApplicationController < ActionController::Base
   end
 =end
 
-  def flash_t type=nil
+  def flash_t(type = nil, action = nil)
     params = request.parameters.clone
     params["controller"]["/"] = "." if params["controller"].include?("/")
-    text = t("flash.#{params["controller"]}.#{params[:action]}")
+    if action.nil?
+    	text = t("flash.#{params["controller"]}.#{params[:action]}")
+    else
+    	text = t("flash.#{params["controller"]}.#{action}")
+    end
     return text if type.nil?
+    flash[type] = text
+  end
+  
+  def flash_t_general(type = nil, action = nil)
+    text = t("flash.general.#{action}")
+    return text if type.nil? && action.nil?
     flash[type] = text
   end
 

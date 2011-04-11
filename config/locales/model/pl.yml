@@ -6,8 +6,13 @@ pl:
       project: Projekt
       topic: Temat
       post: Post
+      project_file: Plik projektu
+      role: Rola
+      user: Użytkownik
+      membership: Członkostwo
     attributes:
       user:
+        login: Login
         name: Imie
         lastname: Nazwisko
         password: Hasło
@@ -28,18 +33,35 @@ pl:
         body: Treść
         receiver_login: Login odbiorcy
       project:
+        auction_id: Aukcja
+        name: Nazwa
+        owner_id: Właściciel
+        leader_id: Lider
+        duration: Czas trwania
+        status: Status
         description: Opis
+      role:
+        name: Nazwa
       comment:
         values: Atrybut komentarza
       comment_value:
         extra: Pole opis
         rating: Pole ocena
-      projectfile:
+      project_file:
         description: Opis
         file: Plik
+        project_file_file_name: Nazwa pliku
+        project_file_file_size: Rozmiar pliku
+        name: Nazwa
+        size: Rozmiar
       topic:
         title: Tytuł
         content: Pierwszy post
+        user_id: Autor
+      membership:
+        user_id: Użytkownik
+        project_id: Projekt
+        role_id: Rola
     errors:
       models:
         auction:
@@ -50,7 +72,7 @@ pl:
           attributes:
             description:
               blank: nie może być pusty
-              too_short: jest za krótki (przynajmniej %{count} znaków)"
+              too_short: jest za krótki (przynajmniej %{count} znaków)
 #MODELE
   tag:
     statuses:
@@ -84,6 +106,7 @@ pl:
     statuses:
       active: Aktywny
       finished: Zakończony
+    deadline: Termin
 
   role:
     name:

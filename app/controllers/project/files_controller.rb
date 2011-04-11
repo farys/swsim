@@ -7,6 +7,12 @@ class Project::FilesController < Project::ApplicationController
 	end
 	
 	def show
+	  unless ProjectFile.exists? params[:id]
+	    flash_t_general :error, 'project_file.dont_exists'
+	    redirect_to project_files_path
+	    return
+	  end
+	  
 		@file = ProjectFile.find(params[:id])
 		title_t :show
 	end
@@ -17,7 +23,10 @@ class Project::FilesController < Project::ApplicationController
 	end
 	
 	def create
-		if ProjectFile.create(params[:project_file])
+		file = ProjectFile.new(params[:project_file])
+		file.project_id = @project.id
+		
+		if file.save
 			flash_t :success
 			redirect_to project_files_path
 		else
@@ -27,8 +36,17 @@ class Project::FilesController < Project::ApplicationController
 	end
 	
 	def update
+	  unless ProjectFile.exists? params[:id]
+	    flash_t_general :error, 'project_file.dont_exists'
+	    redirect_to project_files_path
+	    return
+	  end
+	  
 		file = ProjectFile.find(params[:id])
+		project = file.project_id
 		file.description = params[:project_file][:description]
+		file.project_id = project
+		
 		if file.save
 			flash_t :success
 			redirect_to project_file_path(@project, file)
@@ -39,6 +57,12 @@ class Project::FilesController < Project::ApplicationController
 	end
 	
 	def destroy
+	  unless ProjectFile.exists? params[:id]
+	    flash_t_general :error, 'project_file.dont_exists'
+	    redirect_to project_files_path
+	    return
+	  end
+	  
 		file = ProjectFile.find(params[:id])
 		if file.destroy
 			flash_t :success
@@ -50,6 +74,7 @@ class Project::FilesController < Project::ApplicationController
 	
 	def check_privileges
 		unless can_edit? 'file'
+			flash_t_general :error, 'error.privileges'
 			redirect_to project_files_path
 		end
 	end
