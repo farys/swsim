@@ -25,13 +25,13 @@ class Project::TopicsController < Project::ApplicationController
 	
 	def create
 	  
-		topic = Topic.new
-		topic.project_id = @project.id
-		topic.user_id = current_user.id
-		topic.title = params[:topic][:title]
-		topic.content = params[:topic][:content]
+		@topic = Topic.new
+		@topic.project_id = @project.id
+		@topic.user_id = current_user.id
+		@topic.title = params[:topic][:title]
+		@topic.content = params[:topic][:content]
 		
-		if topic.save
+		if @topic.save
 			flash_t :success
 			redirect_to project_topics_path
 		else
@@ -41,16 +41,16 @@ class Project::TopicsController < Project::ApplicationController
 	end
 	
 	def edit
-	  title_t :edit	    
-	  @topic = Topic.find(params[:id])	  
+	  @topic = Topic.find(params[:id])
+    title_t :edit
 	end
 	
 	def update
-	  topic = Topic.find(params[:topic][:id])
-	  topic.title = params[:topic][:title]
-		topic.content = params[:topic][:content]
+	  @topic = Topic.find(params[:id])
+	  @topic.title = params[:topic][:title]
+		@topic.content = params[:topic][:content]
 		
-		if topic.save
+		if @topic.save
 		  flash_t :success
 		  redirect_to project_topics_path
 		else
