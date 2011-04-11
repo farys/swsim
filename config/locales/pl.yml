@@ -194,8 +194,9 @@ pl:
     errors:
       template:
         header:
-          one:    "%{model} nie został zachowany z powodu jednego błędu"
-          other:  "%{model} nie został zachowany z powodu %{count} błędów"
+          one:    "Formularz nie został zapisany z powodu jednego błędu"
+          few:    "Formularz nie został zapisany z powodu %{count} błędów"
+          other:  "Formularz nie został zapisany z powodu %{count} błędów"
         body: "Błędy dotyczą następujących pól:"
 
       messages:
