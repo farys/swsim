@@ -1,3 +1,0 @@
-gnome-terminal -t "SWSIM Server" --working-directory /home/yakob/RailsProjects/swsim/
-gnome-terminal -t "SWSIM Console " --working-directory /home/yakob/RailsProjects/swsim/
-gnome-terminal -t "SWSIM" --working-directory /home/yakob/RailsProjects/swsim/
