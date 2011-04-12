@@ -50,7 +50,7 @@
       		<td><%= t("general.actions") %></td>
       		<td>
       			<%= form_for @project, :url => project_info_path(@project) do |f| %>
-      			<%= f.submit t("general.project.end") %>
+      			<%= f.submit t("general.project.end"), :confirm => t('general.confirm') %>
       			<% end %>
       		</td>
       	</tr>

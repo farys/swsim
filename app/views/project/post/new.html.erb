@@ -1,0 +1,13 @@
+<%= render 'project/shared/menu' %>
+<div class="span-10 prepend-1">
+	<%= form_for @post, :url => project_topic_post_path(@project, @topic, @post) do |f| %>
+		<%= render "layouts/error_messages", :target => @post %>
+		<div class="field">
+			<%= f.label :content %><br />
+			<%= f.text_area :content %>
+		</div>
+		<div class="action">
+			<%= f.submit t('general.save') %>
+		</div>
+	<% end %>
+</div>

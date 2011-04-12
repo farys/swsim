@@ -1,7 +1,7 @@
 <%= render 'project/shared/menu' %>
 
 <div class="span-22 last">
-  <div class="prepend-1 span-7">
+  <div class="prepend-1 span-5">
     <table class="list">
       <tr>
         <td><%= attribute_t 'project_file.name' %></td>
@@ -11,15 +11,18 @@
         <td><%= attribute_t 'project_file.size' %></td>
         <td><%= escape_file_size @file.size %></td>
       </tr>
-      <% if can_edit? 'file' %>
-      	<tr>
-      		<td><%= t('general.actions') %></td>
-      		<td>
-      		  <%= link_to t('general.delete'), project_file_path(@project,@file),
-      		                                   :method => :delete %>
-      		</td>
-      	</tr>
-      <% end %>
+      <tr>
+      	<td><%= t('general.actions') %></td>
+      	<td>
+      	  <p><%= link_to t('general.download'), @file.project_file.url %></p>
+      	  <% if can_edit? 'file' -%>
+      	    <p>
+      	      <%= link_to t('general.delete'), project_file_path(@project,@file),
+      	                                   :method => :delete %>
+      	    </p>
+      	  <% end -%>     	  
+      	</td>
+      </tr>
     </table>
   </div>
   <div class="span-12 last append-1 prepend-1">

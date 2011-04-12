@@ -67,7 +67,7 @@ Inz::Application.routes.draw do
       resources :members, :except => [:show, :edit]
       resources :files, :except => [:edit]
       resources :topics do
-      	resource :post
+      	resource :post, :controller => "post"
       end
     end
   end

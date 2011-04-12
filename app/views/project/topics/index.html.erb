@@ -16,9 +16,7 @@
 	  <tbody>
 	    <% @topics.each do |topic| %>
 	    	<% user = User.find(topic.user_id) %>
-	      	<% if can_edit?('forum') ||
-	    			    ( current_user.topic_ids.include?(topic.id) &&
-	    			    @project.active? ) %>
+	      	<% if edit_topic? topic.id %>
 	    	    <%= render :partial => 'edit_table', :locals => { :topic => topic,
 	    	    																									:user => user } %>
 	    		<% else %>
@@ -29,4 +27,5 @@
 	    <% end %>
 	  </tbody>
 	</table>
+	<%= will_paginate %>
 </div>

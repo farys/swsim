@@ -10,6 +10,7 @@ pl:
         not_active: Projekt jest zakończony, edycja nie jest już możliwa
       project_file:
         dont_exists: Plik nie istnieje
+        not_included: Plik nie należy do tego projeku
       user:
         dont_exists: Użytkownik nie istnieje
       role:
@@ -18,6 +19,10 @@ pl:
         dont_exists: Członkostwo nie istnieje
       topic:
         dont_exists: Temat nie istnieje
+        not_included: Temat nie należy do tego projektu
+      post:
+        dont_exists: Post nie istnieje
+        not_included: Post nie należy do tego tematu
     users:
       create: Witaj nowy użytkowniku
       update: Profil zaktualizowany
@@ -87,7 +92,11 @@ pl:
       topics:
         destroy: Temat został pomyślnie usunięty
         create: Nowy temat został pomyślnie dodany
-        edit: Temat został pomyślnie zaktualizowany
+        update: Temat został pomyślnie zaktualizowany
+      post:
+        create: Post został pomyślnie dodany
+        update: Post został pomyślnie zaktualizowany
+        destroy: Post został pomyślnie usunięty
         
   title:
     auctions:
@@ -155,4 +164,7 @@ pl:
         index: "{@project.name} | Forum"
         show: "{@project.name} | Forum | {@topic.title}"
         new: "{@project.name} | Forum | Nowy temat"
-        edit: "{@project.name} | Forum | Edycja {@topic.title}"
+        edit: "{@project.name} | Forum | Edycja Tematu"
+      post:
+        new: "{@project.name} | Forum | {@topic.title} | Nowy post"
+        edit: "{@project.name} | Forum | {@topic.title} | Edycja"

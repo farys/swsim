@@ -20,11 +20,17 @@
         <td><%= link_to file.name, project_file_path(@project, file) %></td>
       	<td><%= escape_file_size file.size %></td>
       	<td>
-      		<%= link_to t('general.delete'), project_file_path(@project, file), :method => :delete if can_edit? 'file' %>
-      		| <%= link_to t('general.download'), file.project_file.url %>
+      		<%= link_to t('general.download'), file.project_file.url %>
+      		<% if can_edit? 'file' -%>
+      		  | <%= link_to t('general.delete'),
+      		                project_file_path(@project, file),
+      		                :method => :delete,
+      		                :confirm => t('general.confirm') %>
+      		<% end -%>
       	</td>
     	</tr>
     <% end %>
   </tbody>
 </table>
+<%= will_paginate %>
 </div>

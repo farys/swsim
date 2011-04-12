@@ -38,7 +38,9 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
   def escape_file_size(size = 1)
   	case size
   	when 1..1.kilobyte - 1
-  		"#{size} bytes"
+  	  translation = t('number.human.storage_units.units.byte',
+  	                  :count => size)
+  		"#{size} #{translation}"
   	when 1.kilobyte..1.megabyte - 1
   		"#{(size/1024.0).round(2)} KiB"
   	else

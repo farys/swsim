@@ -13,7 +13,11 @@
        	<%= mail_to user.email %>
 			</p>
 		</td>
-		<td><%= @topic.content %></td>
+		<td>
+		  <p><%= @topic.content %></p>
+		  <p align="right"><%= link_to t('general.edit'),
+		                               edit_project_topic_path(@project, @topic) %></p>
+		</td>
 	</tr>
 	<% @posts.each do |post| %>
 		<% user = User.find(post.user_id) %>
@@ -28,7 +32,19 @@
         	<%= mail_to user.email %>
 				</p>
 			</td>
-			<td><%= post.content %></td>
-		</tr>
+			<td>
+			  <p><%= post.content %></p>
+			  <p align="right">
+			    <%= link_to t('general.edit'), 
+			                edit_project_topic_post_path(@project, @topic, :id => post.id) %>
+			     | <%= link_to t('general.delete'),
+			                project_topic_post_path(@project, @topic, :id => post.id),
+			                :method => :delete,
+			                :confirm => t('general.confirm') %>
+			  </p>
+			</td>
 	<% end %>
 </table>
+<div class="span-2 prepend-17">
+  <%= link_to t('general.post.add'), new_project_topic_post_path(@project, @topic) %>
+</div>

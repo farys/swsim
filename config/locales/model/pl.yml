@@ -62,6 +62,8 @@ pl:
         user_id: Użytkownik
         project_id: Projekt
         role_id: Rola
+      post:
+        content: Treść
     errors:
       models:
         auction:
@@ -72,7 +74,12 @@ pl:
           attributes:
             description:
               blank: nie może być pusty
-              too_short: jest za krótki (przynajmniej %{count} znaków
+              too_short: jest za krótki (przynajmniej %{count} znaków)
+        post:
+          attributes:
+            content:
+              too_short: jest za krótka (przynajmniej %{count} znak)
+              too_long: jest za długa (maksymalnie %{count} znaków)
 #MODELE
   tag:
     statuses:

@@ -26,7 +26,7 @@ module ProjectsHelper
   	end
   end
   
-  def edit_topic?(post_id)
+  def edit_post?(post_id)
   	if can_edit?('forum')
   		true
   	elsif current_user.post_ids.include?(post_id) && @project.active?

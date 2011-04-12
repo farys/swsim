@@ -1,18 +1,14 @@
 class Project::FilesController < Project::ApplicationController
-	before_filter :check_privileges, :except => [:index, :show]
+  before_filter :check_read_privileges, :except => [:index, :new, :create]
+	before_filter :check_edit_privileges, :except => [:index, :show]
 	
 	def index
 		title_t :index
-		@files = @project.project_files
+		@files = @project.project_files.paginate :per_page => 15,
+		                                         :page => params[:page]
 	end
 	
-	def show
-	  unless ProjectFile.exists? params[:id]
-	    flash_t_general :error, 'project_file.dont_exists'
-	    redirect_to project_files_path
-	    return
-	  end
-	  
+	def show	  
 		@file = ProjectFile.find(params[:id])
 		title_t :show
 	end
@@ -35,34 +31,20 @@ class Project::FilesController < Project::ApplicationController
 		end
 	end
 	
-	def update
-	  unless ProjectFile.exists? params[:id]
-	    flash_t_general :error, 'project_file.dont_exists'
-	    redirect_to project_files_path
-	    return
-	  end
-	  
+	def update  
 		@file = ProjectFile.find(params[:id])
-		project = file.project_id
 		@file.description = params[:project_file][:description]
-		@file.project_id = project
 		
 		if @file.save
 			flash_t :success
-			redirect_to project_file_path(@project, file)
+			redirect_to project_file_path(@project, @file)
 		else
 			title_t :show
 			render :show
 		end
 	end
 	
-	def destroy
-	  unless ProjectFile.exists? params[:id]
-	    flash_t_general :error, 'project_file.dont_exists'
-	    redirect_to project_files_path
-	    return
-	  end
-	  
+	def destroy 
 		file = ProjectFile.find(params[:id])
 		if file.destroy
 			flash_t :success
@@ -72,10 +54,23 @@ class Project::FilesController < Project::ApplicationController
 	
 	private
 	
-	def check_privileges
+	def check_edit_privileges
 		unless can_edit? 'file'
 			flash_t_general :error, 'error.privileges'
 			redirect_to project_files_path
 		end
+	end
+	
+	def check_read_privileges
+	  unless ProjectFile.exists? params[:id]
+	    flash_t_general :error, 'project_file.dont_exists'
+	    redirect_to project_files_path
+	    return
+	  end
+	  
+	  unless @project.project_file_ids.include?(params[:id].to_i)
+	    flash_t_general :error, 'project_file.not_included'
+	    redirect_to project_files_path
+	  end
 	end
 end

@@ -1,9 +1,11 @@
 class Project::TopicsController < Project::ApplicationController
+  before_filter :check_read_privileges, :except => [:index, :new, :create]
 	before_filter :edit_topic, :only => [:edit, :destroy, :update]
 	
 	def index
 		title_t :index
-		@topics = @project.topics
+		@topics = @project.topics.paginate :per_page => 10,
+    																	 :page => params[:page]
 	end
 	
 	def show
@@ -53,7 +55,7 @@ class Project::TopicsController < Project::ApplicationController
 		
 		if @topic.save
 		  flash_t :success
-		  redirect_to project_topics_path
+		  redirect_to project_topic_path(@project, @topic)
 		else
 		  title_t :edit
 		  render :action => :edit
@@ -88,5 +90,18 @@ class Project::TopicsController < Project::ApplicationController
   	else
   		false
   	end
-  end  
+  end
+  
+  def check_read_privileges
+	  unless Topic.exists? params[:id]
+	    flash_t_general :error, 'topic.dont_exists'
+	    redirect_to project_topics_path
+	    return
+	  end
+	  
+	  unless @project.topic_ids.include?(params[:id].to_i)
+	    flash_t_general :error, 'topic.not_included'
+	    redirect_to project_topics_path
+	  end
+	end  
 end

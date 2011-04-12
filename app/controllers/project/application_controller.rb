@@ -20,17 +20,6 @@ class Project::ApplicationController < ApplicationController
   	end
   end
   
-  #sprawdzenie uprawnien do edycji postow
-  def edit_post?(post_id)
-  	if can_edit?('forum')
-  		true
-  	elsif current_user.post_ids.include?(post_id) && @project.active?
-  		true
-  	else
-  		false
-  	end
-  end
-  
   private
   
   #autoryzacja uzytkownika jako czlonka projektu
@@ -45,7 +34,7 @@ class Project::ApplicationController < ApplicationController
     @project = Project.find(params[:project_id])
     
     unless @project.member?(current_user.id)
-      flash_t_general :notice, 'project.not_participating'
+      flash_t_general :error, 'project.not_participating'
       redirect_to panel_projects_path
       return
     end
