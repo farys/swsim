@@ -61,6 +61,21 @@ class UsersController < ApplicationController
     		flash[:success] = "OK!"
     	end
     end
+    
+    def watching
+	    @title = "Moi zaufani"
+	    @user = User.find(params[:id])
+	    @users = @user.watching.paginate(:page => params[:page])
+	    render 'show_watch'
+    end
+
+    def watchers
+	    @title = "Zaufali mi"
+	    @user = User.find(params[:id])
+	    @users = @user.watchers.paginate(:page => params[:page])
+	    render 'show_watch'
+    end
+
   	
   	private
   	

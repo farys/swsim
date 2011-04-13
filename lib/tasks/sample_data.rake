@@ -4,7 +4,7 @@ I18n.locale = :en
 #wypelnianie bazy development danymi => rake db:populate
 
 #ilosc generowoanych danych
-USERS = 15
+USERS = 99
 PROJECTS = USERS*4
 TOPICS = PROJECTS*5
 POSTS = TOPICS*5
@@ -24,6 +24,7 @@ namespace :db do
   task :populate => :environment do
     Rake::Task['db:reset'].invoke
     make_users
+    make_relationships
     make_roles
     make_groups_and_tags
     make_auctions
@@ -52,6 +53,15 @@ def make_users #zmieniony format emailu dla latwiejszego logowania
       :description => description
     )
   end
+end
+
+def make_relationships
+  users = User.all
+  user  = users.first
+  watching = users[1..50]
+  watchers = users[3..40]
+  watching.each { |watched| user.watch!(watched) }
+  watchers.each { |watcher| watcher.watch!(user) }
 end
 
 def make_projects

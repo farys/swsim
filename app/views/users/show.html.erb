@@ -45,9 +45,10 @@
     </table>
     </div>
     <div class="clear span-11 center">
-    <% if current_user?(@user) %>
+  <% if current_user?(@user) %>
   <%= link_to 'Edytuj dane', edit_user_path(current_user) %>
   <% end %>
+  <%= render 'watch_form' if signed_in? %>
   </div>
   <!--wstepna integracja z paypal, trzeba sprawdzic czy dziala! -->
   <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
@@ -72,3 +73,5 @@
 	 <% end %>
   </table>
 	 <%= will_paginate @projects %>
+	 
+  <%= render 'shared/zaufani' %>

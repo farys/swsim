@@ -1,0 +1,15 @@
+<table summary="Information about watching/watchers">
+  <tr>
+    <td style="width: 500px;">
+      <% unless @users.empty? %>
+        <ul class="users">
+        <% @users.each do |user| %>
+          <%= link_to user.login, user %><br />
+        <% end %>
+        </ul>
+        <%= will_paginate @users %>
+      <% end %>
+    </td>
+  </tr>
+</table>
+

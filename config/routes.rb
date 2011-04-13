@@ -8,8 +8,13 @@ Inz::Application.routes.draw do
   end
   
   #Users and sessions
-  resources :users
+  resources :users do
+  	member do
+  		get :watching, :watchers
+  	end
+  end
   resources :sessions, :only => [:new, :create, :destroy]
+  resources :relationships, :only => [:create, :destroy]
 
   # PANEL
   namespace :panel do
