@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   has_one :emailver
   has_many :topics, :dependent => :destroy
   has_many :posts, :dependent => :destroy
+  has_many :invitations, :dependent => :destroy
   
   email_regex = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃ\-.]+@[a-zżźćńółęąś\d\-.]+\.[a-z]+\z/i
   string = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃß\-.]+\z/

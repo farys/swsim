@@ -7,8 +7,12 @@ class Project::ApplicationController < ApplicationController
 	  	case page
 	  		when 'info'
 	  			@project.user_role(current_user.id).info
-	  		when 'user'
-	  			@project.user_role(current_user.id).user
+	  		when 'invitation'
+	  			@project.user_role(current_user.id).invitation	
+	  		when 'member'
+	  			@project.user_role(current_user.id).member
+	  		when 'ticket'
+	  			@project.user_role(current_user.id).ticket
 	  		when 'forum'
 	  			@project.user_role(current_user.id).forum
 	  		when 'file'

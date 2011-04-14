@@ -15,6 +15,7 @@ pl:
         dont_exists: Użytkownik nie istnieje
       role:
         dont_exists: Rola nie istnieje
+        invalid_role: Nie można nadać uzytkownikowi takiej roli
       membership:
         dont_exists: Członkostwo nie istnieje
       topic:
@@ -23,6 +24,9 @@ pl:
       post:
         dont_exists: Post nie istnieje
         not_included: Post nie należy do tego tematu
+      invitation:
+        dont_exists: Zaproszenie nie istnieje
+        not_included: Zaproszenie nie należy do tego projektu
     users:
       create: Witaj nowy użytkowniku
       update: Profil zaktualizowany
@@ -75,28 +79,35 @@ pl:
    
     project:
       info:
-        update: Opis został pomyślnie zaktualizowany
+        update: Opis został zaktualizowany
         finishing_update: Projekt został zakończony, wystaw teraz ocenę liderowi zespołu.
-      members:
-        create: Użytkownik został pomyślnie dodany do projektu
-        member_exists: Użytkownik uczestniczy już w projekcie
-        invalid_role: Nie można nadać uzytkownikowi takiej roli
-        destroy: Użytkownik został pomyślnie usunięty z projektu
-        update: Rola została pomyślnie zaktualizowana
+      members:              
+        destroy: Użytkownik został usunięty z projektu
+        update: Rola została zaktualizowana
         cant_change_role: Nie możesz zmienić roli tego użytkowika
         cant_delete: Nie możesz usunąć tego użytkowika
+        member_exists: Użytkownik uczestniczy już w projekcie
       files:
         update: Opis został zaktualizowany
-        create: Plik został pomyślnie dodany
-        destroy: Plik został pomyślnie usunięty
+        create: Plik został dodany
+        destroy: Plik został usunięty
       topics:
-        destroy: Temat został pomyślnie usunięty
-        create: Nowy temat został pomyślnie dodany
-        update: Temat został pomyślnie zaktualizowany
+        destroy: Temat został usunięty
+        create: Nowy temat został dodany
+        update: Temat został zaktualizowany
       post:
-        create: Post został pomyślnie dodany
-        update: Post został pomyślnie zaktualizowany
-        destroy: Post został pomyślnie usunięty
+        create: Post został dodany
+        update: Post został zaktualizowany
+        destroy: Post został usunięty
+      invitation:
+        create: Zaproszenie zostało wysłane
+        destroy: Zaproszenie zostało usunięte
+        cancel: Zaproszenie zostało anulowane
+        exists: Zaproszenie zostało już wysłane
+        cancel_error: Nie można anulować tego zaproszenia
+        destroy_error: Nie można usunąć tego zaproszenia
+        accept: Zaproszenie zostało zaakceptowane
+        reject: Zaproszenie zostało odrzucone        
         
   title:
     auctions:
@@ -168,3 +179,6 @@ pl:
       post:
         new: "{@project.name} | Forum | {@topic.title} | Nowy post"
         edit: "{@project.name} | Forum | {@topic.title} | Edycja"
+      invitations:
+        index: "{@project.name} | Zaproszenia"
+        new: "{@project.name} | Zaproszenia | Nowe zaproszenie"

@@ -10,6 +10,7 @@ pl:
       role: Rola
       user: Użytkownik
       membership: Członkostwo
+      invitation: Zaproszenie
     attributes:
       user:
         login: Login
@@ -64,6 +65,8 @@ pl:
         role_id: Rola
       post:
         content: Treść
+      invitation:
+        status: Status
     errors:
       models:
         auction:
@@ -121,4 +124,11 @@ pl:
       owner: właściciel
       leader: lider
       info_mod: moderator informacji
-    
+  
+  invitation:
+    statuses:
+      accepted: Zaakceptowane
+      pending: Oczekujące
+      rejected: Odrzucone
+      canceled: Anulowane
+      

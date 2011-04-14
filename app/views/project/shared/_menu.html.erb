@@ -1,9 +1,11 @@
 <nav id="project-nav" class="round" style="margin-bottom: 10px">
   <ul>
-      <li><%= link_to 'Info', project_info_path %></li>
-      <li><%= link_to 'Członkowie', project_members_path %></li>
-      <li><%= link_to 'Pliki', project_files_path %></li>
-      <li><%= link_to 'Forum', project_topics_path %></li>
+      <li><%= link_to t('general.project.menu.info'), project_info_path %></li>
+      <li><%= link_to t('general.project.menu.invitations'), project_invitations_path %></li>
+      <li><%= link_to t('general.project.menu.members'), project_members_path %></li>
+      <li><%= link_to t('general.project.menu.tickets'), '#' %></li>
+      <li><%= link_to t('general.project.menu.files'), project_files_path %></li>
+      <li><%= link_to t('general.project.menu.forum'), project_topics_path %></li>
   </ul>
 </nav>
 

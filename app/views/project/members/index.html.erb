@@ -1,7 +1,7 @@
 <%= render 'project/shared/menu' %>
 
 <div class="span-11 prepend-1">
-	<% if can_edit?('user') %>
+	<% if can_edit?('member') %>
 		<%= render 'edit_table' %>
 	<% else %>
 		<%= render 'normal_table' %>

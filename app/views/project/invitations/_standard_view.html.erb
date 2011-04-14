@@ -1,0 +1,22 @@
+<% if @invitations.empty? -%>
+  <div class="notice"><%= t('general.invitation.empty') %></div> 
+<% else -%> 
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= model_t 'user' %></th>
+        <th><%= attribute_t 'invitation.status' %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @invitations.each do |inv| %>
+      <% user = User.find(inv.user_id) -%>
+        <tr>
+          <td><%= link_to user.login, user_path(user) %></td>
+        	<td><%= escape_status inv %></td>
+      	</tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end -%>
+<%= will_paginate %>

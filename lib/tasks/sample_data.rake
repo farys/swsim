@@ -97,9 +97,20 @@ end
 
 def make_roles
   Role.create!(:name => 'guest')
-  Role.create!(:name => 'leader', :file => true, :forum => true, :user => true, :info => true)
+  Role.create!(:name => 'leader', :file => true, 
+                                  :forum => true,
+                                  :member => true,
+                                  :info => true,
+                                  :invitation => true,
+                                  :ticket => true)
   Role.create!(:name => 'owner', :info => true)
   Role.create!(:name => 'info_mod', :info => true)
+  Role.create!(:name => 'inv_mod', :invitation => true)
+  Role.create!(:name => 'member_mod', :member => true)
+  Role.create!(:name => 'ticket_mod', :ticket => true)
+  Role.create!(:name => 'file_mod', :file => true)
+  Role.create!(:name => 'forum_mod', :forum => true)
+  
 end
 
 def make_auctions

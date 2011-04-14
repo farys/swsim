@@ -5,52 +5,6 @@ class Project::MembersController < Project::ApplicationController
     title_t :index
   end
   
-  def new
-  	title_t :new
-  	@memb = Membership.new	
-  end
-  
-  def create
-  	@memb = Membership.new(:project_id => @project.id,
-  												 :user_id => params[:membership][:user_id],
-  												 :role_id => params[:membership][:role_id])
-  	
-  	#weryfikacja uzytkownika
-  	unless User.exists? @memb.user_id
-  	  flash.now[:error] = t('flash.general.user.dont_exists')
-  	  render_new
-  	  return
-  	end
-  	
-  	if @project.user_ids.include? @memb.user_id
-  		flash.now[:notice] = t('flash.project.members.member_exists')
-  		render_new
-  	  return 
-  	end
-  	
-  	#weryfikacja roli
-  	unless Role.exists? @memb.role_id
-  	  flash.now[:error] = t('flash.general.role.dont_exists')
-  	  render_new
-  	  return
-  	end
-  	
-  	if @memb.role_id == Role.get_id('owner') ||
-    	 @memb.role_id == Role.get_id('leader')
-    	flash.now[:notice] = t('flash.project.members.invalid_role')
-    	render_new
-  	  return
-    end
-    
-    #dodanie nowego uzytkownika
-    if @memb.save
-    	flash_t :success
-    	redirect_to project_members_path
-    else
-      render_new
-    end   		
-  end
-  
   def update
   	@memb = Membership.where(:user_id => params[:membership][:user_id],
   													:project_id => @project.id).first
@@ -74,7 +28,7 @@ class Project::MembersController < Project::ApplicationController
   	#weryfikacja roli	 
     if role == Role.get_id('owner') ||
        role == Role.get_id('leader')
-      flash_t :notice, 'invalid_role'
+      flash_t_general :notice, 'role.invalid_role'
       render_index
       return
     end      
@@ -121,7 +75,7 @@ class Project::MembersController < Project::ApplicationController
   
   #sprawdzenie uprawnien do edycji
   def check_privileges
-  	unless can_edit?('user')
+  	unless can_edit?('member')
   	  flash_t_general :errors, 'error.privileges'
   		redirect_to project_members_path
   	end

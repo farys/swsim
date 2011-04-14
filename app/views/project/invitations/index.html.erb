@@ -1,0 +1,9 @@
+<%= render 'project/shared/menu' %>
+
+<div class="span-8 prepend-1">
+  <% if can_edit?('invitation') -%>
+    <%= render 'edit_view' %>
+  <% else -%>
+    <%= render 'standard_view' %>
+  <% end -%>
+<div>
