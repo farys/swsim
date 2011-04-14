@@ -1,0 +1,9 @@
+<% form_tag({:controller => "users", :action => "find"}) do %>
+   Wyszukaj użytkownika:<br />
+   <%= text_field "item", "name"%><br />
+   <%= radio_button("szukaj", "user", "id", {:checked => true}) %><%= label :id, "ID" %>
+   <%= radio_button("szukaj", "user", "lastname")%><%= label :lastname, "Lastname" %>
+   <%= radio_button("szukaj", "user", "email")%><%= label :email, "E-mail" %>
+   <%= radio_button("szukaj", "user", "login")%><%= label :login, "Login" %><br />
+<%= submit_tag "Wyszukaj uzytkownika" %>
+<% end %>

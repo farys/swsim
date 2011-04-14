@@ -75,6 +75,27 @@ class UsersController < ApplicationController
 	    @users = @user.watchers.paginate(:page => params[:page])
 	    render 'show_watch'
     end
+    
+    def find
+    	@fraza = params[:item][:name]
+    	@value = params[:szukaj][:user]
+    	if @fraza == ""
+    		redirect_to user_path(current_user)
+    		flash[:error] = "Pusty formularz!"
+    	elsif @value == "id"
+    		@user = User.find_by_id(@fraza)
+    		redirect_to user_path(@user)
+    	elsif @value == "lastname"
+    		@user = User.find_by_lastname(@fraza)
+    		redirect_to user_path(@user)
+    	elsif @value == "email"
+    		@user = User.find_by_email(@fraza)
+    		redirect_to user_path(@user)
+    	elsif @value == "login"
+    		@user = User.find_by_login(@fraza)
+    		redirect_to user_path(@user)
+    	end
+    end
 
   	
   	private

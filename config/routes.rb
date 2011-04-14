@@ -84,6 +84,7 @@ Inz::Application.routes.draw do
   match '/signin',  :to => 'sessions#new'
   match 'signout',  :to => 'sessions#destroy'
   match '/ver', :to => 'users#mail_ver'
+  match '/find', :to => 'users#find'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
