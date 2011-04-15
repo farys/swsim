@@ -3,6 +3,7 @@ class CreateInvitations < ActiveRecord::Migration
     create_table :invitations do |t|
       t.references :project, :null => :false
       t.references :user, :null => :false
+      t.references :role, :null => :false
       t.integer :status, :null => :false
 
       t.timestamps

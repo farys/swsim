@@ -4,10 +4,6 @@ class Role < ActiveRecord::Base
   
   validates :name, :presence => true,
                    :length => { :in => 3..30 }
-  #validates :file, :presence => true
-  #validates :forum, :presence => true
-  #validates :info, :presence => true
-  #validates :user, :presence => true
   
   def self.get_id(name)
   	Role.where(:name => name).first.id

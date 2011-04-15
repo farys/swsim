@@ -4,8 +4,9 @@ I18n.locale = :en
 #wypelnianie bazy development danymi => rake db:populate
 
 #ilosc generowoanych danych
-USERS = 15
-PROJECTS = USERS*4
+USERS = 5
+PROJECTS = USERS*5
+INVITATIONS = PROJECTS*5
 TOPICS = PROJECTS*5
 POSTS = TOPICS*5
 
@@ -28,6 +29,7 @@ namespace :db do
     make_groups_and_tags
     make_auctions
     make_projects
+    make_invitations
     make_offers
     make_comments_keywords
     make_topics
@@ -165,4 +167,13 @@ def make_posts
 								 :user_id => rand(User.count-1)+1,
 								 :content => content)
 	end
+end
+
+def make_invitations
+  roles = [1,4,5,6,7,8,9]
+  INVITATIONS.times do
+    Invitation.create!(:project_id => rand(Project.count-1)+1,
+                       :user_id => rand(User.count-1)+1,
+                       :role_id => roles[rand(roles.length)])
+  end
 end

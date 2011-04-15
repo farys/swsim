@@ -7,6 +7,7 @@ pl:
     save: Zapisz
     delete: Usuń
     edit: Edytuj
+    cancel: Anuluj
     download: Pobierz
     pm: PW
     contact: Kontakt
@@ -14,8 +15,6 @@ pl:
     project:
       ended: Projekt zakończony
       end: Zakończ projekt
-      add_user: Dodaj użytkowika
-      add_file: Dodaj plik
       menu:
         info: Info
         invitations: Zaproszenia
@@ -23,14 +22,16 @@ pl:
         tickets: Tickety
         files: Pliki
         forum: Forum
-    topic:
-      last_post: Ostatni post
-    post:
-      add: Nowy post
-    invitation:
-      topic: Otrzymaleś zaproszenie do projektu
-      body: "Zaproszono Cie do projektu {@project.title}[{link_to @auciton.title, auction_path(@auciton)}] z rolą {t(@role.name)}"
-      empty: Obecnie nie ma zaproszeń do wyświetlenia	
+      file:
+        add: Dodaj plik
+      topic:
+        last_post: Ostatni post
+      post:
+        add: Nowy post
+      invitation:
+        add: Zaproś użytkownika
+        topic: Otrzymaleś zaproszenie do projektu
+        body: "Zaproszono Cie do projektu {@project.title}[{link_to @auciton.title, auction_path(@auciton)}] z rolą {t(@role.name)}"
   date:
     formats:
       default: "%d-%m-%Y"

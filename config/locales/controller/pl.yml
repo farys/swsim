@@ -11,6 +11,7 @@ pl:
       project_file:
         dont_exists: Plik nie istnieje
         not_included: Plik nie należy do tego projeku
+        empty: Obecnie nie ma żadnych plików do wyświetlenia
       user:
         dont_exists: Użytkownik nie istnieje
       role:
@@ -21,12 +22,14 @@ pl:
       topic:
         dont_exists: Temat nie istnieje
         not_included: Temat nie należy do tego projektu
+        empty: Obecnie nie ma żadnych tematów do wyświetlenia
       post:
         dont_exists: Post nie istnieje
         not_included: Post nie należy do tego tematu
       invitation:
         dont_exists: Zaproszenie nie istnieje
         not_included: Zaproszenie nie należy do tego projektu
+        empty: Obecnie nie ma żadnych zaproszeń do wyświetlenia
     users:
       create: Witaj nowy użytkowniku
       update: Profil zaktualizowany

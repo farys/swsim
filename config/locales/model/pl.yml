@@ -120,10 +120,15 @@ pl:
 
   role:
     name:
-      guest: gość
-      owner: właściciel
-      leader: lider
-      info_mod: moderator informacji
+      guest: Gość
+      owner: Właściciel
+      leader: Lider
+      info_mod: Moderator informacji
+      inv_mod: Moderator zaproszeń
+      ticket_mod: Moderator ticketów
+      file_mod: Moderator plików
+      forum_mod: Moderator forum
+      member_mod: Moderator użytkowników
   
   invitation:
     statuses:

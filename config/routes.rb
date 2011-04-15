@@ -66,7 +66,11 @@ Inz::Application.routes.draw do
       resource :info, :only => [:show, :update], :controller => "info"
       resources :members, :only => [:index, :update, :destroy]
       resources :files, :except => [:edit]
-      resources :invitations
+      resources :invitations do
+        get :accept, :on => :member
+        get :reject, :on => :member
+        get :cancel, :on => :member
+      end
       resources :topics do
       	resource :post, :controller => "post"
       end

@@ -1,10 +1,14 @@
-<% if @invitations.empty? -%>
-  <div class="notice"><%= t('general.invitation.empty') %></div> 
-<% else -%> 
-  <table class="list">
+<div class="span-7 prepend-1">  
+  <% if @invitations.empty? -%>
+    <div class="notice span-7">
+      <%= t('flash.general.invitation.empty') %>
+    </div>
+  <% else -%>
+    <table class="list">
     <thead>
       <tr>
         <th><%= model_t 'user' %></th>
+        <th><%= model_t 'role' %></th>
         <th><%= attribute_t 'invitation.status' %></th>
       </tr>
     </thead>
@@ -13,10 +17,12 @@
       <% user = User.find(inv.user_id) -%>
         <tr>
           <td><%= link_to user.login, user_path(user) %></td>
+          <td><%= escape_column(Role.find(inv.role_id), 'name') %></td>
         	<td><%= escape_status inv %></td>
       	</tr>
       <% end %>
     </tbody>
-  </table>
-<% end -%>
-<%= will_paginate %>
+    </table>
+  <%= will_paginate %>
+  <% end -%>
+</div>

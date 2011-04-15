@@ -1,0 +1,43 @@
+<div class="span-10 prepend-1">
+  <div class="span-3 prepend-7">
+    <%= link_to t('general.project.invitation.add'), '#' %>
+  </div>
+  <% if @invitations.empty? -%>
+    <div class="notice span-10">
+      <%= t('flash.general.invitation.empty') %>
+    </div>
+  <% else -%>
+    <table class="list">
+      <thead>
+        <tr>
+          <th><%= model_t 'user' %></th>
+          <th><%= model_t 'role' %></th>
+          <th><%= attribute_t 'invitation.status' %></th>
+          <th><%= t('general.actions') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @invitations.each do |inv| %>
+        <% user = User.find(inv.user_id) -%>
+          <tr>
+            <td><%= link_to user.login, user_path(user) %></td>
+            <td><%= escape_column(Role.find(inv.role_id), 'name') %></td>
+          	<td><%= escape_status inv %></td>
+          	<td>
+          	  <% if inv.status == Invitation::STATUSES[:pending] -%>
+          	    <%= link_to t('general.cancel'),
+          	                project_invitation_path(@project, inv),
+          	                :action => :cancel %>
+          	  <% else -%>
+          	    <%= link_to t('general.delete'),
+          	                project_invitation_path(@project, inv),
+          	                :method => :delete %>
+          	  <% end -%>
+          	</td>
+        	</tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= will_paginate %>
+  <% end -%>
+</div>

@@ -4,28 +4,34 @@
 	<div class="span-3 prepend-10" style="margin-bottom: 5px">
 		<%= link_to 'Dodaj temat', :action => :new %>
 	</div>
-	<table class="list">
-	  <thead>
-	    <tr>
-	      <th><%= attribute_t 'topic.title' %></th>
-	      <th><%= attribute_t 'topic.user_id' %></th>
-	      <th><%= t('general.topic.last_post') %></th>
-	      <th><%= t('general.actions') %></th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <% @topics.each do |topic| %>
-	    	<% user = User.find(topic.user_id) %>
-	      	<% if edit_topic? topic.id %>
-	    	    <%= render :partial => 'edit_table', :locals => { :topic => topic,
-	    	    																									:user => user } %>
-	    		<% else %>
-	    		  <%= render :partial => 'normal_table', :locals => { :topic => topic,
-	    	    																									:user => user } %>
-	    		<% end %>
-	    	</tr>
-	    <% end %>
-	  </tbody>
-	</table>
-	<%= will_paginate %>
+	<% if @topics.empty? -%>
+	  <div class="notice span-12">
+	    <%= t('flash.general.topic.empty') %>
+	  </div>  
+	<% else -%>
+	  <table class="list">
+	    <thead>
+	      <tr>
+	        <th><%= attribute_t 'topic.title' %></th>
+	        <th><%= attribute_t 'topic.user_id' %></th>
+	        <th><%= t('general.topic.last_post') %></th>
+	        <th><%= t('general.actions') %></th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <% @topics.each do |topic| %>
+	      	<% user = User.find(topic.user_id) %>
+	        	<% if edit_topic? topic.id %>
+	      	    <%= render :partial => 'edit_table', :locals => { :topic => topic,
+	      	    																									:user => user } %>
+	      		<% else %>
+	      		  <%= render :partial => 'normal_table', :locals => { :topic => topic,
+	      	    																									:user => user } %>
+	      		<% end %>
+	      	</tr>
+	      <% end %>
+	    </tbody>
+	  </table>
+	  <%= will_paginate %>
+	<% end -%>
 </div>
