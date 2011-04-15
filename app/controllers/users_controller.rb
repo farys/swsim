@@ -61,6 +61,41 @@ class UsersController < ApplicationController
     		flash[:success] = "OK!"
     	end
     end
+    
+    def watching
+	    @title = "Moi zaufani"
+	    @user = User.find(params[:id])
+	    @users = @user.watching.paginate(:page => params[:page])
+	    render 'show_watch'
+    end
+
+    def watchers
+	    @title = "Zaufali mi"
+	    @user = User.find(params[:id])
+	    @users = @user.watchers.paginate(:page => params[:page])
+	    render 'show_watch'
+    end
+    
+    def find
+    	@fraza = params[:find][:text]
+    	@value = params[:szukaj][:user]
+    	if @value == "id"
+    		@user = User.find_by_id(@fraza)
+    	elsif @value == "lastname"
+    		@user = User.find_by_lastname(@fraza)
+    	elsif @value == "email"
+    		@user = User.find_by_email(@fraza)
+    	elsif @value == "login"
+    		@user = User.find_by_login(@fraza)
+    	end
+    	if @user.nil?
+    			redirect_to user_path(current_user)
+    			flash[:error] = "Nie ma takiego uzytkownika"
+    	else
+    		redirect_to user_path(@user)
+    	end
+    end
+
   	
   	private
   	

@@ -1,0 +1,5 @@
+<% @user ||= current_user %>
+<div>
+	<a href="<%= watching_user_path(@user) %>"><%= @user.watching.count %> zaufanych</a> || 
+    <a href="<%= watchers_user_path(@user) %>"><%= @user.watchers.count %> zaufało mi</a>
+</div>

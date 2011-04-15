@@ -8,8 +8,13 @@ Inz::Application.routes.draw do
   end
   
   #Users and sessions
-  resources :users
+  resources :users do 
+  	member do
+  		get :watching, :watchers
+  	end
+  end
   resources :sessions, :only => [:new, :create, :destroy]
+  resources :relationships, :only => [:create, :destroy]
 
   # PANEL
   namespace :panel do
@@ -84,6 +89,7 @@ Inz::Application.routes.draw do
   match '/signin',  :to => 'sessions#new'
   match 'signout',  :to => 'sessions#destroy'
   match '/ver', :to => 'users#mail_ver'
+  match '/find', :to => 'users#find'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
