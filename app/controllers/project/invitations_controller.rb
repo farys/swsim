@@ -93,8 +93,8 @@ class Project::InvitationsController < Project::ApplicationController
     @invitation.status = Invitation::STATUSES[:accepted]
     if @invitation.save
       Membership.create(:project_id => @invitation.project_id,
-                           :user_id => @invitation.user_id,
-                           :role_id => @invitation.role_id)
+                        :user_id => @invitation.user_id,
+                        :role_id => @invitation.role_id)
       flash_t :success
       redirect project_info_path(@invitation.project_id)
     else
@@ -138,7 +138,7 @@ class Project::InvitationsController < Project::ApplicationController
   private
   
   def get_invitation
-    unless Invitation.exsists? params[:id]
+    unless Invitation.exists? params[:id]
       flash_t_general :error, 'invitation.dont_exists'
       redirect_to project_invitations_path(@project)
       return

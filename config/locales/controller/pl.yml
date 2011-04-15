@@ -102,7 +102,7 @@ pl:
         create: Post został dodany
         update: Post został zaktualizowany
         destroy: Post został usunięty
-      invitation:
+      invitations:
         create: Zaproszenie zostało wysłane
         destroy: Zaproszenie zostało usunięte
         cancel: Zaproszenie zostało anulowane
@@ -169,7 +169,6 @@ pl:
         show: "{@project.name}"
       members:
         index: "{@project.name} | Członkowie"
-        new: "{@project.name} | Dodaj użytkowika"
       files:
         index: "{@project.name} | Pliki"
         show: "{@project.name} | Pliki | {@file.name}"

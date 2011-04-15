@@ -4,7 +4,7 @@ I18n.locale = :en
 #wypelnianie bazy development danymi => rake db:populate
 
 #ilosc generowoanych danych
-USERS = 99
+USERS = 5
 PROJECTS = USERS*5
 INVITATIONS = PROJECTS*5
 TOPICS = PROJECTS*5
@@ -60,8 +60,8 @@ end
 def make_relationships
   users = User.all
   user  = users.first
-  watching = users[1..50]
-  watchers = users[3..40]
+  watching = users[1..User.count-1]
+  watchers = users[1..User.count-1]
   watching.each { |watched| user.watch!(watched) }
   watchers.each { |watcher| watcher.watch!(user) }
 end
