@@ -8,7 +8,7 @@ Inz::Application.routes.draw do
   end
   
   #Users and sessions
-  resources :users do
+  resources :users do 
   	member do
   		get :watching, :watchers
   	end

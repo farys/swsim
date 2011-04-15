@@ -4,7 +4,18 @@
       <% unless @users.empty? %>
         <ul class="users">
         <% @users.each do |user| %>
-          <%= link_to user.login, user %><br />
+        <tr>
+        <td>
+          <%= link_to user.login, user %> <%= user.email %>
+        </td>
+        <% if params[:action] == 'watching' %>
+        <td>
+        <%= form_for current_user.relationships.find_by_watched_id(user.id), :html => { :method => :delete } do |f| %>
+  			<div style="float: right;"><%= f.submit "Wyrzuć z zaufanych" %></div>
+		<% end %>
+        </td>
+        <% end %>
+        </tr>
         <% end %>
         </ul>
         <%= will_paginate @users %>
