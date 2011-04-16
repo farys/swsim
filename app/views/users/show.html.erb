@@ -76,3 +76,12 @@
 	 
   <%= render 'shared/zaufani' %>
   <%= render 'find_user' %>
+  
+  <%= render 'blogpost_form' %>
+  
+  <% unless @user.blogposts.empty? %>
+        <table summary="User blogposts">
+          <%= render @blogposts %>
+        </table>
+        <%= will_paginate @blogposts %>
+  <% end %>
