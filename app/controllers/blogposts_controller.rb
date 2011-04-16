@@ -19,7 +19,7 @@ class BlogpostsController < ApplicationController
   private
 
     def authorized_user
-      @micropost = Micropost.find(params[:id])
-      redirect_to root_path unless current_user?(@micropost.user)
+      @blogpost = Blogpost.find(params[:id])
+      redirect_to root_path unless current_user?(@blogpost.user)
     end
 end
