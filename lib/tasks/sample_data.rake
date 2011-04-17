@@ -26,6 +26,7 @@ namespace :db do
     Rake::Task['db:reset'].invoke
     make_users
     make_relationships
+    make_blogposts
     make_roles
     make_groups_and_tags
     make_auctions
@@ -64,6 +65,14 @@ def make_relationships
   watchers = users[1..User.count-1]
   watching.each { |watched| user.watch!(watched) }
   watchers.each { |watcher| watcher.watch!(user) }
+end
+
+def make_blogposts
+	User.all(:limit => 6).each do |user|
+      50.times do
+        user.blogposts.create!(:title => Faker::Lorem.sentence(2), :content => Faker::Lorem.sentence(5))
+      end
+    end
 end
 
 def make_projects

@@ -1,0 +1,12 @@
+<%= form_for @blogpost do |f| %>
+  <%= render "layouts/error_messages", :target => @blogpost %>
+  <div class="field">
+    <%= f.text_area :title %>
+  </div>
+  <div class="field">
+    <%= f.text_area :content %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Submit" %>
+  </div>
+<% end %>

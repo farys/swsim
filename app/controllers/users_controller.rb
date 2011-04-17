@@ -14,6 +14,8 @@ class UsersController < ApplicationController
       @projects = Project.find(@user.project_ids).paginate :per_page => 15, :page => params[:page]
       @country_name = Carmen::country_name(@user.country)
       @country_flag = "flags/#{@user.country.downcase}.gif"
+      @blogposts = @user.blogposts.paginate(:page => params[:page])
+      @blogpost = Blogpost.new if signed_in?
     end
 	
 	def create
