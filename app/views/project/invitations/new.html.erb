@@ -1,0 +1,19 @@
+<%= render 'project/shared/menu' %>
+
+<div class="span-8 prepend-1">
+  <%= form_for @invitation,
+              :url => project_invitations_path(@project, @invitation) do |f| -%>
+    <%= render "layouts/error_messages", :target => @invitation %>
+    <div class="field">
+      <%= f.label :user_id %>
+      <%= f.text_field :user_id %>
+    </div>
+    <div class="field">
+      <%= f.label :role_id %>
+      <%= f.select('role_id',roles_for_select(Role.new)) %>
+    </div>
+    <div class="action">
+      <%= f.submit t('general.save') %>
+    </div>
+  <% end -%>
+</div>

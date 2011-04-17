@@ -63,7 +63,7 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
   	options = []
   	Role.find(:all, :select => 'id, name').each do |r|
   		unless r.name == 'owner' || r.name == 'leader'
-  			options += [[escape_column(r, 'name').capitalize, r.id]]
+  			options += [[escape_column(r, 'name'), r.id]]
   		end
   	end
   	options_for_select(options, model.send('id'))

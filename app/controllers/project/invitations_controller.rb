@@ -46,26 +46,37 @@ class Project::InvitationsController < Project::ApplicationController
     
     inv_users = []
     @project.invitations.each do |i|
-      inv_users << i.user_id
+      inv_users << i.user_id if i.status == Invitation::STATUSES[:pending]
     end
     
     if inv_users.include? @invitation.user_id
-      flash.now[:notice] = t('flash.project.invitation.exists')
+      flash.now[:notice] = t('flash.project.invitations.exists')
       render_new
+      return
     end
-    
-    @user = User.find(@invitation.user_id)
-    @role = Role.find(@invitation.role_id)
-    @auciton = Auction.find(@project.auciton_id)
-       
-    #TODO wysylanie powiadomniena   
+        
+    Message.create   
           
     if @invitation.save
-      flash_t :success    
+      @role = Role.find(@invitation.role_id)
+      @auciton = Auction.find(@project.auction_id)
+      msg = Message.new(:receiver_id => @invitation.user_id,
+                        :owner_id => @invitation.user_id,
+                        :author_id => current_user.id,
+                        :topic => t('general.project.invitation.topic'),
+                        :body => raw(t('general.project.invitation.body')))
+      
+      if msg.save
+        flash_t :success
+      else
+        @invitation.destroy
+        flash_t_general :error, 'error.unknown'
+      end
+      
+      redirect_to project_invitations_path    
     else
-      flash_t_general :error, 'error.unknown'
+      render_new
     end
-    redirect_to project_invitations_path
   end
   
   def destroy

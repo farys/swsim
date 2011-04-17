@@ -67,6 +67,8 @@ pl:
         content: Treść
       invitation:
         status: Status
+        user_id: Użytkownik
+        role_id: Rola
     errors:
       models:
         auction:

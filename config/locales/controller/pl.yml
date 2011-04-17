@@ -180,7 +180,7 @@ pl:
         edit: "{@project.name} | Forum | Edycja Tematu"
       post:
         new: "{@project.name} | Forum | {@topic.title} | Nowy post"
-        edit: "{@project.name} | Forum | {@topic.title} | Edycja"
+        edit: "{@project.name} | Forum | {@topic.title} | Edycja postu"
       invitations:
         index: "{@project.name} | Zaproszenia"
         new: "{@project.name} | Zaproszenia | Nowe zaproszenie"
