@@ -98,7 +98,7 @@ pl:
         destroy: Temat został usunięty
         create: Nowy temat został dodany
         update: Temat został zaktualizowany
-      post:
+      posts:
         create: Post został dodany
         update: Post został zaktualizowany
         destroy: Post został usunięty
@@ -181,7 +181,7 @@ pl:
         show: "{@project.name} | Forum | {@topic.title}"
         new: "{@project.name} | Forum | Nowy temat"
         edit: "{@project.name} | Forum | Edycja Tematu"
-      post:
+      posts:
         new: "{@project.name} | Forum | {@topic.title} | Nowy post"
         edit: "{@project.name} | Forum | {@topic.title} | Edycja postu"
       invitations:

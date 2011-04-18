@@ -1,4 +1,4 @@
-class Project::PostController < Project::ApplicationController
+class Project::PostsController < Project::ApplicationController
   before_filter :get_topic
   before_filter :edit_post, :only => [:edit, :update, :destroy]
   
