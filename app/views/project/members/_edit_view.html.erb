@@ -11,12 +11,13 @@
     <% @members.each do |user| %>
     	<tr>
 	    	<% if user.id == @project.owner_id || user.id == @project.leader_id %>
-	    		<td><%= link_to user.login, user_path(user) %></td>
+	    		<td><%= link_to user.login, user_path(user), :target => '_blank' %></td>
 	      	<td>
-	      		<%= link_to t('general.pm'), :controller => 'panel/messages',
-														  :action => :new,
-	        										:receiver_login => user.login %> |
-	        	<%= mail_to user.email %>
+	      		<%= link_to t('general.pm'),
+	      		            :controller => 'panel/messages',
+												:action => :new,
+	        							:receiver_login => user.login %>
+	        	 | <%= mail_to user.email %>
 	      	</td>
 	      	<td><%= escape_column(@project.user_role(user.id), "name").capitalize %></td>
 	      	<td>brak</td>
@@ -24,12 +25,13 @@
           <% membership = @project.find_membership(user.id) %>
 	    		<%= form_for membership, :url => project_member_path(@project, membership) do |f| %>
 	    			<%= f.hidden_field :user_id %>
-		    		<td><%= link_to user.login, user_path(user) %></td>
+		    		<td><%= link_to user.login, user_path(user), :target => '_blank' %></td>
 		      	<td>
-		      		<%= link_to t('general.pm'), :controller => 'panel/messages',
-															  :action => :new,
-		        										:receiver_login => user.login %> |
-		        	<%= mail_to user.email %>
+		      		<%= link_to t('general.pm'),
+		      		            :controller => 'panel/messages',
+													:action => :new,
+		        							:receiver_login => user.login %>
+		        	 | <%= mail_to user.email %>
 		      	</td>
 		      	<td><%= f.select('role_id',roles_for_select(@project.user_role(user.id)))%></td>
 		      	<td>

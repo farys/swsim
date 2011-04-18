@@ -4,17 +4,17 @@
 	<%= form_for @file, :url => project_files_path(@project, @file),
 											:html => {:multipart => true} do |f| %>
 		<%= render "layouts/error_messages", :target => @file %>
-    <p>
+    <div class="field">
       <%= f.label attribute_t 'project_file.file' %><br />
       <%= f.file_field :project_file %>
-    </p>
-    <p>
+    </div>
+    <div class="field">
       <%= f.label :description %><br />
       <%= f.text_area :description %>
-    </p>   
-    <p>
-      <%= f.submit t('general.project.add_file') %>
-    </p>
+    </div>   
+    <div class="actions">
+      <%= f.submit t('general.project.file.add') %>
+    </div>
 	<% end %>
 </div>
 

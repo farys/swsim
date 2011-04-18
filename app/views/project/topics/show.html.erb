@@ -5,12 +5,13 @@
 	<tr>
 		<td class="span-3">
 			<p><%= image_tag user.avatar.url(:thumb) %></p>
-			<p><%= link_to user.login, user_path(user.id) %></p>
+			<p><%= link_to user.login, user_path(user.id), :target => '_blank' %></p>
 			<p>
-				<%= link_to t('general.pm'), :controller => 'panel/messages',
-													:action => :new, 
-													:receiver_login => user.login %> | 
-       	<%= mail_to user.email %>
+				<%= link_to t('general.pm'),
+				            :controller => 'panel/messages',
+										:action => :new, 
+										:receiver_login => user.login %>
+       	 | <%= mail_to user.email %>
 			</p>
 		</td>
 		<td>
@@ -24,12 +25,13 @@
 		<tr>
 			<td class="span-3">
 				<p><%= image_tag user.avatar.url(:thumb) %></p>
-				<p><%= link_to user.login, user_path(user.id) %></p>
+				<p><%= link_to user.login, user_path(user.id), :target => '_blank' %></p>
 				<p>
-					<%= link_to t('general.pm'), :controller => 'panel/messages',
-														:action => :new, 
-														:receiver_login => user.login %> | 
-        	<%= mail_to user.email %>
+					<%= link_to t('general.pm'),
+					            :controller => 'panel/messages',
+											:action => :new, 
+											:receiver_login => user.login %>
+        	 | <%= mail_to user.email %>
 				</p>
 			</td>
 			<td>
@@ -46,5 +48,5 @@
 	<% end %>
 </table>
 <div class="span-2 prepend-17">
-  <%= link_to t('general.post.add'), new_project_topic_post_path(@project, @topic) %>
+  <%= link_to t('general.project.post.add'), new_project_topic_post_path(@project, @topic) %>
 </div>

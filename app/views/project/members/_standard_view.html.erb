@@ -9,10 +9,13 @@
   <tbody>
     <% @members.each do |user| %>
       <tr>
-        <td><%= link_to user.login, user_path(user) %></td>
+        <td><%= link_to user.login, user_path(user), :target => '_blank' %></td>
         <td>
-        	<%= link_to t('general.pm'), :controller => 'panel/messages', :action => :new, :receiver_login => user.login %> | 
-        	<%= mail_to user.email %>
+        	<%= link_to t('general.pm'),
+        	            :controller => 'panel/messages',
+        	            :action => :new,
+        	            :receiver_login => user.login %> 
+        	 | <%= mail_to user.email %>
         </td>
       	<td>
       		<%= escape_column(@project.user_role(user.id), "name").capitalize %>        	

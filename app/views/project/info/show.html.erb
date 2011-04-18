@@ -27,14 +27,16 @@
         <td><%= attribute_t 'project.owner_id' %></td>
         <td>
         	<%= link_to(User.find(@project.owner_id).login,
-        	 						user_path(User.find(@project.owner_id).id))  %>     	
+        	 						user_path(User.find(@project.owner_id).id),
+        	 						:target => '_blank')  %>     	
         </td>
       </tr>
       <tr>
         <td><%= attribute_t 'project.leader_id' %></td>
         <td>
         	<%= link_to(User.find(@project.leader_id).login,
-        	 						user_path(User.find(@project.leader_id).id))  %>
+        	 						user_path(User.find(@project.leader_id).id),
+        	 						:target => '_blank')  %>
         </td>
       </tr>
       <tr>
@@ -43,7 +45,11 @@
       </tr>
       <tr>
       	<td><%= model_t 'auction' %></td>
-      	<td><%= link_to(Auction.find(@project.auction_id).title, auction_path(@project.auction_id)) %></td>
+      	<td>
+      	  <%= link_to(Auction.find(@project.auction_id).title,
+      	              auction_path(@project.auction_id),
+      	              :target => '_blank') %>
+      	</td>
       </tr>
       <% if @project.owner_id == current_user.id && @project.status == Project::STATUSES[:active] %>
       	<tr>

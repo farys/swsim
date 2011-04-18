@@ -1,5 +1,5 @@
 <td><%= link_to topic.title, project_topic_path(@project, topic.id) %></td>
-<td><%= link_to user.login,	user_path(user.id)%></td>
+<td><%= link_to user.login,	user_path(user.id), :target => '_blank'%></td>
 <td>
 	<%= render :partial => 'topic_last_post', :locals => { :topic => topic,
 	    	    																							 :user => user } %>

@@ -22,11 +22,11 @@
 	      <% @topics.each do |topic| %>
 	      	<% user = User.find(topic.user_id) %>
 	        	<% if edit_topic? topic.id %>
-	      	    <%= render :partial => 'edit_table', :locals => { :topic => topic,
-	      	    																									:user => user } %>
+	      	    <%= render :partial => 'edit_view', :locals => { :topic => topic,
+	      	    																								 :user => user } %>
 	      		<% else %>
-	      		  <%= render :partial => 'normal_table', :locals => { :topic => topic,
-	      	    																									:user => user } %>
+	      		  <%= render :partial => 'standard_view', :locals => { :topic => topic,
+	      	    																									   :user => user } %>
 	      		<% end %>
 	      	</tr>
 	      <% end %>

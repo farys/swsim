@@ -17,8 +17,10 @@
       	  <p><%= link_to t('general.download'), @file.project_file.url %></p>
       	  <% if can_edit? 'file' -%>
       	    <p>
-      	      <%= link_to t('general.delete'), project_file_path(@project,@file),
-      	                                   :method => :delete %>
+      	      <%= link_to t('general.delete'),
+      	                  project_file_path(@project,@file),
+      	                  :method => :delete,
+      	                  :confirm => t('general.confirm') %>
       	    </p>
       	  <% end -%>     	  
       	</td>
