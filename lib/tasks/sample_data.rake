@@ -9,6 +9,7 @@ PROJECTS = USERS*5
 INVITATIONS = PROJECTS*5
 TOPICS = PROJECTS*5
 POSTS = TOPICS*5
+TICKETS = PROJECTS*5
 
 namespace :db do
 
@@ -31,6 +32,7 @@ namespace :db do
     make_groups_and_tags
     make_auctions
     make_projects
+    make_tickets
     make_offers
     make_comments_keywords
     make_topics
@@ -185,4 +187,16 @@ def make_posts
 								 :user_id => rand(User.count-1)+1,
 								 :content => content)
 	end
+end
+
+def make_tickets
+  TICKETS.times do
+    title = Faker::Lorem.words(3).join(' ')
+		content = Faker::Lorem.sentences(12)
+    Ticket.create!(:project_id => rand(Project.count-1)+1,
+                   :title => title,
+									 :content => content,
+									 :duration => rand(23)+1,
+									 :status => 0)
+  end
 end

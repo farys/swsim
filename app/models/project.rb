@@ -6,6 +6,7 @@ class Project < ActiveRecord::Base
   has_many :project_files, :dependent => :destroy
   has_many :topics, :dependent => :destroy
   has_many :invitations, :dependent => :destroy
+  has_many :tickets, :dependent => :destroy
   belongs_to :auction
 	
 	validates :name, :length => { :in => 5..50}

@@ -1,0 +1,47 @@
+<%= render 'project/shared/menu' %>
+
+<div class="span-10 prepend-1">
+  <div class="span-2 prepend-8">
+    <%= link_to(t('general.project.ticket.add'), '#') if can_edit?('ticket') %>
+  </div>  
+  <% if @tickets.empty? -%>
+    <div class="notice span-9">
+      <%= t('flash.general.tickets.empty') %>
+    </div>
+  <% else -%>
+    <table class="list">
+    <thead>
+      <tr>
+        <th><%= attribute_t 'ticket.title' %></th>
+        <th><%= attribute_t 'ticket.duration' %></th>
+        <th><%= attribute_t 'ticket.status' %></th>
+        <th><%= t('general.actions') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tickets.each do |ticket| %>
+        <tr>
+          <td><%= ticket.title %></td>
+          <td><%= ticket.duration %></td>
+          <td><%= escape_status ticket %></td>
+          <td>
+            <% if ticket.status == Ticket::STATUSES[:free] -%>
+              <%= link_to t('general.project.ticket.take'), '#' %>
+            <% elsif ticket.status == Ticket::STATUSES[:implementation] -%>
+              <%= link_to t('general.project.ticket.give'), '#' %>
+            <% end -%>
+            <% if can_edit?('ticket') && ticket.status == Ticket::STATUSES[:finished] -%>
+              <%= link_to t('general.delete'), '#' %>
+            <% elsif can_edit?('ticket') -%>
+               | <%= link_to t('general.delete'), '#' %>
+            <% elsif ticket.status == Ticket::STATUSES[:finished] -%>
+              <%= t('general.none') %>
+            <% end -%>
+          </td>
+      	</tr>
+      <% end %>
+    </tbody>
+    </table>
+  <%= will_paginate %>
+  <% end -%>
+</div>

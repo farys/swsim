@@ -69,6 +69,12 @@ pl:
         status: Status
         user_id: Użytkownik
         role_id: Rola
+      ticket:
+        user_id: Użytkownik
+        title: Tytuł
+        description: Opis
+        duration: Roboczogodziny
+        status: Status
     errors:
       models:
         auction:
@@ -138,4 +144,8 @@ pl:
       pending: Oczekujące
       rejected: Odrzucone
       canceled: Anulowane
-      
+  ticket:
+    statuses:
+      free: Wolny
+      implementation: W realizacji
+      finished: Zakończony

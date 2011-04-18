@@ -20,7 +20,7 @@
 	        	 | <%= mail_to user.email %>
 	      	</td>
 	      	<td><%= escape_column(@project.user_role(user.id), "name").capitalize %></td>
-	      	<td>brak</td>
+	      	<td><%= t('general.none') %></td>
 	    	<% else %>
           <% membership = @project.find_membership(user.id) %>
 	    		<%= form_for membership, :url => project_member_path(@project, membership) do |f| %>

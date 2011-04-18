@@ -30,6 +30,8 @@ pl:
         dont_exists: Zaproszenie nie istnieje
         not_included: Zaproszenie nie należy do tego projektu
         empty: Obecnie nie ma żadnych zaproszeń do wyświetlenia
+      tickets:
+        empty: Obecnie nie ma żadnych ticketów do wyświetlenia
     users:
       create: Witaj nowy użytkowniku
       update: Profil zaktualizowany
@@ -187,3 +189,5 @@ pl:
       invitations:
         index: "{@project.name} | Zaproszenia"
         new: "{@project.name} | Zaproszenia | Nowe zaproszenie"
+      tickets:
+        index: "{@project.name} | Tickety"

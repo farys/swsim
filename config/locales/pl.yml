@@ -9,6 +9,7 @@ pl:
     edit: Edytuj
     cancel: Anuluj
     download: Pobierz
+    none: Brak
     pm: PW
     contact: Kontakt
     confirm: Jesteś pewien ?
@@ -34,6 +35,10 @@ pl:
         accept: Akceptuj
         reject: Odrzuć
         body: "Zaproszono Cie do projektu {@auction_link} z rolą {@role}. [{@accept_link} | {@reject_link}]"
+      ticket:
+        add: Dodaj ticket
+        take: Weź
+        give: Oddaj
   date:
     formats:
       default: "%d-%m-%Y"
