@@ -1,5 +1,6 @@
 class Project::ApplicationController < ApplicationController	
   before_filter :get_project
+  before_filter :check_membership, :except =>[:accept, :reject]
   
   #sprawdzenie uprawnien do edytowania wybranego widoku  
   def can_edit?(page)
@@ -36,15 +37,15 @@ class Project::ApplicationController < ApplicationController
       redirect_to panel_projects_path
       return
     end
-    
+        
     @project = Project.find(params[:project_id])
-    
+  end
+  
+  def check_membership
     unless @project.member?(current_user.id)
       flash_t_general :error, 'project.not_participating'
       redirect_to panel_projects_path
       return
-    end
-    
-    @members = @project.users.paginate :per_page => 15, :page => params[:page]
+    end    
   end
 end

@@ -31,7 +31,9 @@ pl:
       invitation:
         add: Zaproś użytkownika
         topic: Otrzymaleś zaproszenie do projektu
-        body: "Zaproszono Cie do projektu {raw \"@project.title}[{link_to @auciton.title, auction_path(@auciton)}]\" z rolą {t(@role.name)}"
+        accept: Akceptuj
+        reject: Odrzuć
+        body: "Zaproszono Cie do projektu {@auction_link} z rolą {@role}. [{@accept_link} | {@reject_link}]"
   date:
     formats:
       default: "%d-%m-%Y"

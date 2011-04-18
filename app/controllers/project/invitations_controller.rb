@@ -1,6 +1,7 @@
 class Project::InvitationsController < Project::ApplicationController
-  before_filter :get_invitation, :except => [:index, :new, :create]
+  before_filter :get_invitation, :only => [:cancel, :destroy]
   before_filter :check_privileges, :except => [:index, :accept, :reject]
+  before_filter :get_reciver_invitation, :only => [:accept, :reject]
   
   def index
     title_t :index
@@ -58,13 +59,25 @@ class Project::InvitationsController < Project::ApplicationController
     Message.create   
           
     if @invitation.save
-      @role = Role.find(@invitation.role_id)
-      @auciton = Auction.find(@project.auction_id)
+      role = Role.find(@invitation.role_id)
+      auction = Auction.find(@project.auction_id)
+      
+      @role = t("role.name.#{role.send("name")}")
+      @auction_link = "<a href=\"/auctions/#{auction.id}\" target=\"_blank\">#{auction.title}</a>"
+      @accept_link = "<a href=\"/projects/#{@project.id}/invitations/#{@invitation.id}/accept\">#{t('general.project.invitation.accept')}</a>"
+      @reject_link = "<a href=\"/projects/#{@project.id}/invitations/#{@invitation.id}/reject\">#{t('general.project.invitation.reject')}</a>"
+      
+      body = t('general.project.invitation.body')    
+      body.scan(/{[^}]+}/).each do |var|
+        body[var] = eval("->"+var+".call").to_s
+      end
+      @body = body
+      
       msg = Message.new(:receiver_id => @invitation.user_id,
                         :owner_id => @invitation.user_id,
                         :author_id => current_user.id,
                         :topic => t('general.project.invitation.topic'),
-                        :body => raw(t('general.project.invitation.body')))
+                        :body => @body)
       
       if msg.save
         flash_t :success
@@ -94,32 +107,21 @@ class Project::InvitationsController < Project::ApplicationController
     redirect_to project_invitations_path
   end
   
-  def accept
-    unless @invitation.user_id == current_user.id
-      flash_t_general :error, 'error.privileges'
-      redirect_to panel_messages_path
-      return
-    end
-    
+  def accept 
     @invitation.status = Invitation::STATUSES[:accepted]
     if @invitation.save
       Membership.create(:project_id => @invitation.project_id,
                         :user_id => @invitation.user_id,
                         :role_id => @invitation.role_id)
       flash_t :success
-      redirect project_info_path(@invitation.project_id)
+      redirect_to project_info_path(@invitation.project_id)
     else
       flash_t_general 'error.unknown'
       redirect_to panel_messages_path
     end  
   end
   
-  def reject
-    unless @invitation.user_id == current_user.id
-      flash_t_general :error, 'error.privileges'
-      redirect_to panel_messages_path
-    end
-    
+  def reject   
     @invitation.status = Invitation::STATUSES[:rejected]
     if @invitation.save
       flash_t :success
@@ -155,6 +157,38 @@ class Project::InvitationsController < Project::ApplicationController
       return
     end
     @invitation = Invitation.find(params[:id])
+  end
+  
+  def get_reciver_invitation
+    unless Invitation.exists? params[:id]
+      flash_t_general :error, 'invitation.dont_exists'
+      redirect_to panel_messages_path
+      return
+    end
+    @invitation = Invitation.find(params[:id])
+    
+    unless @invitation.user_id == current_user.id
+      flash_t_general :error, 'error.privileges'
+      redirect_to panel_messages_path
+      return
+    end
+    
+    if @invitation.status == Invitation::STATUSES[:canceled]
+      flash_t :notice, 'canceled'
+      redirect_to panel_messages_path
+      return
+    end
+    
+    if @invitation.status == Invitation::STATUSES[:accepted]
+      redirect_to project_info_path(@invitation.project_id)
+      return
+    end
+    
+    if @invitation.status == Invitation::STATUSES[:rejected]
+      redirect_to panel_messages_path
+      return
+    end
+    
   end
   
   def check_privileges

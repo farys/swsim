@@ -3,6 +3,7 @@ class Project::MembersController < Project::ApplicationController
    
   def index
     title_t :index
+    @members = @project.users.paginate :per_page => 15, :page => params[:page]
   end
   
   def update

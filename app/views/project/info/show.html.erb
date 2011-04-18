@@ -39,7 +39,7 @@
       </tr>
       <tr>
         <td><%= t("general.users") %></td>
-        <td><%= link_to(@members.count, project_members_path(@project)) %></td>
+        <td><%= link_to(@members, project_members_path(@project)) %></td>
       </tr>
       <tr>
       	<td><%= model_t 'auction' %></td>

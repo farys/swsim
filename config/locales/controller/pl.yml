@@ -110,7 +110,10 @@ pl:
         cancel_error: Nie można anulować tego zaproszenia
         destroy_error: Nie można usunąć tego zaproszenia
         accept: Zaproszenie zostało zaakceptowane
-        reject: Zaproszenie zostało odrzucone        
+        reject: Zaproszenie zostało odrzucone
+        canceled: Zaproszenie zostało anulowane, nie można wykonać akcji
+          
+                
         
   title:
     auctions:

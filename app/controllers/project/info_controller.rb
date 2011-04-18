@@ -3,6 +3,7 @@ class Project::InfoController < Project::ApplicationController
 	
   def show
     title_t :show
+    @members = @project.users.count
   end
   
   #zakonczenie projektu lub edycja opisu
