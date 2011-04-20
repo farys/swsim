@@ -1,0 +1,67 @@
+<div class="prepend-1 span-22 last">
+  <div class="span-6">
+    <table class>
+      <tr>
+      	<td colspan="2" id="table_title">
+      		Dane osobowe 
+      	</td>
+      </tr>
+      <tr>
+        <td>Login</td>
+        <td><b><%= @user.login %></b></td>
+      </tr>
+      <tr>
+        <td>Imie</td>
+        <td><%= @user.name %></td>
+      </tr>
+      <tr>
+        <td>Nazwisko</td>
+        <td><%= @user.lastname %></td>
+      </tr>
+      <tr>
+        <td>Utworzony</td>
+        <td><%= escape_date(@user.created_at) %></td>
+      </tr>
+      <tr>
+        <td>Kraj</td>
+        <td><%= image_tag(@country_flag) %> <%= @country_name %></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td><%= @user.email %></td>
+      </tr>
+    </table>
+    </div>
+    <div class="prepend-0 span-9">
+    <table class>
+    <tr>
+    	<tr>
+      	<td colspan="2" id="table_title">
+      		O sobie
+      	</td>
+      </tr>
+        <td style="vertical-align: top; border-right: 1px solid black;"><%= image_tag @user.avatar.url(:thumb) %></td><td><%= simple_format(@user.description) -%></td>
+      </tr>
+    </table>
+    </div>
+    <div class="prepend-0 span-6">
+    <table class>
+    <tr>
+    	<tr>
+      	<td colspan="2" id="table_title">
+      		Statystyki
+      	</td>
+      </tr>
+        <td>
+        	<%= render 'shared/zaufani' %>
+        	<%= link_to @projects.count, projects_path %> projektow
+        </td>
+      </tr>
+    </table>
+    </div>
+    <div class="clear span-11 center">
+  <% if current_user?(@user) %>
+  <%= link_to 'Edytuj dane', edit_user_path(current_user) %>
+  <% end %>
+  <%= render 'watch_form' if signed_in? %>
+  </div>

@@ -1,0 +1,9 @@
+<%= render 'users/user_menu' %>
+<div class="prepend-1">
+<% unless @user.blogposts.empty? %>
+        <table summary="User blogposts">
+          <%= render @blogposts %>
+        </table>
+</div>
+        <%= will_paginate @blogposts %>
+<% end %>

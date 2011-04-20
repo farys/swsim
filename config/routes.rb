@@ -12,10 +12,17 @@ Inz::Application.routes.draw do
   	member do
   		get :watching, :watchers
   	end
+  	resources :userprojects, :only => [:index]
+  	resources :blogposts
   end
   resources :sessions, :only => [:new, :create, :destroy]
   resources :relationships, :only => [:create, :destroy]
   resources :blogposts
+  match '/signup',  :to => 'users#new'
+  match '/signin',  :to => 'sessions#new'
+  match 'signout',  :to => 'sessions#destroy'
+  match '/ver', :to => 'users#mail_ver'
+  match '/find', :to => 'users#find'
 
   # PANEL
   namespace :panel do
@@ -87,11 +94,6 @@ Inz::Application.routes.draw do
   resources :alerts, :only => [:create]
   
   root :to =>  "auctions#index"
-  match '/signup',  :to => 'users#new'
-  match '/signin',  :to => 'sessions#new'
-  match 'signout',  :to => 'sessions#destroy'
-  match '/ver', :to => 'users#mail_ver'
-  match '/find', :to => 'users#find'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

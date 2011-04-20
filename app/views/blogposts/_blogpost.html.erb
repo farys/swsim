@@ -1,11 +1,13 @@
+<table style="border: 1px solid cyan;">
 <tr>
   <td>
-  	<h3><%= blogpost.title %></h3></td>
+  	<h1><%= blogpost.title %></h1></td>
   	<tr>
   	<td>
-    <span><%= blogpost.content %></span>
-    <span>
+    <%= blogpost.content %>
+    <div class="right">
       Posted <%= time_ago_in_words(blogpost.created_at) %> ago.
-    </span>
+    </div>
   </td>
 </tr>
+</table>

@@ -1,0 +1,20 @@
+<%= render 'users/user_menu' %>
+<div class="prepend-1">
+<table>
+	<tr style="background-color: cyan;">
+		<td class="bold">Nazwa projektu</td><td class="bold">Rola</td><td class="bold">Data</td><td class="bold">Status</td>
+	</tr>
+  	<% @projects.each do |proj| %>
+	        <tr>
+	          <td><%= link_to proj.name, project_info_path(proj) %></td>
+	          <td><%= escape_column(proj.user_role(@user.id), "name").capitalize %></td>
+	          <td>
+	            <%= escape_date(proj.deadline) %>
+	            (PozostaBo <%= time_ago_in_words(proj.deadline) %>)
+	          </td>
+	          <td><%= escape_status(proj) %></td>
+	        </tr>
+	 <% end %>
+</table>
+</div>
+	 <%= will_paginate @projects %>
