@@ -1,6 +1,7 @@
 class Project::PostsController < Project::ApplicationController
   before_filter :get_topic
   before_filter :edit_post, :only => [:edit, :update, :destroy]
+  before_filter :get_post, :only => [:show, :edit, :update, :destroy]
   
   def new
     @post = Post.new
@@ -23,11 +24,9 @@ class Project::PostsController < Project::ApplicationController
   
   def edit
     title_t :edit
-    @post = Post.find(params[:id])
   end
   
   def update
-    @post = Post.find(params[:id])
     @post.content = params[:post][:content]
     
     if @post.save
@@ -72,19 +71,25 @@ class Project::PostsController < Project::ApplicationController
     unless Topic.exists? params[:topic_id]
       flash_t_general :error, 'topic.dont_exists'
       redirect_to project_topics_path
-    end
-    
+      return
+    end   
     @topic = Topic.find(params[:topic_id])
+    
+    unless @project.topic_ids.include? @topic.id
+      flash_t_general :error, 'topic.not_included'
+      redirect_to project_topics_path
+    end
   end
   
-  def check_read_privileges
+  def get_post
 	  unless Post.exists? params[:id]
 	    flash_t_general :error, 'post.dont_exists'
 	    redirect_to project_topic_path(@project, @topics)
 	    return
 	  end
+	  @post = Post.find(params[:id])
 	  
-	  unless @topic.post_ids.include?(params[:id].to_i)
+	  unless @topic.post_ids.include? @post.id
 	    flash_t_general :error, 'post.not_included'
 	    redirect_to project_topic_path(@project, @topics)
 	  end

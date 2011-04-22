@@ -20,7 +20,7 @@ pl:
         info: Info
         invitations: Zaproszenia
         members: Członkowie
-        tickets: Tickety
+        tickets: Zadania
         files: Pliki
         forum: Forum
       file:
@@ -36,7 +36,7 @@ pl:
         reject: Odrzuć
         body: "Zaproszono Cie do projektu {@auction_link} z rolą {@role}. [{@accept_link} | {@reject_link}]"
       ticket:
-        add: Dodaj ticket
+        add: Dodaj zadanie
         take: Weź
         give: Oddaj
   date:

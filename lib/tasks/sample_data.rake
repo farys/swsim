@@ -195,7 +195,7 @@ def make_tickets
 		content = Faker::Lorem.sentences(12)
     Ticket.create!(:project_id => rand(Project.count-1)+1,
                    :title => title,
-									 :content => content,
+									 :description => content,
 									 :duration => rand(23)+1,
 									 :status => 0)
   end
