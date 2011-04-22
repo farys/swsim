@@ -32,7 +32,7 @@ namespace :db do
     make_groups_and_tags
     make_auctions
     make_projects
-    make_tickets
+    #make_tickets
     make_offers
     make_comments_keywords
     make_topics

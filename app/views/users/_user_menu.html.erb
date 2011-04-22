@@ -1,0 +1,16 @@
+<div class="prepend-1">
+<nav id="project-nav" class="round" style="margin-bottom: 10px">
+  <ul>
+      <li><%= link_to "O mnie", user_path(@user) %></li>
+      <li><%= link_to "Zaufani", watching_user_path(@user) %><font color=white>/</font><%= link_to "Zaufali mi", watchers_user_path(@user) %></li>
+      <li><%= link_to "Aktywne projekty", user_userprojects_path(@user) %></li>
+      <li><%= link_to "Portfolio", '#' %></li>
+      <li><%= link_to "Blog", user_blogposts_path(@user) %></li>
+  </ul>
+</nav>
+</div>
+
+<div class="right">
+<%= render 'users/find_user' %>
+
+<div style="clear: both"></div><br />
