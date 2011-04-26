@@ -28,6 +28,7 @@ namespace :db do
     make_users
     make_relationships
     make_blogposts
+    make_blogcomments
     make_roles
     make_groups_and_tags
     make_auctions
@@ -69,9 +70,17 @@ def make_relationships
 end
 
 def make_blogposts
-	User.all(:limit => 6).each do |user|
+	User.all(:limit => 4).each do |user|
       50.times do
         user.blogposts.create!(:title => Faker::Lorem.sentence(2), :content => Faker::Lorem.sentence(5))
+      end
+    end
+end
+
+def make_blogcomments
+	Blogpost.all(:limit => 4).each do |blogpost|
+      50.times do
+        blogpost.blogcomments.create!(:content => Faker::Lorem.sentence(5))
       end
     end
 end

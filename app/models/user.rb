@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
                                    :dependent => :destroy
   has_many :watchers, :through => :reverse_relationships, :source => :watcher
   has_many :blogposts, :dependent => :destroy
+  has_many :blogcomments, :dependent => :destroy
   has_many :tickets
   
   email_regex = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃ\-.]+@[a-zżźćńółęąś\d\-.]+\.[a-z]+\z/i

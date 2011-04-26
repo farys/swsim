@@ -1,0 +1,10 @@
+<table style="border: 1px solid cyan;">
+  	<tr>
+  	<td>
+    <%= simple_format(@comment.content) %>
+    <div class="right">
+		<%= time_ago_in_words(@comment.created_at) %> ago.
+    </div>
+  </td>
+</tr>
+</table>

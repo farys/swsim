@@ -30,7 +30,7 @@ class BlogpostsController < ApplicationController
   def show
   	@user = User.find(params[:user_id])
   	@blogpost = Blogpost.find(params[:id])
-  	@comments = @blogpost.comments.paginate(:page => params[:page])
+  	@comments = Blogcomment.find_all_by_blogpost_id(@blogpost)
   	@title = "Blog"
   end
   

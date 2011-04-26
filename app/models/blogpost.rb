@@ -2,8 +2,9 @@ class Blogpost < ActiveRecord::Base
 	attr_accessible :content, :title
 
 	belongs_to :user
+	has_many :blogcomments, :dependent => :destroy
 	
-	validates :title, :presence => true, :length => {:within => 1..40}
+	validates :title, :presence => true
 	validates :content, :presence => true
   	validates :user_id, :presence => true
 	

@@ -15,3 +15,12 @@
   </td>
 </tr>
 </table>
+<br />
+<%= link_to "Dodaj komentarz", :controller => 'blogcomments', :action => 'new', :blogpost_id => @blogpost.id %>
+<table>
+<% @comments.each do |comment| %>
+<tr>
+<td><%= User.find(comment.user_id) %> || <%= simple_format(comment.content) %></td>
+</tr>
+<% end %>
+</table>

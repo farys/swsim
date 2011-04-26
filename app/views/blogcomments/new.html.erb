@@ -1,0 +1,13 @@
+<div class="left prepend-1">
+<% form_for [@blogcomment] do |f| -%>
+  <%= render "layouts/error_messages", :target => @blogcomment %>
+  <div class="field">
+  	<%= f.label :content %><br />
+    <%= f.text_area :content, :class => 'span-10' %>
+    <%= hidden_field_tag(:blogpost_id, @blogpost.id) %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Submit" %>
+  </div>
+  </div>
+<% end %>

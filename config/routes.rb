@@ -13,13 +13,12 @@ Inz::Application.routes.draw do
   		get :watching, :watchers
   	end
   	resources :userprojects, :only => [:index]
-  	resources :blogposts do
-  		resources :blogcomments
-  	end
+  	resources :blogposts
   end
   resources :sessions, :only => [:new, :create, :destroy]
   resources :relationships, :only => [:create, :destroy]
   resources :blogposts
+  resources :blogcomments
   match '/signup',  :to => 'users#new'
   match '/signin',  :to => 'sessions#new'
   match 'signout',  :to => 'sessions#destroy'
