@@ -1,0 +1,33 @@
+<%= render 'project/shared/menu' %>
+
+<div class="span-21 prepend-1">
+  <div class="span-8">
+    <table>
+      <tr>
+        <td><%= attribute_t 'ticket.title' %></td>
+        <td><%= @ticket.title %></td>
+      </tr>
+      <tr>
+        <td><%= attribute_t 'ticket.duration' %></td>
+        <td><%= @ticket.duration %></td>
+      </tr>
+      <tr>
+        <td><%= t('general.actions') %></td>
+        <td>
+          <% if @ticket.status == Ticket::STATUSES[:free] -%>
+            <%= link_to t('general.project.ticket.take'), '#' %>
+          <% elsif @ticket.status == Ticket::STATUSES[:implementation] &&
+                   @ticket.user_id == current_user.id -%>
+            <%= link_to t('general.project.ticket.give'), '#' %>
+          <% else -%>
+            <%= t('general.none') %>
+          <% end -%>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="span-11 prepend-1">
+    <p><%= attribute_t 'ticket.description' %></p>
+    <p><%= @ticket.description %></p>
+  </div>
+</div>

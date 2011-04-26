@@ -7,6 +7,7 @@ class Ticket < ActiveRecord::Base
   validates :project_id, :presence => true
   validates :title, :length => {:in => 5..40}
   validates :description, :length => {:in => 10..2000}
-  validates_numericality_of :duration, :only_integer => true
+  validates_numericality_of :duration, :only_integer => true,
+                                       :greater_than => 0
   validates :status, :inclusion => { :in => STATUSES.values }
 end

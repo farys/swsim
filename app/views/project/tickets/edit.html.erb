@@ -1,0 +1,24 @@
+<%= render 'project/shared/menu' %>
+
+<div class="span-20 prepend-1">
+  <div class="span-11">
+    <% form_for @ticket, :url => project_ticket_path(@project, @ticket) do |f| -%>
+      <%= render "layouts/error_messages", :target => @ticket %>
+      <div class="field">
+        <%= f.label :title %>
+        <%= f.text_field :title %>
+      </div>
+      <div class="field">
+        <%= f.label :description %></br>
+        <%= f.text_area :description, :class => 'span-10' %>
+      </div>
+      <div class="field">
+        <%= f.label :duration %>
+        <%= f.text_field :duration %>
+      </div>
+      <div class="actions">
+        <%= f.submit t('general.save') %>
+      </div>
+    <% end -%>
+  </div>
+</div>

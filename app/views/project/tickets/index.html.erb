@@ -1,12 +1,12 @@
 <%= render 'project/shared/menu' %>
 
 <div class="span-10 prepend-1">
-  <div class="span-2 prepend-8">
-    <%= link_to(t('general.project.ticket.add'), '#') if can_edit?('ticket') %>
+  <div class="span-3 prepend-8">
+    <%= link_to(t('general.project.ticket.add'), new_project_ticket_path) if can_edit?('ticket') %>
   </div>  
   <% if @tickets.empty? -%>
     <div class="notice span-9">
-      <%= t('flash.general.tickets.empty') %>
+      <%= t('flash.general.ticket.empty') %>
     </div>
   <% else -%>
     <table class="list">
@@ -14,28 +14,58 @@
       <tr>
         <th><%= attribute_t 'ticket.title' %></th>
         <th><%= attribute_t 'ticket.duration' %></th>
+        <th><%= attribute_t 'ticket.user_id' %></th>
         <th><%= attribute_t 'ticket.status' %></th>
         <th><%= t('general.actions') %></th>
       </tr>
     </thead>
     <tbody>
       <% @tickets.each do |ticket| %>
-        <tr>
-          <td><%= ticket.title %></td>
+        <% if ticket.user_id.eql?(current_user.id) -%>
+          <tr style="background:#C9E1B4">
+        <% else -%>
+          <tr>
+        <% end -%>
+          <td>
+            <% if can_edit? 'ticket' && ticket.status == Ticket::STATUSES[:free] -%>
+              <%= link_to ticket.title, edit_project_ticket_path(@project, ticket) %>
+            <% else -%>
+              <%= link_to ticket.title, project_ticket_path(@project, ticket) %>
+            <% end -%>
+          </td>
           <td><%= ticket.duration %></td>
+          <td>
+            <% if ticket.user_id == nil -%>
+              <%= t('general.none') %>
+            <% else -%>
+              <% user = User.find(ticket.user_id) -%>
+              <%= link_to user.login,
+                          user_path(user),
+                          :target => '_blank' %>
+            <% end -%>
+          </td>
           <td><%= escape_status ticket %></td>
           <td>
-            <% if ticket.status == Ticket::STATUSES[:free] -%>
-              <%= link_to t('general.project.ticket.take'), '#' %>
-            <% elsif ticket.status == Ticket::STATUSES[:implementation] -%>
-              <%= link_to t('general.project.ticket.give'), '#' %>
-            <% end -%>
-            <% if can_edit?('ticket') && ticket.status == Ticket::STATUSES[:finished] -%>
-              <%= link_to t('general.delete'), '#' %>
-            <% elsif can_edit?('ticket') -%>
-               | <%= link_to t('general.delete'), '#' %>
-            <% elsif ticket.status == Ticket::STATUSES[:finished] -%>
-              <%= t('general.none') %>
+            <% if can_edit? 'ticket' -%>
+              <% if ticket.status == Ticket::STATUSES[:free] -%>
+                <%= link_to t('general.delete'),
+                            project_ticket_path(@project, ticket),
+                            :method => :delete,
+                            :confirm => t('general.confirm') %>
+                <% else -%>
+                  <%= t('general.none') %>
+                <% end -%>
+            <% else -%>
+              <% if ticket.status == Ticket::STATUSES[:free] -%>
+                <%= link_to t('general.project.ticket.take'),
+                            take_project_ticket_path(@project, ticket) %>
+              <% elsif ticket.status == Ticket::STATUSES[:implementation] &&
+                       ticket.user_id == current_user.id -%>
+                <%= link_to t('general.project.ticket.give'),
+                            give_project_ticket_path(@project, ticket) %>
+              <% else -%>
+                <%= t('general.none') %>
+              <% end -%>
             <% end -%>
           </td>
       	</tr>

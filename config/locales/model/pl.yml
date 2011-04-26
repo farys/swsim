@@ -70,7 +70,7 @@ pl:
         user_id: Użytkownik
         role_id: Rola
       ticket:
-        user_id: Użytkownik
+        user_id: Wykonawca
         title: Tytuł
         description: Opis
         duration: Roboczogodziny
@@ -91,6 +91,12 @@ pl:
             content:
               too_short: jest za krótka (przynajmniej %{count} znak)
               too_long: jest za długa (maksymalnie %{count} znaków)
+        ticket:
+          attributes:
+            duration:
+              not_a_number: "nie są liczbą"
+              not_an_integer: "muszą być liczbą całkowitą"
+              greater_than: "muszą być większe od %{count}"
 #MODELE
   tag:
     statuses:

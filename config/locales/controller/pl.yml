@@ -30,8 +30,10 @@ pl:
         dont_exists: Zaproszenie nie istnieje
         not_included: Zaproszenie nie należy do tego projektu
         empty: Obecnie nie ma żadnych zaproszeń do wyświetlenia
-      tickets:
-        empty: Obecnie nie ma żadnych ticketów do wyświetlenia
+      ticket:
+        empty: Obecnie nie ma żadnych zadań do wyświetlenia
+        dont_exists: Zadanie nie istnieje
+        not_included: Zadanie nie należy do tego projektu
     users:
       create: Witaj nowy użytkowniku
       update: Profil zaktualizowany
@@ -114,6 +116,12 @@ pl:
         accept: Zaproszenie zostało zaakceptowane
         reject: Zaproszenie zostało odrzucone
         canceled: Zaproszenie zostało anulowane, nie można wykonać akcji
+      tickets:
+        create: Zadanie zostało dodane
+        destroy: Zadanie zostało usunięte
+        update: Zadanie zostało zaktualizowane
+        take: Zadanie zostało przyjęte do realizacji
+        give: Zadanie zostało zwrócone
           
                 
         
@@ -190,4 +198,7 @@ pl:
         index: "{@project.name} | Zaproszenia"
         new: "{@project.name} | Zaproszenia | Nowe zaproszenie"
       tickets:
-        index: "{@project.name} | Tickety"
+        index: "{@project.name} | Zadania"
+        new: "{@project.name} | Zadania | Nowe zadanie"
+        show: "{@project.name} | Zadania | {@ticket.title}"
+        edit: "{@project.name} | Zadania | {@ticket.title} | Edycja"

@@ -5,7 +5,7 @@
 											:html => {:multipart => true} do |f| %>
 		<%= render "layouts/error_messages", :target => @file %>
     <div class="field">
-      <%= f.label attribute_t 'project_file.file' %><br />
+      <%= f.label attribute_t 'project_file.project_file_file_name' %><br />
       <%= f.file_field :project_file %>
     </div>
     <div class="field">

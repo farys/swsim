@@ -89,7 +89,10 @@ Inz::Application.routes.draw do
       resources :topics do
       	resources :posts, :except => [:index, :show]
       end
-      resources :tickets
+      resources :tickets do
+        get :take, :on => :member
+        get :give, :on => :member
+      end
     end
   end
   	
