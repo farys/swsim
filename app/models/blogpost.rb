@@ -3,7 +3,7 @@ class Blogpost < ActiveRecord::Base
 
 	belongs_to :user
 	
-	validates :title, :presence => true
+	validates :title, :presence => true, :length => {:within => 1..40}
 	validates :content, :presence => true
   	validates :user_id, :presence => true
 	

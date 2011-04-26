@@ -13,7 +13,9 @@ Inz::Application.routes.draw do
   		get :watching, :watchers
   	end
   	resources :userprojects, :only => [:index]
-  	resources :blogposts
+  	resources :blogposts do
+  		resources :blogcomments
+  	end
   end
   resources :sessions, :only => [:new, :create, :destroy]
   resources :relationships, :only => [:create, :destroy]

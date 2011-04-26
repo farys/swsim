@@ -1,12 +1,16 @@
+<div class="left prepend-1">
 <%= form_for @blogpost do |f| %>
   <%= render "layouts/error_messages", :target => @blogpost %>
   <div class="field">
-    <%= f.text_area :title %>
+  	<%= f.label :title %><br />
+    <%= f.text_field :title, :class => 'span-10' %>
   </div>
   <div class="field">
-    <%= f.text_area :content %>
+  	<%= f.label :content %><br />
+    <%= f.text_area :content, :class => 'span-10' %>
   </div>
   <div class="actions">
     <%= f.submit "Submit" %>
+  </div>
   </div>
 <% end %>

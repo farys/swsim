@@ -1,12 +1,16 @@
 <table style="border: 1px solid cyan;">
 <tr>
   <td>
-  	<h1><%= blogpost.title %></h1></td>
+  	<h1><%= link_to blogpost.title, user_blogpost_path(@user, blogpost.id) %></h1></td>
   	<tr>
   	<td>
-    <%= blogpost.content %>
+    <%= simple_format(blogpost.content) %>
     <div class="right">
-      Posted <%= time_ago_in_words(blogpost.created_at) %> ago.
+      <% if current_user?(@user) %>
+      <%= link_to "Usun", blogpost, :method => :delete, :confirm => "Jestes pewien?",:title => "Skasowac post o tytule #{blogpost.title}" %>
+       || <%= link_to "Edytuj wpis", edit_user_blogpost_path(@user, blogpost.id) %>
+      <% end %>
+       || Posted <%= time_ago_in_words(blogpost.created_at) %> ago.
     </div>
   </td>
 </tr>

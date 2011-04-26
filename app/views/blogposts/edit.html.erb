@@ -1,0 +1,16 @@
+<div class="left prepend-1">
+<%= form_for @blogpost do |f| %>
+  <%= render "layouts/error_messages", :target => @blogpost %>
+  <div class="field">
+  	<%= f.label :title %><br />
+    <%= f.text_field :title, :value => @blogpost.title, :class => 'span-10' %>
+  </div>
+  <div class="field">
+  	<%= f.label :content %><br />
+    <%= f.text_area :content, :value => @blogpost.content, :class => 'span-10' %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Submit" %>
+  </div>
+  </div>
+<% end %>

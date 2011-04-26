@@ -1,0 +1,17 @@
+<table style="border: 1px solid cyan;">
+<tr>
+  <td>
+  	<h1><%= @blogpost.title %></h1></td>
+  	<tr>
+  	<td>
+    <%= simple_format(@blogpost.content) %>
+    <div class="right">
+      <% if current_user?(@user) %>
+      <%= link_to "Usun", @blogpost, :method => :delete, :confirm => "Jestes pewien?",:title => "Skasowac post o tytule #{@blogpost.title}" %>
+       || <%= link_to "Edytuj wpis", edit_user_blogpost_path(current_user) %>
+      <% end %>
+       || Posted <%= time_ago_in_words(@blogpost.created_at) %> ago.
+    </div>
+  </td>
+</tr>
+</table>
