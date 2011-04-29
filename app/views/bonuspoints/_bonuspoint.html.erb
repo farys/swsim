@@ -1,0 +1,17 @@
+<tr>
+  <td>
+    <%= bonuspoint.points %>
+  </td>
+  <td>
+    <% if bonuspoint.for_what == 0 %>
+    <span>Punkty zakupione</span>
+    <% elsif bonuspoint.for_what == 1 %>
+    <span>Punkty za blogposta</span>
+    <% else %>
+    <span>Punkty za poleconego</span>
+    <% end %>
+  </td>
+  <td>
+    Otrzymane <%= escape_date(bonuspoint.created_at) %>
+  </td>
+</tr>

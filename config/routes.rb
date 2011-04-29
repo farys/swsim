@@ -14,6 +14,7 @@ Inz::Application.routes.draw do
   	end
   	resources :userprojects, :only => [:index]
   	resources :blogposts
+  	resources :bonuspoints, :only => [:index]
   end
   resources :sessions, :only => [:new, :create, :destroy]
   resources :relationships, :only => [:create, :destroy]

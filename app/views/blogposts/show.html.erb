@@ -20,7 +20,14 @@
 <table>
 <% @comments.each do |comment| %>
 <tr>
-<td><%= User.find(comment.user_id) %> || <%= simple_format(comment.content) %></td>
+<td>
+	<div class="left"><b><%= User.find(comment.user_id) %> napisal:</b> <%= simple_format(comment.content) %></div>
+	<% if current_user.id == comment.user_id %>
+	<div class="right"><%= link_to "Edytuj komentarz", edit_blogcomment_path(comment.id) %>
+	<% end %>
+	|| Posted <%= time_ago_in_words(comment.created_at) %> ago.
+	</div>
+	</td>
 </tr>
 <% end %>
 </table>

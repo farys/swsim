@@ -15,6 +15,10 @@ class UsersController < ApplicationController
       @projects = Project.find(@user.project_ids).paginate :per_page => 15, :page => params[:page]
       @country_name = Carmen::country_name(@user.country)
       @country_flag = "flags/#{@user.country.downcase}.gif"
+      @points = Bonuspoint.find_all_by_user_id(@user, :select => "points")
+      sum_points
+
+      #@points = BonusPoints.find(:all, :select => "name")
     end
 	
 	def create
@@ -99,6 +103,13 @@ class UsersController < ApplicationController
 
   	
   	private
+  	
+  	def sum_points
+  	  @pts = 0
+      @points.each do |points|
+        @pts += points.points
+      end
+  	end
   	
   	#generowanie hasha, ktory jest wysylany na email uzytkownika przy rejestracji w celu weryfikacji emaila
   	def make_hash

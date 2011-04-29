@@ -25,4 +25,20 @@ class BlogcommentsController < ApplicationController
     end
   end
   
+  def edit
+  	@title = "Edit comment"
+  	@blogcomment = Blogcomment.find(params[:id])
+  end
+  
+  def update
+  	@blogcomment = Blogcomment.find(params[:id])
+	if @blogcomment.update_attributes(params[:blogcomment])
+		redirect_to user_blogpost_path(current_user, @blogcomment.blogpost_id)
+		flash_t :notice
+	else
+		@title = "Edit comment"
+		render :action => :edit
+	end
+  end
+  
 end

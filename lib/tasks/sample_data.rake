@@ -27,6 +27,7 @@ namespace :db do
     Rake::Task['db:reset'].invoke
     make_users
     make_relationships
+    make_points
     make_blogposts
     make_blogcomments
     make_roles
@@ -83,6 +84,16 @@ def make_blogcomments
         blogpost.blogcomments.create!(:content => Faker::Lorem.sentence(5))
       end
     end
+end
+
+def make_points
+	50.times do
+		Bonuspoint.create!(
+		:points => rand(100),
+		:user_id => 1,
+		:for_what => rand(3)
+		)
+	end
 end
 
 def make_projects

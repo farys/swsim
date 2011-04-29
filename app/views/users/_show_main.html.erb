@@ -54,7 +54,8 @@
       </tr>
         <td>
         	<%= render 'shared/zaufani' %>
-        	<%= link_to @projects.count, projects_path %> projektow
+        	<%= link_to @projects.count, projects_path %> projektow<br />
+        	<%= link_to @pts, user_bonuspoints_path(@user) %> bonus points
         </td>
       </tr>
     </table>
