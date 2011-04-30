@@ -1,5 +1,5 @@
 class Bonuspoint < ActiveRecord::Base
-	attr_accessible :points, :for_what
+	attr_accessible :points, :for_what, :user_id
 	
 	belongs_to :user
 	

@@ -6,7 +6,7 @@ class Sender < ActionMailer::Base
 
   def ver_mail(hash)
     @hash = hash
-    mail(:to => 'maverral@wp.pl', :from => 'mario@open.net', :subject => 'Testujemy mailera')
+    mail(:to => 'maverral@wp.pl', :from => 'maverral@wp.pl', :subject => 'Testujemy mailera')
   end
 
   def user_commented(comment)

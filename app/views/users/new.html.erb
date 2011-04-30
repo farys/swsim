@@ -16,6 +16,7 @@
 <div class="field">
   <%= f.label :email %><br />
   <%= f.text_field :email, :class=>"span-6" %>
+  <%= hidden_field_tag(:ref_id, @referer) %>
 </div>
 <%= f.label :country %><br />
 <%= f.select :country, $countries, {:selected => 'PL'} %>

@@ -7,6 +7,13 @@ class UsersController < ApplicationController
 	
 	def new
 		@user = User.new
+		if User.exists?(:id => params[:ref_id])
+			@referer = User.find_by_id(params[:ref_id], :select => ["id", "login"])
+	    else
+	    	@referer
+	    	render :action => :new
+	    end
+	    	
 	end
 	
 	def show
@@ -17,8 +24,6 @@ class UsersController < ApplicationController
       @country_flag = "flags/#{@user.country.downcase}.gif"
       @points = Bonuspoint.find_all_by_user_id(@user, :select => "points")
       sum_points
-
-      #@points = BonusPoints.find(:all, :select => "name")
     end
 	
 	def create
@@ -27,6 +32,9 @@ class UsersController < ApplicationController
     	@emailver = Emailver.new(:hash => @hash_mail, :user => @user)
     	if validate_recap(params, @user.errors) && @user.save && @emailver.save
     		Sender.ver_mail(@hash_mail).deliver
+    		if params[:ref_id] != ""
+    		Bonuspoint.create!(:points => 20, :user_id => params[:ref_id], :for_what => 2)
+    		end
     		redirect_to root_path
       		flash_t :notice
     	else

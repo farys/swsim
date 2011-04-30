@@ -1,0 +1,18 @@
+<%= render 'users/user_menu' %>
+<div class="prepend-1">
+<table>
+	<tr style="background-color: cyan;">
+		<td class="bold">Nazwa projektu</td><td class="bold">Opis</td><td class="bold">Data zakonczenia</td>
+	</tr>
+  	<% @portfolio.each do |port| %>
+	        <tr>
+	          <td><%= link_to port.name, project_info_path(port) %></td>
+	          <td><%= port.description %></td>
+	          <td>
+	            <%= escape_date(port.updated_at) %>
+	          </td>
+	        </tr>
+	 <% end %>
+</table>
+</div>
+	 <%= will_paginate @portfolio %>

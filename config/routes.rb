@@ -14,12 +14,18 @@ Inz::Application.routes.draw do
   	end
   	resources :userprojects, :only => [:index]
   	resources :blogposts
-  	resources :bonuspoints, :only => [:index]
+  	resources :portfolios
+  	resources :bonuspoints, :only => [:index] do
+  		member do
+  			get :addfromblog
+  		end
+  	end
   end
   resources :sessions, :only => [:new, :create, :destroy]
   resources :relationships, :only => [:create, :destroy]
   resources :blogposts
   resources :blogcomments
+  resources :bonuspoints
   match '/signup',  :to => 'users#new'
   match '/signin',  :to => 'sessions#new'
   match 'signout',  :to => 'sessions#destroy'
