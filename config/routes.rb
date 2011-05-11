@@ -31,6 +31,7 @@ Inz::Application.routes.draw do
   match 'signout',  :to => 'sessions#destroy'
   match '/ver', :to => 'users#mail_ver'
   match '/find', :to => 'users#find'
+  match '/delete', :to => 'users#delete'
 
   # PANEL
   namespace :panel do

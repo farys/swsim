@@ -30,6 +30,10 @@
         <td>Email</td>
         <td><%= @user.email %></td>
       </tr>
+      <tr>
+        <td>Status konta</td>
+        <td><%= @statuses[@user.status] %></td>
+      </tr>
     </table>
     </div>
     <div class="prepend-0 span-9">

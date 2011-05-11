@@ -26,8 +26,9 @@ class BlogcommentsController < ApplicationController
   end
   
   def edit
-  	@title = "Edit comment"
   	@blogcomment = Blogcomment.find(params[:id])
+  	@blogpost = Blogpost.find_by_id(@blogcomment.blogpost_id)
+  	@title = "Edycja komentarza dla wpisu: #{@blogpost.title}"
   end
   
   def update

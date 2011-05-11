@@ -2,8 +2,8 @@ class BlogpostsController < ApplicationController
   before_filter :authorized_user, :only => :destroy
   
   def index
-  	@title = "Blog"
   	@user = User.find(params[:user_id])
+  	@title = "#{@user.name} #{@user.lastname} || Blog"
   	if @user.blogposts.empty?
   		flash[:error] = "Brak wpisow"
   	else
@@ -13,6 +13,7 @@ class BlogpostsController < ApplicationController
   
   def new
   	@user = User.find(params[:user_id])
+  	@title = "#{@user.name} #{@user.lastname} || Blog || Nowy wpis"
 	@blogpost = Blogpost.new
   end
 
@@ -29,14 +30,15 @@ class BlogpostsController < ApplicationController
   
   def show
   	@user = User.find(params[:user_id])
+  	@title = "#{@user.name} #{@user.lastname} || Blog"
   	@blogpost = Blogpost.find(params[:id])
   	@comments = Blogcomment.find_all_by_blogpost_id(@blogpost)
-  	@title = "Blog"
   end
   
   def edit
-  	@title = "Edit post"
+  	@user = User.find_by_id(params[:user_id])
   	@blogpost = Blogpost.find(params[:id])
+  	@title = "#{@user.name} #{@user.lastname} || Edycja wpisu: #{@blogpost.title}"
   end
   
   def update

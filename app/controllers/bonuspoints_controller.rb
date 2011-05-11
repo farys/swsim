@@ -7,7 +7,7 @@ class BonuspointsController < ApplicationController
   	
   	def addfromblog
   		@user_id = params[:user_id]
-  		Bonuspoint.create!(:points => 20, :user_id => @user_id, :for_what => 1)
+  		Bonuspoint.use!(20, @user_id, 1)
   		redirect_to user_blogposts_path(@user_id)
   	end
 end

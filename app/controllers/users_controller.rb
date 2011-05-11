@@ -18,6 +18,7 @@ class UsersController < ApplicationController
 	
 	def show
       @user = User.find(params[:id])
+      @statuses = ["Dezaktywowane", "Niezweryfikowane", "Zweryfikowane"]
       @title = "Panel uzytkownika #{@user.name} #{@user.lastname}"
       @projects = Project.find(@user.project_ids).paginate :per_page => 15, :page => params[:page]
       @country_name = Carmen::country_name(@user.country)
@@ -33,7 +34,8 @@ class UsersController < ApplicationController
     	if validate_recap(params, @user.errors) && @user.save && @emailver.save
     		Sender.ver_mail(@hash_mail).deliver
     		if params[:ref_id] != ""
-    		Bonuspoint.create!(:points => 20, :user_id => params[:ref_id], :for_what => 2)
+    		Bonuspoint.use!(20, params[:ref_id], 2)
+    		#Bonuspoint.create!(:points => 20, :user_id => params[:ref_id], :for_what => 2)
     		end
     		redirect_to root_path
       		flash_t :notice
@@ -61,6 +63,14 @@ class UsersController < ApplicationController
 	    end
     end
     
+    def delete
+    	@user = User.find_by_id(params[:user_id])
+    	if @user.update_attribute(:status, params[:status])
+    		redirect_to @user
+    		flash[:success] = "Usunieto uzytkownika"
+    	end
+    end
+    
     #sprawdzamy hasha ktorego dostal na skrzynke user
     def mail_ver
     	@hash = Emailver.find_by_hash(params[:hash])
@@ -76,36 +86,46 @@ class UsersController < ApplicationController
     end
     
     def watching
-	    @title = "Moi zaufani"
 	    @user = User.find(params[:id])
+	    @title = "#{@user.name} #{@user.lastname} || Zaufani"
 	    @users = @user.watching.paginate(:page => params[:page])
 	    render 'show_watch'
     end
 
     def watchers
-	    @title = "Zaufali mi"
 	    @user = User.find(params[:id])
+	    @title = "#{@user.name} #{@user.lastname} || Zaufali mi"
 	    @users = @user.watchers.paginate(:page => params[:page])
 	    render 'show_watch'
     end
     
     def find
+    	@title = "Find"
+    	@user = current_user
     	@fraza = params[:find][:text]
     	@value = params[:szukaj][:user]
     	if @value == "id"
-    		@user = User.find_by_id(@fraza)
+    		@findusers = User.find_all_by_id(@fraza)
     	elsif @value == "lastname"
-    		@user = User.find_by_lastname(@fraza)
+    		@arrayforname = @fraza.split(/ /)
+    		@findusers = User.find_all_by_lastname_and_name(@arrayforname[0], @arrayforname[1])
+    		if @findusers.empty?
+    			@findusers = User.find_all_by_name_and_lastname(@arrayforname[0], @arrayforname[1])
+    		end
     	elsif @value == "email"
-    		@user = User.find_by_email(@fraza)
+    		@findusers = User.find_all_by_email(@fraza)
     	elsif @value == "login"
-    		@user = User.find_by_login(@fraza)
+    		@findusers = User.find_all_by_login(@fraza)
     	end
-    	if @user.nil?
+    	if @findusers.empty?
     			redirect_to user_path(current_user)
     			flash[:error] = "Nie ma takiego uzytkownika"
     	else
-    		redirect_to user_path(@user)
+    		#redirect_to user_path(@user)
+    		respond_to do |format|
+  				format.html { render '_user' }
+  				format.xml  { render '_user2' }
+			end
     	end
     end
 

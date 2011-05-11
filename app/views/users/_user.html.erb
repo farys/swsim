@@ -1,0 +1,17 @@
+<%= render 'users/user_menu' %>
+<div class="prepend-1">
+<table>
+	<tr style="background-color: cyan;">
+		<td class="bold">Login</td><td class="bold">Imie i Nazwisko</td><td class="bold">Email</td>
+	</tr>
+  	<% @findusers.each do |fusers| %>
+	        <tr>
+	          <td><%= link_to fusers.login, user_path(fusers.id) %></td>
+	          <td><%= fusers.name %> <%= fusers.lastname %></td>
+	          <td>
+	            <%= fusers.email %>
+	          </td>
+	        </tr>
+	 <% end %>
+</table>
+</div>

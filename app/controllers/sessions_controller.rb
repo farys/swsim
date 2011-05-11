@@ -1,14 +1,17 @@
 class SessionsController < ApplicationController
   def new
-  	@title = "Sign in"
+  	@title = "Logowanie"
   end
   
   def create
+  	@title = "Logowanie"
   	user = User.authenticate(params[:session][:email],
                              params[:session][:password])
     if user.nil?
-      flash.now[:error] = "Invalid email/password combination."
-      @title = "Sign in"
+      flash.now[:error] = "Invalid email/password combination."     
+      render 'new'
+    elsif user.status == 0
+    	flash.now[:error] = "To konto zostalo zdeaktywowane"
       render 'new'
     else
       sign_in user
