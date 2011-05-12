@@ -59,7 +59,14 @@
         <td>
         	<%= render 'shared/zaufani' %>
         	<%= link_to @projects.count, user_userprojects_path(@user) %> projektow<br />
-        	<%= link_to @pts, user_bonuspoints_path(@user) %> bonus points
+        	<%= link_to @pts, user_bonuspoints_path(@user) %> bonus points<br />
+        	<%= @how_many_auctions %> zakonczonych aukcji<br />
+        	<%= @suma %> suma punktow za aukcje<br />
+        	<%= @how_many_comments %> otrzymanych ocen za projekty<br />
+        	<%= @suma2 %> suma punktow za projekty<br />
+        	<div class="center bold"><font size="6">Reputacja:</font><br />
+        		<font size="7" color="red"><%= @reputation %>%</font>
+        	</div>
         </td>
       </tr>
     </table>

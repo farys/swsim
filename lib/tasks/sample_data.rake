@@ -26,6 +26,7 @@ namespace :db do
   task :populate => :environment do
     Rake::Task['db:reset'].invoke
     make_users
+    make_reputations
     make_relationships
     make_points
     make_blogposts
@@ -59,6 +60,15 @@ def make_users #zmieniony format emailu dla latwiejszego logowania
       :description => description
     )
   end
+end
+
+def make_reputations
+   USERS.times do |i|
+   	Reputation.create!(
+      :user_id => i,
+      :value => 0
+    )
+   end
 end
 
 def make_relationships

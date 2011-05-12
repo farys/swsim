@@ -25,6 +25,7 @@ class UsersController < ApplicationController
       @country_flag = "flags/#{@user.country.downcase}.gif"
       @points = Bonuspoint.find_all_by_user_id(@user, :select => "points")
       sum_points
+      reputation
     end
 	
 	def create
@@ -137,6 +138,25 @@ class UsersController < ApplicationController
       @points.each do |points|
         @pts += points.points
       end
+  	end
+  	
+  	def reputation
+  	  @auctionsratings = Auction.find_all_by_owner_id_and_status(@user, 1, :select => "id")
+  	  @how_many_auctions = @auctionsratings.count
+      @auctionsratings2 = AuctionRating.find_all_by_auction_id(@auctionsratings, :select => "value")
+      @suma = 0
+      @auctionsratings2.each do |sum|
+      	@suma += sum.value
+      end
+      
+      @commentsratings = Comment.find_all_by_receiver_id(@user, :select => "id")
+      @how_many_comments = @commentsratings.count
+      @commentsratings2 = CommentValue.find_all_by_comment_id(@commentsratings, :select => "rating")
+      @suma2 = 0
+      @commentsratings2.each do |sum|
+      	@suma2 += sum.rating
+      end
+      @reputation = (((@suma+@suma2)/(@how_many_auctions+@how_many_comments))/0.05).round
   	end
   	
   	#generowanie hasha, ktory jest wysylany na email uzytkownika przy rejestracji w celu weryfikacji emaila

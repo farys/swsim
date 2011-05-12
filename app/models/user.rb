@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   has_many :projects, :through => :memberships
   has_many :roles, :through => :memberships
   has_one :emailver
+  has_one :reputation, :dependent => :destroy
   has_many :topics, :dependent => :destroy
   has_many :posts, :dependent => :destroy
   has_many :invitations, :dependent => :destroy
