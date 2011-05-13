@@ -9,7 +9,7 @@
         <td>
           <%= link_to user.login, user %> <%= user.email %>
         </td>
-        <% if params[:action] == 'watching' %>
+        <% if params[:action] == 'watching' && current_user?(@user) %>
         <td>
         <%= form_for @user.relationships.find_by_watched_id(user.id), :html => { :method => :delete } do |f| %>
   			<div style="float: right;"><%= f.submit "Wyrzuć z zaufanych" %></div>

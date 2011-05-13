@@ -7,6 +7,10 @@
     <%= f.text_area :content, :class => 'span-10' %>
     <%= hidden_field_tag(:blogpost_id, @blogpost.id) %>
   </div>
+  <div class="field">
+  <%= f.label :recaptcha, "Przepisz koda z obrazka" %><br />
+  <%= raw(get_captcha(:options => {:theme => 'white', :tabindex => 10})) %>
+</div>
   <div class="actions">
     <%= f.submit "Submit" %>
   </div>

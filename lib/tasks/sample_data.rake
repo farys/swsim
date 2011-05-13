@@ -66,7 +66,7 @@ def make_reputations
    USERS.times do |i|
    	Reputation.create!(
       :user_id => i,
-      :value => 0
+      :reputation => 0
     )
    end
 end
