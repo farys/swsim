@@ -6,7 +6,7 @@
       <li><%= link_to "Aktywne projekty", user_userprojects_path(@user) %></li>
       <li><%= link_to "Portfolio", user_portfolios_path(@user) %></li>
       <li><%= link_to "Blog", user_blogposts_path(@user) %></li>
-      <% if current_user?(@user) %>
+      <% if current_user?(@user) || current_user.role == "administrator" %>
       <li><%= link_to "Dezaktywuj konto", :controller => "users", :action => "delete", :user_id => @user.id, :status => 0 %></li>
       <% end %>
   </ul>

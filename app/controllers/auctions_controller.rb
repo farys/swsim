@@ -4,6 +4,7 @@ class AuctionsController < ApplicationController
 
   def index
     @auctions = Auction.with_status(:active).order("id DESC").limit(18)
+    @users = User.count
     title_t
   end
 

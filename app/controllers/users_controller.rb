@@ -51,11 +51,11 @@ class UsersController < ApplicationController
   	
   	def update
   		@user = User.find(params[:id])
-    	if params[:user][:password] == ''	
-    		params[:user][:password] = @user.password
-    		params[:user][:password_confirmation] = @user.password
-    	end
-	    if @user.update_attributes(params[:user])
+    	if params[:user][:password] == ''
+    		@title = "Edit user"	
+    		render :action => :edit
+    		flash[:error] = "Haslo nie moze byc puste"
+	    elsif @user.update_attributes(params[:user])
 	      redirect_to @user
 	      flash_t :notice
 	    else
@@ -152,6 +152,6 @@ class UsersController < ApplicationController
   	
   	def correct_user
       @user = User.find(params[:id])
-      redirect_to(root_path) unless current_user?(@user)
+      redirect_to(root_path) unless current_user?(@user) || current_user.role == "administrator"
     end
 end

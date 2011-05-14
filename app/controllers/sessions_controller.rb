@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
   		
   	  #suma punktow za aukcje
   	  @reputation_user = Reputation.find_or_create_by_user_id(current_user)
-  	  @auctionsratings = Auction.find_all_by_owner_id(current_user, :select => "id")
+  	  @auctionsratings = Auction.find_all_by_owner_id_and_status(current_user, 1, :select => "id")
   	  @how_many_auctions = @auctionsratings.count
       @auctionsratings2 = AuctionRating.find_all_by_auction_id(@auctionsratings, :select => "value")
       @suma = 0

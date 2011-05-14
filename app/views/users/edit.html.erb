@@ -1,5 +1,5 @@
 <div class="prepend-1">
-<%= form_for @user, :html => { :multipart => true } do |f| -%>
+<% form_for @user, :html => { :multipart => true } do |f| -%>
 <%= render "layouts/error_messages", :target => @user %>
 <div class="field">
   <%= f.label :name %><br />
@@ -12,6 +12,14 @@
 <div class="field">
   <%= f.label :email %><br />
   <%= f.text_field :email, :value => @user.email.force_encoding("UTF-8"), :class=>"span-6" %>
+</div>
+<div class="field">
+  <%= f.label :password %><br />
+  <%= f.password_field :password, :class=>"span-6" %>
+</div>
+<div class="field">
+  <%= f.label :password_confirmation, "Confirmation" %><br />
+  <%= f.password_field :password_confirmation, :class=>"span-6" %>
 </div>
 <div class="field">
 <%= f.label :country %><br />
