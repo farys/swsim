@@ -7,8 +7,10 @@
     <span>Punkty zakupione</span>
     <% elsif bonuspoint.for_what == 1 %>
     <span>Punkty za blogposta</span>
-    <% else %>
+    <% elsif bonuspoint.for_what == 2 %>
     <span>Punkty za poleconego</span>
+    <% else %>
+    <span>Interwencja administratora</span>
     <% end %>
   </td>
   <td>

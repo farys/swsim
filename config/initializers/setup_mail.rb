@@ -1,8 +1,8 @@
 ActionMailer::Base.smtp_settings = {
   :address              => "smtp.wp.pl",
   :port                 => 587,
-  :user_name            => "jasiek123456@wp.pl",
-  :password             => "dupadupadupa",
+  :user_name            => "maverral@wp.pl",
+  :password             => "mietek84",
   :authentication       => "plain",
   :enable_starttls_auto => true
 }

@@ -60,6 +60,17 @@ def make_users #zmieniony format emailu dla latwiejszego logowania
       :description => description
     )
   end
+      User.create!(
+      :login => "Maveral2",
+      :password => 'password',
+      :name => "Mariusz",
+      :lastname => "Franke",
+      :role => 'administrator',
+      :status => 2,
+      :country => "pol",
+      :email => "mavek@inz.pl",
+      :description => "To ja :)"
+    )
 end
 
 def make_reputations

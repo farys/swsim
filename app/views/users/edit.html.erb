@@ -13,6 +13,7 @@
   <%= f.label :email %><br />
   <%= f.text_field :email, :value => @user.email.force_encoding("UTF-8"), :class=>"span-6" %>
 </div>
+<% if current_user.role == "administrator" %>
 <div class="field">
   <%= f.label :password %><br />
   <%= f.password_field :password, :class=>"span-6" %>
@@ -21,6 +22,7 @@
   <%= f.label :password_confirmation, "Confirmation" %><br />
   <%= f.password_field :password_confirmation, :class=>"span-6" %>
 </div>
+<% end %>
 <div class="field">
 <%= f.label :country %><br />
 <%= f.select :country, $countries, {:selected => @user.country} %>

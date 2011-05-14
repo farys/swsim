@@ -78,9 +78,12 @@ Inz::Application.routes.draw do
     resources :tags, :except => [:show]
     resources :communications, :only => [:destroy]
     resources :users do
+      get :points, :on => :member
       resources :comments, :only => [:index, :edit, :update]
     end
   end
+  match 'admin/users/:id/points', :to => 'admin/users#points'
+  match 'admin/users/:id/editpoints', :to => 'admin/users#editpoints'
   
   #PROJECT
   scope :module => "project" do

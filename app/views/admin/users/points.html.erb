@@ -1,0 +1,35 @@
+<div class="center">
+	Dodaj/odejmij punkty<br />
+		<% form_tag({:action => "editpoints"}) do %>
+		  <div class="field">
+		    <%= text_field "addorremove", :points %>
+		  </div>
+		  <div class="actions">
+		    <%= submit_tag "Submit" %>
+		  </div>
+		<% end %>
+</div>
+
+<% unless @points.empty? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>ID</td>
+        <td>Za co</td>
+        <td>Punkty</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @points.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.for_what %></td>
+          <td><%= user.points %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @points %>
+<% else %>
+  <div class="clear notice">Nie znaleziono żadnych punktów.</div>
+<% end %>

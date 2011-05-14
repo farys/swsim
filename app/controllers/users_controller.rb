@@ -33,6 +33,7 @@ class UsersController < ApplicationController
     	@hash_mail = make_hash
     	@emailver = Emailver.new(:hash => @hash_mail, :user => @user)
     	if validate_recap(params, @user.errors) && @user.save && @emailver.save
+    		Reputation.create!(:reputation => 0, :user_id => @user.id, :finished_auctions => 0, :auctions_overall_ratings => 0, :rated_projects => 0, :projects_overall_ratings => 0, :average_contact => 0, :average_realization => 0, :average_attitude => 0)
     		Sender.ver_mail(@hash_mail).deliver
     		if params[:ref_id] != ""
     		Bonuspoint.use!(20, params[:ref_id], 2)
@@ -53,8 +54,8 @@ class UsersController < ApplicationController
   		@user = User.find(params[:id])
     	if params[:user][:password] == ''
     		@title = "Edit user"	
-    		render :action => :edit
     		flash[:error] = "Haslo nie moze byc puste"
+    		render :action => :edit
 	    elsif @user.update_attributes(params[:user])
 	      redirect_to @user
 	      flash_t :notice
@@ -67,7 +68,8 @@ class UsersController < ApplicationController
     def delete
     	@user = User.find_by_id(params[:user_id])
     	if @user.update_attribute(:status, params[:status])
-    		redirect_to @user
+    		sign_out
+    		redirect_to root_path
     		flash[:success] = "Usunieto uzytkownika"
     	end
     end
@@ -80,8 +82,8 @@ class UsersController < ApplicationController
     		redirect_to root_path
     	else
     		@user = User.find(@hash.user_id)
-    		#TODO napisac zmiane statusu w bazie na aktywny
-    		redirect_to user_path(@user)
+    		@user.update_attribute(:status, 2)
+    		redirect_to root_path
     		flash[:success] = "OK!"
     	end
     end

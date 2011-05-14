@@ -1,0 +1,32 @@
+<% unless @users.empty? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>ID</td>
+        <td>Nazwisko i imie</td>
+        <td>Login</td>
+        <td>Email</td>
+        <td>Status</td>
+        <td>Akcje</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.lastname %> <%= user.name %></td>
+          <td><%= user.login %></td>
+          <td><%= user.email %></td>
+          <td><% if user.status == 0 %>Dezaktywowane<% elsif user.status == 1 %>Niezweryfikowane<% else %>Zabanowane<% end %></td>
+          <td>
+          	<%= link_to "Edytuj profil", edit_user_path(user) %><br />
+          	<%= link_to "Edytuj punkty", :action => "points", :id => user.id %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @users %>
+<% else %>
+  <div class="clear notice">Nie znaleziono żadnych użytkowników.</div>
+<% end %>

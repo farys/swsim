@@ -5,7 +5,7 @@ class BlogpostsController < ApplicationController
   	@user = User.find(params[:user_id])
   	@title = "#{@user.name} #{@user.lastname} || Blog"
   	if @user.blogposts.empty?
-  		flash[:error] = "Brak wpisow"
+  		flash.now[:error] = "Brak wpisow"
   	else
   	@blogposts = @user.blogposts.paginate(:page => params[:page])
   	end

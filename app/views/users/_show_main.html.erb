@@ -75,7 +75,7 @@
     </table>
     </div>
     <div class="clear span-11 center">
-  <% if current_user?(@user) || current_user.role == "administrator" %>
+  <% if current_user?(@user) %>
   <%= link_to 'Edytuj dane', edit_user_path(params[:id]) %>
   <% end %>
   <%= render 'watch_form' if signed_in? %>
