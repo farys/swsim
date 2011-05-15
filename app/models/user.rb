@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
                                    :class_name => "Relationship",
                                    :dependent => :destroy
   has_many :watchers, :through => :reverse_relationships, :source => :watcher
-  has_many :blogposts, :dependent => :destroy
+  has_many :blogposts
   has_many :blogcomments, :dependent => :destroy
   has_many :bonuspoints, :dependent => :destroy
   has_many :tickets

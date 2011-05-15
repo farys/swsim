@@ -1,5 +1,5 @@
 class Blogpost < ActiveRecord::Base
-	attr_accessible :content, :title
+	attr_accessible :content, :title, :admin
 
 	belongs_to :user
 	has_many :blogcomments, :dependent => :destroy

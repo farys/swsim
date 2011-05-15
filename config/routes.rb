@@ -13,7 +13,11 @@ Inz::Application.routes.draw do
   		get :watching, :watchers
   	end
   	resources :userprojects, :only => [:index]
-  	resources :blogposts
+  	resources :blogposts do
+  		member do
+  			get :admin
+  		end
+  	end
   	resources :portfolios
   	resources :bonuspoints, :only => [:index] do
   		member do
@@ -78,12 +82,17 @@ Inz::Application.routes.draw do
     resources :tags, :except => [:show]
     resources :communications, :only => [:destroy]
     resources :users do
-      get :points, :on => :member
+    	get :blogposts, :on => :member
       resources :comments, :only => [:index, :edit, :update]
     end
   end
   match 'admin/users/:id/points', :to => 'admin/users#points'
   match 'admin/users/:id/editpoints', :to => 'admin/users#editpoints'
+  match 'admin/users/:id/status/:status/delete', :to => 'admin/users#delete'
+  match 'admin/blogposts', :to => 'admin/users#blogposts'
+  match 'admin/blogpost/:id', :to => 'admin/users#blogpostedit'
+  match 'admin/blogpost/:id/edit', :to => 'admin/users#blogpostedit2'
+  match 'admin/blogposts/delete/:blogpost', :to => 'admin/users#deleteblogpost'
   
   #PROJECT
   scope :module => "project" do

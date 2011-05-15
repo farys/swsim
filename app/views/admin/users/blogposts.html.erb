@@ -1,0 +1,26 @@
+<% unless @blogposts.empty? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>ID</td>
+        <td>Tytuł</td>
+        <td>Właściciel</td>
+        <td>Akcje</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @blogposts.each do |blog| %>
+      	<% blog %>
+        <tr>
+          <td><%= blog.id %></td>
+          <td><%= link_to blog.title, :action => "blogpostedit", :id => blog.id %></td>
+          <td><%= User.find(blog.user_id) %></td>
+          <td><%= link_to "Usun", :action => "deleteblogpost", :blogpost => blog %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @blogposts %>
+<% else %>
+  <div class="clear notice">Nie znaleziono żadnych postów.</div>
+<% end %>

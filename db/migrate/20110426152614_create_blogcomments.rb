@@ -4,6 +4,7 @@ class CreateBlogcomments < ActiveRecord::Migration
       t.text :content
       t.integer :blogpost_id
       t.integer :user_id, :default => 1
+      t.integer :admin, :default => 0
 
       t.timestamps
     end

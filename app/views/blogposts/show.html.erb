@@ -11,7 +11,7 @@
       <%= link_to "Usun", @blogpost, :method => :delete, :confirm => "Jestes pewien?",:title => "Skasowac post o tytule #{@blogpost.title}" %>
        || <%= link_to "Edytuj wpis", edit_user_blogpost_path(current_user) %>
        <% else %>
-       <%= link_to "Przydatne", :controller => "bonuspoints", :action => "addfromblog", :user_id => params[:user_id] %>
+       <%= link_to "Przydatne", :controller => "bonuspoints", :action => "addfromblog", :user_id => params[:user_id] %> || <%= link_to "Zgłoś administratorowi", :action => "admin", :id => @blogpost%>
       <% end %>
        || Posted <%= time_ago_in_words(@blogpost.created_at) %> ago.
     </div>

@@ -68,7 +68,7 @@ def make_users #zmieniony format emailu dla latwiejszego logowania
       :role => 'administrator',
       :status => 2,
       :country => "pol",
-      :email => "mavek@inz.pl",
+      :email => "mav@inz.pl",
       :description => "To ja :)"
     )
 end

@@ -56,6 +56,17 @@ class BlogpostsController < ApplicationController
     @blogpost.destroy
     redirect_to user_blogposts_path(current_user)
   end
+  
+  def admin
+  	@blogpost = Blogpost.find(params[:id])
+  	if @blogpost.update_attribute(:admin, 1)
+  		@user = User.find(params[:user_id])
+  		@title = "#{@user.name} #{@user.lastname} || Blog"
+  		@comments = Blogcomment.find_all_by_blogpost_id(@blogpost)
+  		flash[:success] = "Zgloszono wpis do administratora"
+  		render :action => :show
+  	end
+  end
 
   private
 

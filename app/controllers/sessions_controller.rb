@@ -13,6 +13,9 @@ class SessionsController < ApplicationController
     elsif user.status == 0
     	flash[:error] = "To konto zostalo zdeaktywowane"
       render 'new'
+    elsif user.status == 4
+    	flash[:error] = "To konto zostalo zbanowane przez administratora"
+      render 'new'
     else
       sign_in user
       reputation

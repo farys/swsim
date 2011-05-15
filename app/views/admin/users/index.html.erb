@@ -17,10 +17,11 @@
           <td><%= user.lastname %> <%= user.name %></td>
           <td><%= user.login %></td>
           <td><%= user.email %></td>
-          <td><% if user.status == 0 %>Dezaktywowane<% elsif user.status == 1 %>Niezweryfikowane<% else %>Zabanowane<% end %></td>
+          <td><% if user.status == 0 %>Dezaktywowane<% elsif user.status == 1 %>Niezweryfikowane<% elsif user.status == 2 %>Zweryfikowane<% else %>Zbanowane<% end %></td>
           <td>
           	<%= link_to "Edytuj profil", edit_user_path(user) %><br />
-          	<%= link_to "Edytuj punkty", :action => "points", :id => user.id %>
+          	<%= link_to "Edytuj punkty", :action => "points", :id => user.id %><br />
+          	<%= link_to "Zbanuj", :action => "delete", :id => user.id, :status => 4 %>
           </td>
         </tr>
       <% end %>

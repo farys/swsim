@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 	
 	def show
       @user = User.find(params[:id])
-      @statuses = ["Dezaktywowane", "Niezweryfikowane", "Zweryfikowane"]
+      @statuses = ["Dezaktywowane", "Niezweryfikowane", "Zweryfikowane", "Zbanowane"]
       @title = "Panel uzytkownika #{@user.name} #{@user.lastname}"
       @projects = Project.find(@user.project_ids).paginate :per_page => 15, :page => params[:page]
       @country_name = Carmen::country_name(@user.country)
