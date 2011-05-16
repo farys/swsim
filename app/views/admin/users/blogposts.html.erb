@@ -5,6 +5,7 @@
         <td>ID</td>
         <td>Tytuł</td>
         <td>Właściciel</td>
+        <td>Ostatnio zmieniany</td>
         <td>Akcje</td>
       </tr>
     </thead>
@@ -15,6 +16,7 @@
           <td><%= blog.id %></td>
           <td><%= link_to blog.title, :action => "blogpostedit", :id => blog.id %></td>
           <td><%= User.find(blog.user_id) %></td>
+          <td><%= blog.updated_at %></td>
           <td><%= link_to "Usun", :action => "deleteblogpost", :blogpost => blog %></td>
         </tr>
       <% end %>
@@ -22,5 +24,5 @@
   </table>
   <%= will_paginate @blogposts %>
 <% else %>
-  <div class="clear notice">Nie znaleziono żadnych postów.</div>
+  <div class="clear notice">Nie znaleziono żadnych postów do moderacji.</div>
 <% end %>

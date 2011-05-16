@@ -15,16 +15,28 @@
     <thead>
       <tr>
         <td>ID</td>
-        <td>Za co</td>
+        <td>Za co otrzymane</td>
+        <td>Kiedy otrzymane</td>
         <td>Punkty</td>
       </tr>
     </thead>
     <tbody>
-      <% @points.each do |user| %>
+      <% @points.each do |points| %>
         <tr>
-          <td><%= user.id %></td>
-          <td><%= user.for_what %></td>
-          <td><%= user.points %></td>
+          <td><%= points.id %></td>
+          <td>
+          	<% if points.for_what == 0 %>
+    			<span>Punkty zakupione</span>
+   			<% elsif points.for_what == 1 %>
+    			<span>Punkty za blogposta</span>
+    		<% elsif points.for_what == 2 %>
+    			<span>Punkty za poleconego</span>
+    		<% else %>
+    			<span>Interwencja administratora</span>
+    		<% end %>      	
+          </td>
+          <td><%= points.created_at %></td>
+          <td><%= points.points %></td>
         </tr>
       <% end %>
     </tbody>

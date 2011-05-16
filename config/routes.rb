@@ -28,7 +28,11 @@ Inz::Application.routes.draw do
   resources :sessions, :only => [:new, :create, :destroy]
   resources :relationships, :only => [:create, :destroy]
   resources :blogposts
-  resources :blogcomments
+  resources :blogcomments do
+  	member do
+  		get :admin
+  	end
+  end
   resources :bonuspoints
   match '/signup',  :to => 'users#new'
   match '/signin',  :to => 'sessions#new'
@@ -93,6 +97,8 @@ Inz::Application.routes.draw do
   match 'admin/blogpost/:id', :to => 'admin/users#blogpostedit'
   match 'admin/blogpost/:id/edit', :to => 'admin/users#blogpostedit2'
   match 'admin/blogposts/delete/:blogpost', :to => 'admin/users#deleteblogpost'
+  match 'admin/blogcomments', :to => 'admin/users#blogcomments'
+  match 'admin/blogcomments/delete/:blogcomment', :to => 'admin/users#deleteblogcomment'
   
   #PROJECT
   scope :module => "project" do
@@ -116,6 +122,8 @@ Inz::Application.routes.draw do
   end
   	
   resources :alerts, :only => [:create]
+  
+  
   
   root :to =>  "auctions#index"
 

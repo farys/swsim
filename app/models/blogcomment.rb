@@ -1,5 +1,5 @@
 class Blogcomment < ActiveRecord::Base
-	attr_accessible :content, :admin
+	attr_accessible :content, :admin, :user_id, :blogpost_id
 	
 	belongs_to :blogpost
 	belongs_to :user

@@ -4,6 +4,9 @@
   	<td>
     <%= simple_format(@comment.content) %>
     <div class="right">
+		<% if @comment.user_id == current_user.id %>
+			<%= link_to "Zgłoś administratorowi", :action => "admin", :id => @comment%>
+		<% end %>
 		<%= time_ago_in_words(@comment.created_at) %> ago.
     </div>
   </td>
