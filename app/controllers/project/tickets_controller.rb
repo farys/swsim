@@ -88,6 +88,23 @@ class Project::TicketsController < Project::ApplicationController
     redirect_to project_tickets_path
   end
   
+  def end
+    unless @ticket.status == Ticket::STATUSES[:implementation]
+      flash_t_general :error, 'error.privileges'
+      redirect_to project_tickets_path
+      return
+    end
+    
+    @ticket.status = Ticket::STATUSES[:finished]
+    
+    if @ticket.save
+      flash_t :success
+    else
+      flash_t_general :error, 'error.unknown'
+    end
+    redirect_to project_tickets_path
+  end
+  
   private
   
   def check_privileges

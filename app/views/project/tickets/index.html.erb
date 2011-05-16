@@ -52,9 +52,13 @@
                             project_ticket_path(@project, ticket),
                             :method => :delete,
                             :confirm => t('general.confirm') %>
-                <% else -%>
-                  <%= t('general.none') %>
-                <% end -%>
+              <% elsif ticket.status == Ticket::STATUSES[:implementation] -%>
+                <%= link_to t('general.project.ticket.end'),
+                            end_project_ticket_path(@project, ticket),
+                            :confirm => t('general.confirm') %>
+              <% else -%>
+                 <%= t('general.none') %>
+              <% end -%>
             <% else -%>
               <% if ticket.status == Ticket::STATUSES[:free] -%>
                 <%= link_to t('general.project.ticket.take'),

@@ -37,8 +37,9 @@ pl:
         body: "Zaproszono Cie do projektu {@auction_link} z rolą {@role}. [{@accept_link} | {@reject_link}]"
       ticket:
         add: Dodaj zadanie
-        take: Weź
-        give: Oddaj
+        take: Pobierz
+        give: Zwróć
+        end: Zakończ
       project_file:
         must_be_set: nie może być pusta
   date:

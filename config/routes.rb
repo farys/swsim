@@ -111,6 +111,7 @@ Inz::Application.routes.draw do
       resources :tickets do
         get :take, :on => :member
         get :give, :on => :member
+        get :end, :on => :member
       end
     end
   end
