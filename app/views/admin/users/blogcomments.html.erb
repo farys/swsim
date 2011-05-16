@@ -1,0 +1,27 @@
+<% unless @blogcomments.empty? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>ID</td>
+        <td>Treść</td>
+        <td>Właściciel</td>
+        <td>Ostatnio zmieniany</td>
+        <td>Akcje</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @blogcomments.each do |comm| %>
+        <tr>
+          <td><%= comm.id %></td>
+          <td><%= comm.content %></td>
+          <td><%= User.find(comm.user_id) %></td>
+          <td><%= comm.updated_at %></td>
+          <td><%= link_to "Usun", :action => "deleteblogcomment", :blogcomment => comm %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @blogcomments %>
+<% else %>
+  <div class="clear notice">Nie zgłoszono żadnych komentarzy do moderacji.</div>
+<% end %>
