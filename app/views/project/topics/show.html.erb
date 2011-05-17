@@ -16,8 +16,12 @@
 		</td>
 		<td>
 		  <p><%= @topic.content %></p>
-		  <p align="right"><%= link_to t('general.edit'),
-		                               edit_project_topic_path(@project, @topic) %></p>
+		  <% if edit_topic?(@topic.id) -%>
+		    <p align="right">
+		      <%= link_to t('general.edit'),
+		                  edit_project_topic_path(@project, @topic) %>
+		    </p>
+		  <% end -%>  
 		</td>
 	</tr>
 	<% @posts.each do |post| %>
@@ -36,14 +40,16 @@
 			</td>
 			<td>
 			  <p><%= post.content %></p>
-			  <p align="right">
-			    <%= link_to t('general.edit'), 
-			                edit_project_topic_post_path(@project, @topic, :id => post.id) %>
-			     | <%= link_to t('general.delete'),
-			                project_topic_post_path(@project, @topic, :id => post.id),
-			                :method => :delete,
-			                :confirm => t('general.confirm') %>
-			  </p>
+			  <% if edit_post?(post.id) -%>
+			    <p align="right">
+			      <%= link_to t('general.edit'), 
+			                  edit_project_topic_post_path(@project, @topic, :id => post.id) %>
+			      | <%= link_to t('general.delete'),
+			                    project_topic_post_path(@project, @topic, :id => post.id),
+			                    :method => :delete,
+			                    :confirm => t('general.confirm') %>
+			   </p>
+			  <% end -%>
 			</td>
 	<% end %>
 </table>

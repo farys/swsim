@@ -37,7 +37,8 @@
 		      	<td>
 		      		<%= f.submit t('general.save') %>		      		
 		      		<%= link_to t('general.delete'), project_member_path(@project, membership),
-		      		                                                     :method =>:delete %>
+		      		                                                     :method =>:delete,
+		      		                                                     :confirm => t('general.confirm') %>
 		      	</td>
 		      <% end %>		      
 	    	<% end %>	      

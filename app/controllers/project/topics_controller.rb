@@ -1,6 +1,6 @@
 class Project::TopicsController < Project::ApplicationController
-  before_filter :check_read_privileges, :except => [:index, :new, :create]
-	before_filter :edit_topic, :only => [:edit, :destroy, :update]
+  before_filter :get_topic, :except => [:index, :new, :create]
+	before_filter :can_edit, :only => [:edit, :destroy, :update]
 	
 	def index
 		title_t :index
@@ -8,14 +8,7 @@ class Project::TopicsController < Project::ApplicationController
     																	 :page => params[:page]
 	end
 	
-	def show
-	  unless Topic.exists? params[:id]
-	    flash_t_general :error, 'topic.dont_exists'
-	    redirect_to project_topics_path
-	    return
-	  end
-	  
-		@topic = Topic.find(params[:id])
+	def show  
 		@posts = @topic.posts
 		title_t :show
 	end
@@ -25,8 +18,7 @@ class Project::TopicsController < Project::ApplicationController
 		title_t :new
 	end
 	
-	def create
-	  
+	def create	  
 		@topic = Topic.new
 		@topic.project_id = @project.id
 		@topic.user_id = current_user.id
@@ -43,13 +35,10 @@ class Project::TopicsController < Project::ApplicationController
 	end
 	
 	def edit
-	  @topic = Topic.find(params[:id])
     title_t :edit
 	end
 	
 	def update
-
-	  @topic = Topic.find(params[:id])
 	  @topic.title = params[:topic][:title]
 		@topic.content = params[:topic][:content]
 		
@@ -62,10 +51,8 @@ class Project::TopicsController < Project::ApplicationController
 		end
 	end
 	
-	def destroy	  
-		topic = Topic.find(params[:id])
-		
-		if topic.destroy
+	def destroy
+		if @topic.destroy
 			flash_t :success
 		else
 		  flash_t_general :error, 'error.unknown'
@@ -75,33 +62,25 @@ class Project::TopicsController < Project::ApplicationController
 	
 	private
 	
-	#sprawdzenie uprawnie do edycji tematow
-  def edit_topic
-    unless Topic.exists? params[:id]
-	    flash_t_general :error, 'topic.dont_exists'
-	    redirect_to project_topics_path
-	    return
-	  end
-	  
-  	if can_edit?('forum')
-  		true
-  	elsif current_user.topic_ids.include?(params[:id]) && @project.active?
-  		true
-  	else
-  		false
-  	end
-  end
-  
-  def check_read_privileges
+	def get_topic
 	  unless Topic.exists? params[:id]
 	    flash_t_general :error, 'topic.dont_exists'
 	    redirect_to project_topics_path
 	    return
 	  end
 	  
-	  unless @project.topic_ids.include?(params[:id].to_i)
+	  @topic = Topic.find(params[:id])
+	  
+	  unless @project.topic_ids.include?(@topic.id)
 	    flash_t_general :error, 'topic.not_included'
 	    redirect_to project_topics_path
 	  end
-	end  
+	end
+	
+  def can_edit	  
+    unless can_edit?('forum') || current_user.topic_ids.include?(@topic.id)
+      flash_t_general :error, 'error.privileges'
+      redirect_to project_topics_path
+    end
+  end
 end

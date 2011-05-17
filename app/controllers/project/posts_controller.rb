@@ -1,6 +1,5 @@
 class Project::PostsController < Project::ApplicationController
   before_filter :get_topic
-  before_filter :edit_post, :only => [:edit, :update, :destroy]
   before_filter :get_post, :only => [:edit, :update, :destroy]
   
   def new
@@ -39,9 +38,7 @@ class Project::PostsController < Project::ApplicationController
   end
   
   def destroy
-    post = Post.find(params[:id])
-    
-    if post.destroy
+    if @post.destroy
       flash_t :success     
     else
       flash_t_general :error, 'general.error.unknown'
@@ -50,32 +47,17 @@ class Project::PostsController < Project::ApplicationController
   end
   
   private
-  
-  #sprawdzenie uprawnien do edycji postow
-  def edit_post
-    unless Post.exists? params[:id]
-      flash_t_general :error, 'post.dont_exists'
-      redirect_to project_topic_path(@project, @topic)
-    end
-  
-  	if can_edit?('forum')
-  		true
-  	elsif current_user.post_ids.include?(params[:id]) && @project.active?
-  		true
-  	else
-  		false
-  	end
-  end
-  
+    
   def get_topic
     unless Topic.exists? params[:topic_id]
       flash_t_general :error, 'topic.dont_exists'
       redirect_to project_topics_path
       return
-    end   
+    end 
+      
     @topic = Topic.find(params[:topic_id])
     
-    unless @project.topic_ids.include? @topic.id
+    unless @project.topic_ids.include?(@topic.id)
       flash_t_general :error, 'topic.not_included'
       redirect_to project_topics_path
     end
@@ -87,11 +69,18 @@ class Project::PostsController < Project::ApplicationController
 	    redirect_to project_topic_path(@project, @topics)
 	    return
 	  end
+	  
 	  @post = Post.find(params[:id])
 	  
-	  unless @topic.post_ids.include? @post.id
+	  unless @topic.post_ids.include?(@post.id)
 	    flash_t_general :error, 'post.not_included'
-	    redirect_to project_topic_path(@project, @topics)
+	    redirect_to project_topic_path(@project, @topic)
+	    return
+	  end
+	  
+	  unless can_edit?('forum') || current_user.post_ids.include?(@post.id)
+	    flash_t_general :error, 'error.privileges'
+	    redirect_to project_topic_path(@project, @topic)
 	  end
 	end
 end

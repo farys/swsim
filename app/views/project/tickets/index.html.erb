@@ -48,6 +48,8 @@
           <td>
             <% if can_edit? 'ticket' -%>
               <% if ticket.status == Ticket::STATUSES[:free] -%>
+                <%= link_to t('general.edit'),
+                            edit_project_ticket_path(@project, ticket) %> | 
                 <%= link_to t('general.delete'),
                             project_ticket_path(@project, ticket),
                             :method => :delete,

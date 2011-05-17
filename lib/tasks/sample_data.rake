@@ -35,7 +35,7 @@ namespace :db do
     make_groups_and_tags
     make_auctions
     make_projects
-    #make_tickets
+    make_tickets
     make_offers
     make_comments_keywords
     make_topics
@@ -238,6 +238,6 @@ def make_tickets
                    :title => title,
 									 :description => content,
 									 :duration => rand(23)+1,
-									 :status => 0)
+									 :status => Ticket::STATUSES[:free])
   end
 end
