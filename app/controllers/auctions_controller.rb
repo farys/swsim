@@ -5,6 +5,8 @@ class AuctionsController < ApplicationController
   def index
     @auctions = Auction.with_status(:active).order("id DESC").limit(18)
     @users = User.count
+    @blogs = Blogpost.order("id DESC").limit(18).includes(:user)
+    @projects = Project.where(:status => Project::STATUSES[:active]).count
     title_t
   end
 

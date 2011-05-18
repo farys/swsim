@@ -8,6 +8,7 @@ class BlogcommentsController < ApplicationController
   end
   
   def new
+    title_t
   	@user = current_user
   	@blogpost = Blogpost.find(params[:blogpost_id])
   	@blogcomment = Blogcomment.new
@@ -15,9 +16,15 @@ class BlogcommentsController < ApplicationController
   
   def create
   	@blogpost = Blogpost.find(params[:blogpost_id])
-    @blogcomment  = Blogcomment.create!(:content => params[:blogcomment][:content], :blogpost_id => params[:blogpost_id], :user_id => current_user.id)
-    flash[:success] = "Comment created!"
-    redirect_to user_blogpost_path(@blogpost.user_id, @blogpost)
+    @blogcomment  = Blogcomment.new(:content => params[:blogcomment][:content], :blogpost_id => params[:blogpost_id], :user_id => current_user.id)
+    if @blogcomment.save
+      flash_t :success
+      redirect_to user_blogpost_path(@blogpost.user_id, @blogpost)
+    else
+      @user = current_user
+      title_t :new
+      render :new, :blogpost_id => params[:blogpost_id], :user_id => current_user.id
+    end
   end
   
   def edit
@@ -31,7 +38,7 @@ class BlogcommentsController < ApplicationController
   	@blogpost = Blogpost.find_by_id(@blogcomment.blogpost_id)
 	if @blogcomment.update_attributes(params[:blogcomment])
 		redirect_to user_blogpost_path(@blogpost.user_id, @blogcomment.blogpost_id)
-		flash[:success] = "Comment edited!"
+		flash_t :success
 	else
 		@title = "Edit comment"
 		render :action => :edit

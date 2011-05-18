@@ -32,7 +32,7 @@ class BlogpostsController < ApplicationController
   	@user = User.find(params[:user_id])
   	@title = "#{@user.name} #{@user.lastname} || Blog"
   	@blogpost = Blogpost.find(params[:id])
-  	@comments = Blogcomment.find_all_by_blogpost_id(@blogpost)
+  	@comments = Blogcomment.find_all_by_blogpost_id(@blogpost).paginate(:page => params[:page], :per_page => 10)
   end
   
   def edit

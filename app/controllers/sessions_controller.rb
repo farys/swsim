@@ -8,18 +8,25 @@ class SessionsController < ApplicationController
   	user = User.authenticate(params[:session][:email],
                              params[:session][:password])
     if user.nil?
-      flash[:error] = "Invalid email/password combination."
+      flash_t :error, 'login_error'
       render 'new'
     elsif user.status == 0
-    	flash[:error] = "To konto zostalo zdeaktywowane"
+    	flash_t :error, 'deactivated'
       render 'new'
-    elsif user.status == 4
-    	flash[:error] = "To konto zostalo zbanowane przez administratora"
+      elsif user.status == 1
+    	flash_t :error, 'niezweryfikowany'
+      render 'new'
+    elsif user.status == 3
+    	flash_t :error, 'ban'
       render 'new'
     else
       sign_in user
       reputation
-      redirect_back_from_login session
+      if current_user.role == "administrator"
+        redirect_to admin_users_path
+      else
+        redirect_back_from_login session
+      end
     end
   end
   

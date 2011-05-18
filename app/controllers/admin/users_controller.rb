@@ -22,11 +22,10 @@ class Admin::UsersController < Admin::ApplicationController
 		flash[:success] = "Dodano #{params[:addorremove][:points]} punkty"
 	end
 	
-	def delete
+	def destroy
 		@title = "Panel administratora: uzytkownicy"
     	@user = User.find_by_id(params[:id])
     	if @user.update_attribute(:status, params[:status])
-    		@users = User.find(:all, :order => "lastname").paginate :per_page => 15, :page => params[:page]
     		redirect_to "/admin/users"
     		flash[:success] = "Zmieniono status uzytkownika o id: #{@user.id}"
     	end

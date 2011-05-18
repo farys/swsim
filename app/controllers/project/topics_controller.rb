@@ -9,7 +9,8 @@ class Project::TopicsController < Project::ApplicationController
 	end
 	
 	def show  
-		@posts = @topic.posts
+		@posts = @topic.posts.paginate :per_page => 10,
+    																	 :page => params[:page]
 		title_t :show
 	end
 	

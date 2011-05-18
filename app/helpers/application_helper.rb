@@ -4,7 +4,7 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
 
   def escape_time(date = DateTime.now, time_new_line = false)
     t = (time_new_line)? '<br />' : ''
-    date.strftime('%a %d-%m-%Y' + t + ' %H:%M')
+    date.strftime('%d-%m-%Y' + t + ' %H:%M')
   end
   
   def escape_date(date = DateTime.now)

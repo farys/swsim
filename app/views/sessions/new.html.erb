@@ -4,12 +4,12 @@
     <%= f.text_field :email %>
   </div>
   <div class="field">
-    <%= f.label :password %><br />
+    <%= f.label :password, "Hasło" %><br />
     <%= f.password_field :password %>
   </div>
   <div class="actions">
-    <%= f.submit "Sign in" %>
+    <%= f.submit "Loguj" %>
   </div>
 <% end %>
 
-<p>New user? <%= link_to "Sign up now!", signup_path %></p>
+<p>Nie masz konta? <%= link_to "Zarejestruj się !", signup_path %></p>

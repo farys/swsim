@@ -14,10 +14,11 @@ pl:
     attributes:
       user:
         login: Login
-        name: Imie
+        name: Imię
         lastname: Nazwisko
         password: Hasło
         password_confirmation: Powierdzenie hasła
+        country: Kraj
       auction:
         title: Tytuł
         expired_at: "Zakończenie aukcji w "
@@ -75,6 +76,8 @@ pl:
         description: Opis
         duration: Roboczogodziny
         status: Status
+      blogcomment:
+        content: Treść
     errors:
       models:
         auction:
@@ -139,7 +142,7 @@ pl:
       leader: Lider
       info_mod: Moderator informacji
       inv_mod: Moderator zaproszeń
-      ticket_mod: Moderator ticketów
+      ticket_mod: Moderator zadań
       file_mod: Moderator plików
       forum_mod: Moderator forum
       member_mod: Moderator użytkowników

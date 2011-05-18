@@ -1,24 +1,12 @@
 module ProjectsHelper
   def can_edit?(page)
-  	if @project.active?
-	  	case page
-	  		when 'info'
-	  		  @project.user_role(current_user.id).info
-	  		when 'invitation'
-	  		  @project.user_role(current_user.id).invitation	
-	  		when 'member'
-	  		  @project.user_role(current_user.id).member
-	  		when 'ticket'
-	  		  @project.user_role(current_user.id).ticket
-	  		when 'forum'
-	  		  @project.user_role(current_user.id).forum
-	  		when 'file'
-	  		  @project.user_role(current_user.id).file
-	  		else
-	  		  false		
-	  	end
+    if @project.active?
+      role = Hash.new(false)
+      role.merge! @project.user_role(current_user.id).attributes
+      role[page]
 	  else
-	  	false
+	  	flash_t_general :notice, 'project.not_active'
+	  	redirect_to project_info_path(@project)
   	end
   end
   

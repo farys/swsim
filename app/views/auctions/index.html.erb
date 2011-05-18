@@ -1,50 +1,53 @@
 <% content_for :title, "Witamy!" %>
 <div class="span-24">
-  <div class="span-12">
+  <table class="center box" style="padding: 5px; margin: -20px auto 10px auto;">
+    <tr>
+      <td class="center">
+        Trwających aukcji: <span><%= Auction.count %></span>
+      </td>
+      <td class="center">
+        Ofert: <span><%= Offer.count %></span>
+      </td>
+      <td class="center">
+        Użytkowników w bazie: <span><%= @users %></span>
+      </td>
+      <td class="center">
+        Aktywnych projektów: <span><%= @projects %></span>
+      </td>
+    </tr>
+  </table>
+  <div class="span-24">
     <p class="box">
-      Jeśli szukasz specjaliste lub pracujesz w branży IT, to dobrze trafiles.
+      Jeśli szukasz specjalisty lub pracujesz w branży IT, to dobrze trafiłeś.
       Pozwól iż wyjaśnimy Ci na czym polega fenomen tego portalu!
-      Otóz, za pośrednictwem tego portalu bedziesz w stanie znalezc wykonawce bądź zleceniodawce,
-      wyróżnic swoje aukcje, zbudowac portfolio, dołączyc do profesjonalnych zespołów.
-      To nie wszystko. Jak tylko zostanie wybrana zwycieska oferta,
-      zostanie udostepniony modul projektu umozliwiajacy prace przy pomocy roznych metod rozwojowych projektu (np. SCRUM).
-      Tak wiec ten serwis to nie tylko raj dla zleceniodawcow ale i dla wykonawcow.
-      Bo wiemy iż efektywnosc to podstawa.
-      Tak więc, skończ czytac i zapierdalaj do roboty z takim uśmiechem --> :D
+      Otóż, za pośrednictwem tego portalu bedziesz w stanie znaleźć wykonawcę bądź zleceniodawcę,
+      wyróżnić swoje aukcje, zbudować portfolio, dołączyć do profesjonalnych zespołów.
+      To nie wszystko. Jak tylko zostanie wybrana zwycięska oferta,
+      zostanie udostępniony moduł projektu umożliwiający pracę przy pomocy różnych metod rozwojowych projektów.
+      Tak więc ten serwis to nie tylko raj dla zleceniodawców, ale i dla wykonawców.
+      Bo wiemy iż efektywność to podstawa.
     </p>
   </div>
-  <%= image_tag "/images/class.gif", :class => "span-12 last"%>
 </div>
-<div class="span-6 statistics">
-  <h2>Statystyki</h2>
-  <div class="box">
-    <p>
-      Trwających aukcji: <span><%= 160234+Auction.count %></span>
-    </p>
-    <p>
-      Ofert dzisiaj: <span><%= 5234+Offer.count %></span>
-    </p>
-    <p>
-      Użytkowników w bazie: <span><%= @users %></span>
-    </p>
-
-    <p>
-      Użytkowników online: <span><%= (User.count*1000).ceil %></span>
-    </p>
-    <div class="prepend-top">Dane aktualizowane raz na godzine</div>
-  </div>
-</div>
-<div class="span-18 last">
-  <h2>Najnowsze zlecenia</h2>
+<div class="prepend-1 span-22 last">
+  <h2>Najnowsze aukcje</h2>
   <% unless @auctions.empty? %>
-    <div class="span-9"><div class="box">
+    <div class="span-11"><div class="box">
         <% @auctions.shift(@auctions.length/2).each do |auction| %>
-          <%= link_to escape_auction(auction), auction_path(auction) %><br />
+          <%= link_to escape_auction(auction), auction_path(auction) %>
+          <span style="float: right;">
+            tu je budzet
+          </span>
+          <br />
         <% end %>
       </div></div>
-    <div class="span-9 last"><div class="box">
+    <div class="span-11 last"><div class="box">
         <% @auctions.each do |auction| %>
-          <%= link_to escape_auction(auction), auction_path(auction) %><br />
+          <%= link_to escape_auction(auction), auction_path(auction) %>
+          <span style="float: right;">
+            tu je budzet
+          </span>
+          <br />
         <% end %>
       </div></div>
   <% else %>
@@ -52,3 +55,28 @@
   <% end %>
 </div>
 
+<div class="prepend-1 span-22 last">
+  <h2>Najnowsze wpisy z blogów</h2>
+  <% unless @blogs.empty? %>
+    <div class="span-11"><div class="box">
+        <% @blogs.shift(@blogs.length/2).each do |blog| %>
+          <%= link_to blog.title, user_blogpost_path(blog.user, blog) %>
+          <span style="float: right;">
+            <%= link_to blog.user.login, user_path(blog.user) %>
+          </span>
+          <br />
+        <% end %>
+      </div></div>
+    <div class="span-11 last"><div class="box">
+        <% @blogs.each do |blog| %>
+          <%= link_to blog.title, user_blogpost_path(blog.user, blog) %>
+          <span style="float: right;">
+             <%= link_to blog.user.login, user_path(blog.user) %>
+          </span>
+          <br />
+        <% end %>
+      </div></div>
+  <% else %>
+    <div class="notice">Narazie nie ma żadnych opublikowanych aukcji.</div>
+  <% end %>
+</div>

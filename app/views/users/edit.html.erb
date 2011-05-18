@@ -34,10 +34,6 @@
   <%= f.label :description %><br />
   <%= f.text_area :description, :value => @user.description.force_encoding("UTF-8"), :class => "mceEditor span-10" %>
 </div>
-<div class="field">
-  <%= f.label :recaptcha, "Przepisz koda z obrazka" %><br />
-  <%= raw(get_captcha(:options => {:theme => 'white', :tabindex => 10})) %>
-</div>
 <%= f.submit "Edit" %>
 <% end %>
 </div>

@@ -10,6 +10,6 @@ class RelationshipsController < ApplicationController
   def destroy
     @user = Relationship.find(params[:id]).watched
     current_user.unwatch!(@user)
-    redirect_to :controller => 'users', :action => 'watching', :id => current_user
+    redirect_to :back
   end
 end

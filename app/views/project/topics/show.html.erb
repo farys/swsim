@@ -53,6 +53,7 @@
 			</td>
 	<% end %>
 </table>
+<div style="text-align: right;"><%= will_paginate @posts %></div>
 <div class="span-2 prepend-17">
   <%= link_to t('general.project.post.add'), new_project_topic_post_path(@project, @topic) %>
 </div>

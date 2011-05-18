@@ -55,8 +55,8 @@ class Project::MembersController < Project::ApplicationController
   	end
   	
   	#weryfikacja roli	 
-    if memb.role == Role.get_id('owner') ||
-       memb.role == Role.get_id('leader')
+    if memb.role_id == Role.get_id('owner') ||
+       memb.role_id == Role.get_id('leader')
       flash_t :notice, 'cant_delete'
       render_index
       return

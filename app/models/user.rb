@@ -48,7 +48,8 @@ class User < ActiveRecord::Base
 	validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png', 'image/gif']
 
 	before_create :encrypt_password
-	before_update :encrypt_password
+	before_update :encrypt_password, :if => ->{ self.password_changed? }
+
 	
   def watching?(watched)
     relationships.find_by_watched_id(watched)

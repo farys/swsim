@@ -4,7 +4,7 @@ class Tag < ActiveRecord::Base
   belongs_to :group
   has_and_belongs_to_many :auctions
   validates_inclusion_of :status, :in => STATUSES.values
-
+  validates :name, :presence => true
   before_validation :default_attributes
 
   default_scope order("name ASC")

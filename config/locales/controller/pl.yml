@@ -40,12 +40,19 @@ pl:
     sessions:
       destroy: Wylogowano pomyślnie
       new: Musisz się zalogowac, aby przeglądac tę stronę
+      login_error: Zły login lub hasło
+      deactivated: To konto zostało zdeaktywowane
+      ban: To konto zostało zablokowane przez administratora
+      niezweryfikowany: To konto nie zostało jeszcze zweryfikowane
     alerts:
       create: Zgłoszenie zostało przyjęte!
     offers:
       create: Oferta została złożona!
     auction:
       show: Nie masz prawa dostępu do aukcji
+    blogcomments:
+      create: Komentarz został utworzony
+      update: Komentarz został zaktualizowany
 
     panel:
       auctions:
@@ -123,7 +130,7 @@ pl:
         take: Zadanie zostało przyjęte do realizacji
         give: Zadanie zostało zwrócone
         end: Zadanie zostało zakończone
-          
+    
                 
         
   title:
@@ -132,6 +139,8 @@ pl:
       show: "{@auction.title} (id {@auction.id})"
       search: Wyszukaj zlecenie!
       result: Wynik zapytania {@query}
+    blogcomments:
+      new: Napisz komentarz
  
     panel:
       auctions:
@@ -178,6 +187,7 @@ pl:
         new: Nowy tag
         index: Tagi
         edit: Edycja tagu o id {@tag.id}
+        
     project:
       info:
         show: "{@project.name}"

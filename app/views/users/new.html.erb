@@ -25,7 +25,7 @@
   <%= f.password_field :password, :class=>"span-6" %>
 </div>
 <div class="field">
-  <%= f.label :password_confirmation, "Confirmation" %><br />
+  <%= f.label :password_confirmation %><br />
   <%= f.password_field :password_confirmation, :class=>"span-6" %>
 </div>
 <div class="field">
@@ -33,7 +33,7 @@
   <%= raw(get_captcha(:options => {:theme => 'white', :tabindex => 10})) %>
 </div>
 <div class="actions">
-    <%= f.submit "Sign up" %>
+    <%= f.submit "Rejestruj" %>
   </div>
 <% end %>
 </div>

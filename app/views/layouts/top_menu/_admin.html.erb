@@ -34,9 +34,8 @@
       </li>
     </ul>
   </li>
-  <li><%= link_to 'Projekty', '#' %>
   </li>
-  <li><%= link_to 'Wyloguj się(' + @logged_user.to_s + ')', '#' %></li>
+  <li><%= link_to 'Wyloguj się(' + current_user.to_s + ')', signout_path, :method => :delete %></li>
 
 </ul>
 <%= javascript_tag do %>

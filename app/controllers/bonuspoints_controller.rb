@@ -8,6 +8,6 @@ class BonuspointsController < ApplicationController
   	def addfromblog
   		@user_id = params[:user_id]
   		Bonuspoint.use!(20, @user_id, 1)
-  		redirect_to user_blogposts_path(@user_id)
+  		redirect_to :back
   	end
 end

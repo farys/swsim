@@ -5,6 +5,7 @@ pl:
     users: Użytkownicy
     actions: Akcje
     save: Zapisz
+    send: Wyślij
     delete: Usuń
     edit: Edytuj
     cancel: Anuluj

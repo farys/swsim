@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 	$countries = Carmen.countries
 	
 	def new
+	  @title = "Rejestracja"
 		@user = User.new
 		if User.exists?(:id => params[:ref_id])
 			@referer = User.find_by_id(params[:ref_id], :select => ["id", "login"])
@@ -29,6 +30,7 @@ class UsersController < ApplicationController
     end
 	
 	def create
+	    @title = "Rejestracja"
     	@user = User.new(params[:user])
     	@hash_mail = make_hash
     	@emailver = Emailver.new(:hash => @hash_mail, :user => @user)
