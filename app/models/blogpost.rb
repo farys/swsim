@@ -4,8 +4,8 @@ class Blogpost < ActiveRecord::Base
 	belongs_to :user
 	has_many :blogcomments, :dependent => :destroy
 	
-	validates :title, :presence => true
-	validates :content, :presence => true
+	validates :title, :presence => true, :length => {:within => 5..40}
+	validates :content, :presence => true, :length => {:within => 20..5000}
   	validates :user_id, :presence => true
 	
 	default_scope :order => 'blogposts.created_at DESC'

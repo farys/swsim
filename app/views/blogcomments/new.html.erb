@@ -1,4 +1,3 @@
-<%= render 'users/user_menu' %>
 <div class="left prepend-1">
 <% form_for [@blogcomment] do |f| -%>
   <%= render "layouts/error_messages", :target => @blogcomment %>
@@ -8,7 +7,10 @@
     <%= hidden_field_tag(:blogpost_id, @blogpost.id) %>
     <%= hidden_field_tag(:user_id, current_user.id) %>
   </div>
-
+  <div class="field">
+  <%= f.label :recaptcha, "Przepisz koda z obrazka" %><br />
+  <%= raw(get_captcha(:options => {:theme => 'white', :tabindex => 10})) %>
+  </div>
   <div class="actions">
     <%= f.submit t('general.send') %>
   </div>

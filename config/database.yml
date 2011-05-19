@@ -1,4 +1,4 @@
-login: &login
+development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
@@ -6,17 +6,26 @@ login: &login
   username: root
   password: Rot192
   host: localhost
-
-development:
-  <<: *login
   database: app_dev
 
 test:
-  <<: *login
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  pool: 5
+  username: root
+  password: Rot192
+  host: localhost
   database: app_test
 
 production:
-  <<: *login
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  pool: 5
+  username: root
+  password: Rot192
+  host: localhost
   database: app_prod
 
 # Warning: The database defined as "test" will be erased and

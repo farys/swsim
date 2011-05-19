@@ -8,6 +8,7 @@
       <li><%= link_to "Blog", user_blogposts_path(@user) %></li>
       <% if current_user?(@user) && @user.role != "administrator"%>
       <li><%= link_to "Dezaktywuj konto", user_path(current_user, :status => 0), :method => "delete", :confirm => t('general.confirm') %></li>
+      <% elsif @user.role == "administrator" %>
       <% end %>
   </ul>
 </nav>

@@ -47,8 +47,6 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
-    mysql (2.8.1)
-    mysql (2.8.1-x86-mingw32)
     mysql2 (0.2.6)
     mysql2 (0.2.6-x86-mingw32)
     paperclip (2.3.8)
@@ -108,10 +106,10 @@ DEPENDENCIES
   faker
   jquery-rails
   mail
-  mysql
   mysql2
   paperclip (~> 2.3)
   rails (= 3.0.3)
+  riddle
   rspec-rails
   ruby-recaptcha
   thinking-sphinx (= 2.0.3)
