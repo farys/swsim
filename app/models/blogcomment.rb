@@ -4,7 +4,7 @@ class Blogcomment < ActiveRecord::Base
 	belongs_to :blogpost
 	belongs_to :user
 	
-	validates :content, :presence => true
+	validates :content, :presence => true, :length => {:within => 1..200}
   	validates :user_id, :presence => true
   	validates :blogpost_id, :presence => true
   	

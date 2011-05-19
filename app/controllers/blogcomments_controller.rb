@@ -17,7 +17,7 @@ class BlogcommentsController < ApplicationController
   def create
   	@blogpost = Blogpost.find(params[:blogpost_id])
     @blogcomment  = Blogcomment.new(:content => params[:blogcomment][:content], :blogpost_id => params[:blogpost_id], :user_id => current_user.id)
-    if @blogcomment.save
+    if validate_recap(params, @blogcomment.errors) && @blogcomment.save
       flash_t :success
       redirect_to user_blogpost_path(@blogpost.user_id, @blogpost)
     else
@@ -36,7 +36,7 @@ class BlogcommentsController < ApplicationController
   def update
   	@blogcomment = Blogcomment.find(params[:id])
   	@blogpost = Blogpost.find_by_id(@blogcomment.blogpost_id)
-	if @blogcomment.update_attributes(params[:blogcomment])
+	if validate_recap(params, @blogcomment.errors) && @blogcomment.update_attributes(params[:blogcomment])
 		redirect_to user_blogpost_path(@blogpost.user_id, @blogcomment.blogpost_id)
 		flash_t :success
 	else

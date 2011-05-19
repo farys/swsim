@@ -44,6 +44,7 @@ pl:
       deactivated: To konto zostało zdeaktywowane
       ban: To konto zostało zablokowane przez administratora
       niezweryfikowany: To konto nie zostało jeszcze zweryfikowane
+      captcha: Źle przepisany kod z obrazka
     alerts:
       create: Zgłoszenie zostało przyjęte!
     offers:
@@ -53,6 +54,9 @@ pl:
     blogcomments:
       create: Komentarz został utworzony
       update: Komentarz został zaktualizowany
+    blogposts:
+      captcha: Źle przepisany kod z obrazka
+      update: Blogpost zaktualizowany 
 
     panel:
       auctions:
@@ -90,6 +94,8 @@ pl:
         update: Grupa została zaktualizowana
         create: Grupa została utworzona
         destroy: Grupa została usunięta wraz z tagami
+      application:
+        not_admin: Dostęp tylko dla administratora
    
     project:
       info:

@@ -19,12 +19,12 @@ class BlogpostsController < ApplicationController
 
   def create
     @blogpost  = current_user.blogposts.build(params[:blogpost])
-    if @blogpost.save
+    if validate_recap(params, @blogpost.errors) && @blogpost.save
       flash[:success] = "Blogpost created!"
       redirect_to user_blogposts_path(current_user)
     else
-      flash[:error] = "Zle parametry"
-      redirect_to new_user_blogpost_path(current_user)
+      @user = current_user
+      render :new
     end
   end
   
@@ -38,22 +38,24 @@ class BlogpostsController < ApplicationController
   def edit
   	@user = User.find_by_id(params[:user_id])
   	@blogpost = Blogpost.find(params[:id])
-  	@title = "#{@user.name} #{@user.lastname} || Edycja wpisu: #{@blogpost.title}"
+  	@title = "#{@user.name} #{@user.lastname} || Edycja wpisu"
   end
   
   def update
   	@blogpost = Blogpost.find(params[:id])
-	if @blogpost.update_attributes(params[:blogpost])
+	if validate_recap(params, @blogpost.errors) && @blogpost.update_attributes(params[:blogpost])
 		redirect_to user_blogpost_path(current_user)
 		flash_t :notice
 	else
-		@title = "Edit post"
+		@user = current_user
+		@title = "#{@user.name} #{@user.lastname} || Edycja wpisu"
 		render :action => :edit
 	end
   end
 
   def destroy
     @blogpost.destroy
+    flash[:success] = "Blogpost usuniety!"
     redirect_to user_blogposts_path(current_user)
   end
   
@@ -62,9 +64,9 @@ class BlogpostsController < ApplicationController
   	if @blogpost.update_attribute(:admin, 1)
   		@user = User.find(params[:user_id])
   		@title = "#{@user.name} #{@user.lastname} || Blog"
-  		@comments = Blogcomment.find_all_by_blogpost_id(@blogpost)
+  		@comments = Blogcomment.find_all_by_blogpost_id(@blogpost).paginate(:page => params[:page], :per_page => 10)
   		flash[:success] = "Zgloszono wpis do administratora"
-  		render :action => :show
+  		redirect_to user_blogpost_path(@user, @blogpost)
   	end
   end
 

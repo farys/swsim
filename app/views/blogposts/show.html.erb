@@ -8,12 +8,15 @@
     <%= simple_format(@blogpost.content) %>
     <div class="right">
       <% if current_user?(@user) %>
-      <%= link_to "Usun", @blogpost, :method => :delete, :confirm => "Jestes pewien?",:title => "Skasowac post o tytule #{@blogpost.title}" %>
+      <%= link_to "Usuń", @blogpost, :method => :delete, :confirm => "Jesteś pewien, że chcesz usunąć ten wpis?",:title => "Skasuj post o tytule #{@blogpost.title}" %>
        || <%= link_to "Edytuj wpis", edit_user_blogpost_path(current_user) %>
        <% else %>
-       <%= link_to "Przydatne", :controller => "bonuspoints", :action => "addfromblog", :user_id => params[:user_id] %> || <%= link_to "Zgłoś administratorowi", :action => "admin", :id => @blogpost%>
+       <%= link_to "Przydatne", :controller => "bonuspoints", :action => "addfromblog", :user_id => params[:user_id] %> || 
+       <% if @blogpost.admin != 1%>
+       <%= link_to "Zgłoś administratorowi", :action => "admin", :id => @blogpost%> || 
+       <% end %>
       <% end %>
-       || Posted <%= time_ago_in_words(@blogpost.created_at) %> ago.
+		Posted <%= time_ago_in_words(@blogpost.created_at) %> ago.
     </div>
   </td>
 </tr>

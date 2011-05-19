@@ -35,6 +35,10 @@
         <td><%= @statuses[@user.status] %></td>
       </tr>
     </table>
+    <% if current_user?(@user) %>
+  		<%= link_to 'Edytuj dane', edit_user_path(params[:id]) %>
+  	<% end %>
+  	<%= render 'watch_form' if signed_in? %>
     </div>
     <div class="prepend-0 span-9">
     <table class>
@@ -74,9 +78,3 @@
       </tr>
     </table>
     </div>
-    <div class="clear span-11 center">
-  <% if current_user?(@user) %>
-  <%= link_to 'Edytuj dane', edit_user_path(params[:id]) %>
-  <% end %>
-  <%= render 'watch_form' if signed_in? %>
-  </div>

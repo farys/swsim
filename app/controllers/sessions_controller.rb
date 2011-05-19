@@ -19,6 +19,9 @@ class SessionsController < ApplicationController
     elsif user.status == 3
     	flash_t :error, 'ban'
       render 'new'
+    elsif validate_recap(params, user.errors) == false
+    	flash_t :error, 'captcha'
+      render 'new'
     else
       sign_in user
       reputation

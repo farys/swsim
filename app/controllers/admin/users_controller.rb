@@ -10,16 +10,21 @@ class Admin::UsersController < Admin::ApplicationController
 	
 	def points
 		@user = User.find(params[:id])
+		@pointssum = Bonuspoint.find_all_by_user_id(params[:id])
 		@points = Bonuspoint.find_all_by_user_id(params[:id]).paginate :per_page => 15, :page => params[:page]
 		@title = "Panel administratora: punkty uzytkownika #{@user}"
+		
+		@suma = 0
+      	@pointssum.each do |sum|
+      		@suma += sum.points
+        end
 	end
 	
 	def editpoints
 		@title = "Panel administratora: punkty"
 		Bonuspoint.use!(params[:addorremove][:points], params[:id], 4)
-		@points = Bonuspoint.find_all_by_user_id(params[:id]).paginate :per_page => 15, :page => params[:page]
-		redirect_to :action => :points
 		flash[:success] = "Dodano #{params[:addorremove][:points]} punkty"
+		redirect_to :action => :points
 	end
 	
 	def destroy

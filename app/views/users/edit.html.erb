@@ -1,4 +1,13 @@
-<div class="prepend-1">
+<div class="prepend-1 span-22 last">
+<div class="span-10">
+<table class>
+<tr>
+<td colspan="2" id="table_title">
+Edycja danych użytkownika
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">      
 <% form_for @user, :html => { :multipart => true } do |f| -%>
 <%= render "layouts/error_messages", :target => @user %>
 <div class="field">
@@ -13,21 +22,12 @@
   <%= f.label :email %><br />
   <%= f.text_field :email, :value => @user.email.force_encoding("UTF-8"), :class=>"span-6" %>
 </div>
-<% if current_user.role == "administrator" %>
-<div class="field">
-  <%= f.label :password %><br />
-  <%= f.password_field :password, :class=>"span-6" %>
-</div>
-<div class="field">
-  <%= f.label :password_confirmation, "Confirmation" %><br />
-  <%= f.password_field :password_confirmation, :class=>"span-6" %>
-</div>
-<% end %>
 <div class="field">
 <%= f.label :country %><br />
 <%= f.select :country, $countries, {:selected => @user.country} %>
 </div>
 <div class="field">
+<%= f.label :avatar %><br />
 <%= f.file_field :avatar %>
 </div>
 <div class="field">
@@ -35,5 +35,37 @@
   <%= f.text_area :description, :value => @user.description.force_encoding("UTF-8"), :class => "mceEditor span-10" %>
 </div>
 <%= f.submit "Edit" %>
+<% end %>
+</td>
+</tr>
+</table>
+</div>
+
+<% if current_user.role == "administrator" || current_user?(@user) %>
+<div class="span-10" style="float: right;">
+<table>
+<tr>
+<td colspan="2" id="table_title">
+Ustal nowe hasło
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+	<% form_for @user do |f| -%>
+	<%= render "layouts/error_messages", :target => @user %>
+	<div class="field">
+  		<%= f.label :password %><br />
+  		<%= f.password_field :password, :value => "", :class=>"span-6" %>
+	</div>
+	<div class="field">
+  		<%= f.label :password_confirmation %><br />
+  		<%= f.password_field :password_confirmation, :class=>"span-6" %>
+	</div>
+	<%= f.submit "Edytuj" %>
+	<% end %>
+</td>
+</tr>
+</table>
+</div>
 <% end %>
 </div>

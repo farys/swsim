@@ -15,6 +15,9 @@ pl:
     contact: Kontakt
     confirm: Jesteś pewien ?
     invite: Zaproś
+    ban: Czy na pewno chcesz zbanować to konto?
+    deactivate: Czy na pewno chcesz dezaktywować to konto? Pamiętaj, że tylko administrator portalu będzie mógł je przywrócić spowrotem
+
     project:
       exceeded: Przekroczono o
       ended: Projekt zakończony
