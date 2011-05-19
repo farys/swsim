@@ -18,8 +18,15 @@
 	          <td><%= escape_column(proj.user_role(current_user.id),"name") %></td>
 	          <td>
 	          	<% if proj.active? %>
-	          		<%= escape_date(proj.deadline) %>
-	            	(<%= t('general.left') %> <%= time_ago_in_words(proj.deadline) %>)
+	          	  <% if proj.deadline.past? -%>
+	          	    <font color="red">
+	          	      <%= escape_date(proj.deadline) %>
+	            	    (<%= t('general.project.exceeded') %> <%= time_ago_in_words(proj.deadline) %>)
+	          	    </font>
+	          	  <% else -%>
+	          	    <%= escape_date(proj.deadline) %>
+	            	  (<%= t('general.left') %> <%= time_ago_in_words(proj.deadline) %>)
+	          	  <% end -%>
 	          	<% else %>
 	          		<%= t('general.project.ended') %> (<%= escape_date(proj.updated_at) %>)
 	          	<% end %>            

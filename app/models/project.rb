@@ -15,11 +15,11 @@ class Project < ActiveRecord::Base
 	validates :duration, :presence => true
 	validates :status, :inclusion => { :in => STATUSES.values }
 	validates :description, :length => { :in => 10..2000}
-		
-	default_scope :order => 'projects.id DESC'
 	
 	before_validation :set_default_status, :on => :create
 	after_create :add_default_users
+	
+	default_scope :order => 'projects.id DESC'
 	
 	#zwraca date zakonczenia projektu
 	def deadline

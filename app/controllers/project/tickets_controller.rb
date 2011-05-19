@@ -42,7 +42,7 @@ class Project::TicketsController < Project::ApplicationController
     
     if @ticket.save
       flash_t :success
-      redirect_to edit_project_ticket_path(@project, @ticket)
+      redirect_to project_ticket_path(@project, @ticket)
     else
       title_t :edit
       render :edit
@@ -59,6 +59,12 @@ class Project::TicketsController < Project::ApplicationController
   end
   
   def take
+    if current_user.id == @project.owner_id
+      flash_t_general :error, 'error.privileges'
+      redirect_to project_tickets_path
+      return
+    end
+  
     @ticket.user_id = current_user.id
     @ticket.status = Ticket::STATUSES[:implementation]
     
