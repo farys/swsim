@@ -71,7 +71,7 @@ class Admin::UsersController < Admin::ApplicationController
     	@title = "Panel administratora: komentarze"
     	@blogcomment = Blogcomment.find(params[:blogcomment])
     	@blogcomment.destroy
-    	edirect_to :action => :blogcomments
+    	redirect_to :action => :blogcomments
     	flash[:success] = "Usunieto komentarz o id: #{@blogcomment.id}"
     end
     

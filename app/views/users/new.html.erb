@@ -16,13 +16,13 @@
 <div class="field">
   <%= f.label :email %><br />
   <%= f.text_field :email, :class=>"span-6" %>
-  <%= hidden_field_tag(:ref_id, @referer) %>
+  <%= hidden_field_tag(:ref, @referer) %>
 </div>
 <%= f.label :country %><br />
 <%= f.select :country, $countries, {:selected => 'PL'} %>
 <div class="field">
   <%= f.label :password %><br />
-  <%= f.password_field :password, :class=>"span-6" %>
+  <%= f.password_field :password, :value => "", :class=>"span-6" %>
 </div>
 <div class="field">
   <%= f.label :password_confirmation %><br />

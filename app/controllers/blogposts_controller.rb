@@ -29,16 +29,23 @@ class BlogpostsController < ApplicationController
   end
   
   def show
-  	@user = User.find(params[:user_id])
-  	@title = "#{@user.name} #{@user.lastname} || Blog"
   	@blogpost = Blogpost.find(params[:id])
+  	@user = User.find_by_id(@blogpost.user_id)
+  	@title = "#{@user.name} #{@user.lastname} || Blog"
+  	if signed_in?
+  		@useful = Useful.find_by_user_id_and_blogpost_id(current_user.id, @blogpost.id)
+  	end
   	@comments = Blogcomment.find_all_by_blogpost_id(@blogpost).paginate(:page => params[:page], :per_page => 10)
   end
   
   def edit
   	@user = User.find_by_id(params[:user_id])
   	@blogpost = Blogpost.find(params[:id])
+  	if current_user.id != @blogpost.user_id
+  		redirect_to user_blogpost_path(@user, @blogpost)
+  	else
   	@title = "#{@user.name} #{@user.lastname} || Edycja wpisu"
+  	end
   end
   
   def update

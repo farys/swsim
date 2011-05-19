@@ -100,6 +100,10 @@ pl:
               not_a_number: "nie są liczbą"
               not_an_integer: "muszą być liczbą całkowitą"
               greater_than: "muszą być większe od %{count}"
+        user:
+          attributes:
+            email:
+              taken: Taki adres e-mail jest już zarejestrowany w serwisie
 #MODELE
   tag:
     statuses:

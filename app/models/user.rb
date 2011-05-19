@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
   has_many :blogcomments, :dependent => :destroy
   has_many :bonuspoints, :dependent => :destroy
   has_many :tickets
+  has_many :usefuls
   
   email_regex = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃ\-.]+@[a-zżźćńółęąś\d\-.]+\.[a-z]+\z/i
   string = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃß\-.]+\z/

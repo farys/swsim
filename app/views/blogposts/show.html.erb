@@ -7,22 +7,28 @@
   	<td>
     <%= simple_format(@blogpost.content) %>
     <div class="right">
+      <% if signed_in? %>
       <% if current_user?(@user) %>
       <%= link_to "Usuń", @blogpost, :method => :delete, :confirm => "Jesteś pewien, że chcesz usunąć ten wpis?",:title => "Skasuj post o tytule #{@blogpost.title}" %>
        || <%= link_to "Edytuj wpis", edit_user_blogpost_path(current_user) %>
        <% else %>
-       <%= link_to "Przydatne", :controller => "bonuspoints", :action => "addfromblog", :user_id => params[:user_id] %> || 
+       <% if @useful.nil? %>
+       		<%= link_to "Przydatne", :controller => "bonuspoints", :action => "addfromblog", :user_id => params[:user_id]%> || 
+       <% end %>
        <% if @blogpost.admin != 1%>
-       <%= link_to "Zgłoś administratorowi", :action => "admin", :id => @blogpost%> || 
+       		<%= link_to "Zgłoś administratorowi", :action => "admin", :id => @blogpost%> || 
+       <% end %>
        <% end %>
       <% end %>
-		Posted <%= time_ago_in_words(@blogpost.created_at) %> ago.
+		Utworzony <%= time_ago_in_words(@blogpost.created_at) %> temu.
     </div>
   </td>
 </tr>
 </table>
 <br />
+<% if signed_in? %>
 <%= link_to "Dodaj komentarz", :controller => 'blogcomments', :action => 'new', :blogpost_id => @blogpost.id %>
+<% end %>
 <table>
 <% @comments.each do |comment| %>
 <tr>
@@ -31,7 +37,10 @@
 	<% if current_user.id == comment.user_id %>
 	<div class="right"><%= link_to "Edytuj komentarz", edit_blogcomment_path(comment.id) %> || 
 	<% else %>
-	<div class="right"><%= link_to "Zgłoś administratorowi", :controller => "blogcomments", :action => "admin", :id => comment.id%> || 
+	<div class="right">
+	<% if comment.admin != 1%>	
+		<%= link_to "Zgłoś administratorowi", :controller => "blogcomments", :action => "admin", :id => comment.id%> || 
+	<% end %>
 	<% end %>
 	Posted <%= time_ago_in_words(comment.created_at) %> ago.
 	</div>

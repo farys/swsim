@@ -30,7 +30,11 @@ class BlogcommentsController < ApplicationController
   def edit
   	@blogcomment = Blogcomment.find(params[:id])
   	@blogpost = Blogpost.find_by_id(@blogcomment.blogpost_id)
+  	if current_user.id != @blogcomment.user_id
+  		redirect_to user_blogpost_path(@blogpost.user_id, @blogcomment.blogpost_id)
+  	else
   	@title = "Edycja komentarza dla wpisu: #{@blogpost.title}"
+  	end
   end
   
   def update

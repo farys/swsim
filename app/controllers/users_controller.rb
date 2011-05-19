@@ -6,14 +6,15 @@ class UsersController < ApplicationController
 	$countries = Carmen.countries
 	
 	def new
-	  @title = "Rejestracja"
+		@title = "Rejestracja"
 		@user = User.new
 		if User.exists?(:id => params[:ref_id])
-			@referer = User.find_by_id(params[:ref_id], :select => ["id", "login"])
+			@referer = User.find(params[:ref_id])
 	    else
-	    	@referer
+	    	@referer = ""
 	    	render :action => :new
 	    end
+	    
 	    	
 	end
 	
@@ -26,23 +27,29 @@ class UsersController < ApplicationController
       @country_flag = "flags/#{@user.country.downcase}.gif"
       @points = Bonuspoint.find_all_by_user_id(@user, :select => "points")
       sum_points
-      @reputation = Reputation.find_by_user_id(@user)
+      @reputation = Reputation.find_by_user_id(@user.id)
     end
 	
 	def create
 	    @title = "Rejestracja"
     	@user = User.new(params[:user])
+    	@referential = User.find_by_login(params[:ref])
+    	
     	@hash_mail = make_hash
-    	@emailver = Emailver.new(:hash => @hash_mail, :user => @user)
-    	if validate_recap(params, @user.errors) && @user.save && @emailver.save
-    		Reputation.create!(:reputation => 0, :user_id => @user.id, :finished_auctions => 0, :auctions_overall_ratings => 0, :rated_projects => 0, :projects_overall_ratings => 0, :average_contact => 0, :average_realization => 0, :average_attitude => 0)
-    		Sender.ver_mail(@hash_mail).deliver
-    		if params[:ref_id] != ""
-    		Bonuspoint.use!(20, params[:ref_id], 2)
-    		#Bonuspoint.create!(:points => 20, :user_id => params[:ref_id], :for_what => 2)
+    	if validate_recap(params, @user.errors) && @user.save
+    		@emailver = Emailver.new(:hash => @hash_mail, :user_id => @user.id)
+    		if @emailver.save
+    			Reputation.create!(:user_id => @user.id, :finished_auctions => 0, :auctions_overall_ratings => 0, :rated_projects => 0, :projects_overall_ratings => 0, :average_contact => 0, :average_realization => 0, :average_attitude => 0, :reputation => 0)
+    			Sender.ver_mail(@hash_mail).deliver
+    		end	
+    		if @referetnial == "" || @referential == nil
+    			redirect_to root_path
+    			flash_t :notice
+    		else
+    			Bonuspoint.use!(20, @referential.id, 2)
+    			redirect_to root_path
+    			flash_t :notice
     		end
-    		redirect_to root_path
-      		flash_t :notice
     	else
       		render :action => :new
     	end
@@ -86,7 +93,7 @@ class UsersController < ApplicationController
     		@user = User.find(@hash.user_id)
     		@user.update_attribute(:status, 2)
     		redirect_to root_path
-    		flash[:success] = "OK!"
+    		flash[:success] = "Zweryfikowano!"
     	end
     end
     
