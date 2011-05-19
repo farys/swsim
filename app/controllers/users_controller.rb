@@ -67,9 +67,9 @@ class UsersController < ApplicationController
 	    end
     end
     
-    def delete
-    	@user = User.find_by_id(params[:user_id])
-    	if @user.update_attribute(:status, params[:status])
+    def destroy
+    	@user = User.find_by_id(params[:id])
+		if @user.update_attribute(:status, params[:status])
     		sign_out
     		redirect_to root_path
     		flash[:success] = "Usunieto uzytkownika"

@@ -1,4 +1,9 @@
 <div class="center">
+	Suma punktów użytkownika <%= @user.login %>: <span class ='bold'><%= @suma %></span>
+</div>
+<br />
+
+<div class="center">
 	Dodaj/odejmij punkty<br />
 		<% form_tag({:action => "editpoints"}) do %>
 		  <div class="field">
@@ -35,7 +40,7 @@
     			<span>Interwencja administratora</span>
     		<% end %>      	
           </td>
-          <td><%= points.created_at %></td>
+          <td><%= escape_time(points.created_at) %></td>
           <td><%= points.points %></td>
         </tr>
       <% end %>
