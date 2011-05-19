@@ -55,8 +55,6 @@ class Project::InvitationsController < Project::ApplicationController
       render_new
       return
     end
-        
-    Message.create   
           
     if @invitation.save
       role = Role.find(@invitation.role_id)

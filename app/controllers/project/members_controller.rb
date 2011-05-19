@@ -62,8 +62,21 @@ class Project::MembersController < Project::ApplicationController
       return
     end 													
 	  
+	  @message = t('general.project.members.message')    
+    @message.scan(/{[^}]+}/).each do |var|
+      @message[var] = eval("->"+var+".call").to_s
+    end
+      
+    msg = Message.create(:receiver_id => memb.user_id,
+                         :owner_id => memb.user_id,
+                         :author_id => current_user.id,
+                         :topic => t('general.project.members.message_topic'),
+                         :body => @message)
+	  
 	  #usuwanie uzytkownika
     if memb.destroy
+      msg.save
+      relese_tickets(memb.user_id)
     	flash_t :success
     	redirect_to project_members_path
   	else
@@ -90,5 +103,14 @@ class Project::MembersController < Project::ApplicationController
   def render_index
     title_t :index
     render :action => :index
+  end
+  
+  def relese_tickets(user_id)
+    tickets = Ticket.where(:user_id => user_id, :project_id => @project.id)
+    tickets.each do |t|
+      t.status = Ticket::STATUSES[:free]
+      t.user_id = nil
+      t.save
+    end
   end
 end

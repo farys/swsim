@@ -12,11 +12,21 @@
         <td><%= escape_date(@project.created_at) %></td>
       </tr>
       <tr>
-        <td><%= t("general.left") %></td>
+        <td>
+          <% if @project.deadline.past? -%>
+            <font color="red"><%= t("general.project.exceeded") %></font>
+          <% else -%>
+            <%= t("general.left") %>
+          <% end -%>
+        </td>
         <td>
         	<% if @project.active? %>
-        		<p><b><%= time_ago_in_words(@project.deadline) %></b></p>
-        		<p>(<%= escape_time(@project.deadline) %>)</p>
+        	  <% if @project.deadline.past? -%>
+        	    <font color="red"><%= time_ago_in_words(@project.deadline) %></font>
+        	  <% else -%>
+          	  <p><b><%= time_ago_in_words(@project.deadline) %></b></p>
+          		<p>(<%= escape_time(@project.deadline) %>)</p>
+        	  <% end -%>
         	<% else %>
         		<p><b><%= t("general.project.ended") %></b></p> 
         		<p>(<%= escape_date(@project.updated_at) %>)</p>
@@ -38,10 +48,6 @@
         	 						user_path(User.find(@project.leader_id).id),
         	 						:target => '_blank')  %>
         </td>
-      </tr>
-      <tr>
-        <td><%= t("general.users") %></td>
-        <td><%= link_to(@members, project_members_path(@project)) %></td>
       </tr>
       <tr>
       	<td><%= model_t 'auction' %></td>

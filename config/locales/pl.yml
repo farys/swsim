@@ -14,9 +14,12 @@ pl:
     pm: PW
     contact: Kontakt
     confirm: Jesteś pewien ?
+    invite: Zaproś
     ban: Czy na pewno chcesz zbanować to konto?
     deactivate: Czy na pewno chcesz dezaktywować to konto? Pamiętaj, że tylko administrator portalu będzie mógł je przywrócić spowrotem
+
     project:
+      exceeded: Przekroczono o
       ended: Projekt zakończony
       end: Zakończ projekt
       menu:
@@ -32,6 +35,9 @@ pl:
         last_post: Ostatni post
       post:
         add: Nowy post
+      members:
+        message: "Zostałeś usunięty z projektu {@project.name}"
+        message_topic: Zostałeś usunięty z projektu
       invitation:
         add: Zaproś użytkownika
         topic: Otrzymaleś zaproszenie do projektu
@@ -45,6 +51,7 @@ pl:
         end: Zakończ
       project_file:
         must_be_set: nie może być pusta
+      
   date:
     formats:
       default: "%d-%m-%Y"
