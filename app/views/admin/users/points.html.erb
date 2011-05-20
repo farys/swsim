@@ -36,9 +36,11 @@
     			<span>Punkty za blogposta</span>
     		<% elsif points.for_what == 2 %>
     			<span>Punkty za poleconego</span>
-    		<% else %>
+    		<% elsif points.for_wht == 3 %>
     			<span>Interwencja administratora</span>
-    		<% end %>      	
+    		<% else %>
+    			<span>Punkty za podświetlenie aukcji</span>
+    		<% end %>
           </td>
           <td><%= escape_time(points.created_at) %></td>
           <td><%= points.points %></td>

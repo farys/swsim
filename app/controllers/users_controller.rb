@@ -113,7 +113,6 @@ class UsersController < ApplicationController
     
   def find
     @title = "Find"
-    @user = current_user
     @fraza = params[:find][:text]
     @value = params[:szukaj][:user]
     if @value == "id"
@@ -133,9 +132,10 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html do
         if @findusers.empty?
-          render '_user'
-          redirect_to user_path(current_user)
+          redirect_to :back
           flash[:error] = "Nie ma takiego uzytkownika"
+        else
+        render '_user'
         end
       end
       format.js  { render '_user2' }

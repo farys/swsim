@@ -9,8 +9,10 @@
     <span>Punkty za blogposta</span>
     <% elsif bonuspoint.for_what == 2 %>
     <span>Punkty za poleconego</span>
-    <% else %>
+    <% elsif bonuspoint.for_what == 3%>
     <span>Interwencja administratora</span>
+    <% else %>
+    <span>Punkty za podświetlenie aukcji</span>
     <% end %>
   </td>
   <td>
