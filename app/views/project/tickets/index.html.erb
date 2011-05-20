@@ -55,6 +55,9 @@
                             :method => :delete,
                             :confirm => t('general.confirm') %>
               <% elsif ticket.status == Ticket::STATUSES[:implementation] -%>
+                <%= link_to t('general.project.ticket.give'),
+                            give_project_ticket_path(@project, ticket),
+                            :confirm => t('general.confirm') %> |
                 <%= link_to t('general.project.ticket.end'),
                             end_project_ticket_path(@project, ticket),
                             :confirm => t('general.confirm') %>

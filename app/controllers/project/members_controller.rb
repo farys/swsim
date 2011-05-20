@@ -1,5 +1,5 @@
 class Project::MembersController < Project::ApplicationController 
-  before_filter :check_privileges, :except => :index
+  before_filter :check_privileges, :except => [:index, :destroy]
    
   def index
     title_t :index
@@ -62,6 +62,11 @@ class Project::MembersController < Project::ApplicationController
       return
     end 													
 	  
+	  unless memb.user_id == current_user.id || can_edit?('member')
+  	  flash_t_general :errors, 'error.privileges'
+  		redirect_to project_members_path
+  	end
+  	
 	  @message = t('general.project.members.message')    
     @message.scan(/{[^}]+}/).each do |var|
       @message[var] = eval("->"+var+".call").to_s
@@ -77,8 +82,13 @@ class Project::MembersController < Project::ApplicationController
     if memb.destroy
       msg.save
       relese_tickets(memb.user_id)
-    	flash_t :success
-    	redirect_to project_members_path
+    	if memb.user_id == current_user.id
+    	  flash_t_general :success, 'membership.leave'
+    	  redirect_to panel_projects_path
+    	else
+    	  flash_t :success
+    	  redirect_to project_members_path
+    	end
   	else
   	  flash_t_general :error, 'error.unknown'
   	  redirect_to project_members_path

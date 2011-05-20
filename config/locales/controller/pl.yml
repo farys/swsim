@@ -19,6 +19,7 @@ pl:
         invalid_role: Nie można nadać uzytkownikowi takiej roli
       membership:
         dont_exists: Członkostwo nie istnieje
+        leave: Opuściłeś projekt
       topic:
         dont_exists: Temat nie istnieje
         not_included: Temat nie należy do tego projektu

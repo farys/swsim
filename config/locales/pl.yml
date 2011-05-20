@@ -38,6 +38,7 @@ pl:
       members:
         message: "Zostałeś usunięty z projektu {@project.name}"
         message_topic: Zostałeś usunięty z projektu
+        leave: Opuść projekt
       invitation:
         add: Zaproś użytkownika
         topic: Otrzymaleś zaproszenie do projektu
