@@ -4,6 +4,7 @@
       <th><%= attribute_t 'user.login' %></th>
       <th><%= t('general.contact') %></th>
       <th><%= model_t 'role' %></th>
+      <th><%= t('general.actions') %></th>
     </tr>
   </thead>
   <tbody>
@@ -19,6 +20,16 @@
         </td>
       	<td>
       		<%= escape_column(@project.user_role(user.id), "name").capitalize %>        	
+      	</td>
+      	<td>
+      	  <% memb = @project.find_membership(user.id) -%>
+      	  <% if memb.user_id == current_user.id -%>
+      	    <%= link_to t('general.project.members.leave'), project_member_path(@project, memb),
+		      		                                              :method =>:delete,
+		      		                                              :confirm => t('general.confirm') %>
+      	  <% else -%>
+      	    <%= t('general.none') %>
+      	  <% end -%>
       	</td>
     	</tr>
     <% end %>

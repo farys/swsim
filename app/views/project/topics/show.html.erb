@@ -1,5 +1,4 @@
 <%= render 'project/shared/menu' %>
-<%= params %>
 <table class="prepend-1 span-20">
   <% if params[:page].nil? || params[:page].to_i == 1 -%>
 	  <% user = User.find(@topic.user_id) %>
@@ -57,5 +56,5 @@
 </table>
 <div class="prepend-1 span-19" style="text-align: right;"><%= will_paginate @posts %></div>
 <div class="span-2 prepend-17">
-  <%= link_to t('general.project.post.add'), new_project_topic_post_path(@project, @topic) %>
+  <%= (link_to t('general.project.post.add'), new_project_topic_post_path(@project, @topic)) if @project.active? %>
 </div>
