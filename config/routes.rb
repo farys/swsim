@@ -101,6 +101,7 @@ Inz::Application.routes.draw do
   match 'admin/blogpost/:id/edit', :to => 'admin/users#blogpostedit2'
   match 'admin/blogposts/delete/:blogpost', :to => 'admin/users#deleteblogpost'
   match 'admin/blogcomments', :to => 'admin/users#blogcomments'
+  match 'admin/blogcomments/:id', :to => 'admin/users#blogcommentok'
   match 'admin/blogcomments/delete/:blogcomment', :to => 'admin/users#deleteblogcomment'
   
   #PROJECT

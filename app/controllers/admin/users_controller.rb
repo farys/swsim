@@ -69,7 +69,7 @@ class Admin::UsersController < Admin::ApplicationController
   			flash[:success] = "Usunieto posta z listy"
   			redirect_to :action => :blogposts
   		else
-  			flash[:success] = "Wystapil jakis super powazny blad!"
+  			flash[:error] = "Wystapil jakis super powazny blad!"
   			redirect_to :action => :blogposts
   		end
     end
@@ -85,6 +85,17 @@ class Admin::UsersController < Admin::ApplicationController
     	@blogcomment.destroy
     	redirect_to :action => :blogcomments
     	flash[:success] = "Usunieto komentarz o id: #{@blogcomment.id}"
+    end
+    
+    def blogcommentok
+    	@blogcomment = Blogcomment.find(params[:id])
+  		if @blogcomment.update_attribute(:admin, 0)
+  			flash[:success] = "Usunieto komentarz z listy"
+  			redirect_to :action => :blogcomments
+  		else
+  			flash[:error] = "Wystapil jakis super powazny blad!"
+  			redirect_to :action => :blogcomments
+  		end
     end
     
     private

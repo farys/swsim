@@ -1,4 +1,5 @@
 <%= render 'users/user_menu' %>
+<div class="prepend-1 append-1">
 <table style="border: 1px solid cyan;">
 <tr>
   <td>
@@ -27,9 +28,15 @@
 </table>
 <br />
 <% if signed_in? %>
-<%= link_to "Dodaj komentarz", :controller => 'blogcomments', :action => 'new', :blogpost_id => @blogpost.id %>
+<div class="left"><%= link_to "Dodaj komentarz", :controller => 'blogcomments', :action => 'new', :blogpost_id => @blogpost.id %></div>
 <% end %>
+<br />
 <table>
+<tr>
+<td id="table_title">
+Komentarze
+</td>
+</tr>
 <% @comments.each do |comment| %>
 <tr>
 <td>
@@ -42,10 +49,11 @@
 		<%= link_to "Zgłoś administratorowi", :controller => "blogcomments", :action => "admin", :id => comment.id%> || 
 	<% end %>
 	<% end %>
-	Posted <%= time_ago_in_words(comment.created_at) %> ago.
+	Utworzony <%= time_ago_in_words(comment.created_at) %> temu.
 	</div>
 	</td>
 </tr>
 <% end %>
 </table>
 <%= will_paginate @comments %>
+</div>

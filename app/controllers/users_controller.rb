@@ -120,9 +120,16 @@ class UsersController < ApplicationController
       @findusers = User.find_all_by_id(@fraza)
     elsif @value == "lastname"
       @arrayforname = @fraza.split(/ /)
+      if @arrayforname.count == 1
+      	@findusers = User.find_all_by_lastname(@arrayforname[0])
+      	if @findusers.empty?
+      		@findusers = User.find_all_by_name(@arrayforname[0])
+      	end
+      else
       @findusers = User.find_all_by_lastname_and_name(@arrayforname[0], @arrayforname[1])
       if @findusers.empty?
         @findusers = User.find_all_by_name_and_lastname(@arrayforname[0], @arrayforname[1])
+      end
       end
     elsif @value == "email"
       @findusers = User.find_all_by_email(@fraza)
