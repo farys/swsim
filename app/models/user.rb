@@ -1,7 +1,7 @@
 # encoding: utf-8
 #require 'paperclip'
 class User < ActiveRecord::Base
-  attr_accessible :login, :name, :lastname, :email, :status, :country, :password, :password_confirmation, :role, :description, :avatar
+  attr_accessible :login, :name, :lastname, :email, :country, :status, :role, :password, :password_confirmation, :description, :avatar
   
 	has_attached_file :avatar, :styles => { :thumb => "100x100>" }, :default_url => "/images/avatars/missing.png"
 	
@@ -49,8 +49,13 @@ class User < ActiveRecord::Base
 	validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png', 'image/gif']
 
 	before_create :encrypt_password
+	before_create :default_data
 	before_update :encrypt_password, :if => ->{ self.password_changed? }
 
+  def default_data
+ 	self.status = 1
+	self.role = "user"
+  end
 	
   def watching?(watched)
     relationships.find_by_watched_id(watched)

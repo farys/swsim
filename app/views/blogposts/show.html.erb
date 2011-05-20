@@ -10,7 +10,7 @@
       <% if signed_in? %>
       <% if current_user?(@user) %>
       <%= link_to "Usuń", @blogpost, :method => :delete, :confirm => "Jesteś pewien, że chcesz usunąć ten wpis?",:title => "Skasuj post o tytule #{@blogpost.title}" %>
-       || <%= link_to "Edytuj wpis", edit_user_blogpost_path(current_user) %>
+       || <%= link_to "Edytuj wpis", edit_user_blogpost_path(current_user) %> ||
        <% else %>
        <% if @useful.nil? %>
        		<%= link_to "Przydatne", :controller => "bonuspoints", :action => "addfromblog", :user_id => params[:user_id]%> || 

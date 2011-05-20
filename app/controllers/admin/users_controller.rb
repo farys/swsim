@@ -5,7 +5,7 @@ class Admin::UsersController < Admin::ApplicationController
 	
 	def index
 		@title = "Panel administratora: uzytkownicy"
-		@users = User.find(:all, :order => "lastname").paginate :per_page => 15, :page => params[:page]	    	
+		@users = User.find(:all, :conditions => ["role NOT IN (?)", "administrator"], :order => "lastname").paginate :per_page => 15, :page => params[:page]	    	
 	end
 	
 	def points
@@ -51,6 +51,7 @@ class Admin::UsersController < Admin::ApplicationController
     	@title = "Panel administratora: blog"
     	@blogpost = Blogpost.find(params[:id])
     	@blogpost.update_attributes(:title => params[:title][:title], :content => params[:content][:content])
+    	flash[:success] = "Post wyedytowany"
     	redirect_to :action => :blogposts
     end
     
@@ -60,6 +61,17 @@ class Admin::UsersController < Admin::ApplicationController
     	@blogpost.destroy
     	redirect_to :action => :blogposts
     	flash[:success] = "Usunieto posta: #{@blogpost.title}"
+    end
+    
+    def blogpostok
+    	@blogpost = Blogpost.find(params[:id])
+  		if @blogpost.update_attribute(:admin, 0)
+  			flash[:success] = "Usunieto posta z listy"
+  			redirect_to :action => :blogposts
+  		else
+  			flash[:success] = "Wystapil jakis super powazny blad!"
+  			redirect_to :action => :blogposts
+  		end
     end
     
     def blogcomments
