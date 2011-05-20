@@ -45,17 +45,18 @@ class SessionsController < ApplicationController
   		
   	  #suma punktow za aukcje
   	  @reputation_user = Reputation.find_or_create_by_user_id(current_user)
-  	  @auctionsratings = Auction.find_all_by_owner_id_and_status(current_user, 1, :select => "id")
+  	  
+  	  @auctionsratings = Comment.find_all_by_receiver_id_and_status_and_level(current_user, 0, 0, :select => "id")
   	  @how_many_auctions = @auctionsratings.count
-      @auctionsratings2 = AuctionRating.find_all_by_auction_id(@auctionsratings, :select => "value")
+      @auctionsratings2 = CommentValue.find_all_by_comment_id(@auctionsratings, :select => "rating")
       @suma = 0
       @auctionsratings2.each do |sum|
-      	@suma += sum.value
+      	@suma += sum.rating
       end
       @suma = @suma.round
       
       #suma punktow za projekty
-      @commentsratings = Comment.find_all_by_receiver_id_and_status(current_user, 0, :select => "id")
+      @commentsratings = Comment.find_all_by_receiver_id_and_status_and_level(current_user, 0, 1, :select => "id")
       @how_many_comments = @commentsratings.count
       @commentsratings2 = CommentValue.find_all_by_comment_id(@commentsratings, :select => "rating")
       @suma2 = 0
@@ -69,6 +70,7 @@ class SessionsController < ApplicationController
       @kontaktrating.each do |sum|
       	@suma3 += sum.rating
       end
+      
       if @kontaktrating.count != 0
       	@suma3 /= @kontaktrating.count
       end
@@ -79,6 +81,7 @@ class SessionsController < ApplicationController
       @realizacjarating.each do |sum|
       	@suma4 += sum.rating
       end
+      
       if @realizacjarating.count != 0
       @suma4 /= @realizacjarating.count
       end
@@ -89,6 +92,7 @@ class SessionsController < ApplicationController
       @stosunekrating.each do |sum|
       	@suma5 += sum.rating
       end
+      
       if @stosunekrating.count != 0
       @suma5 /= @stosunekrating.count
       end
