@@ -47,6 +47,7 @@ Inz::Application.routes.draw do
     resources :auctions, :except => [:show] do
       resources :communications, :only => [:new, :create]
       get :offers, :on => :member # offers#index dla wlasnych ofert zarezerwowane
+      get :user_form, :on => :collection
       resources :offers, :only => [:destroy, :new, :create] do
         #get :to_reject, :on => :member
       end
@@ -73,6 +74,7 @@ Inz::Application.routes.draw do
 
   #ADMIN
   namespace :admin do
+    resources :alerts, :only => [:index, :show, :destroy]
     resources :auctions, :except => [:show] do
       resources :offers, :only => [:destroy] do
         get :recovery, :on => :member

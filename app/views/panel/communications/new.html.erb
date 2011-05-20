@@ -3,9 +3,9 @@
 
     <%= render "layouts/error_messages", :target => @communication %>
     <p>
-      <%= f.label :body, 'tresc komunikatu:' %><br />
+      <%= f.label :body %><br />
       <%= f.text_area :body, :class => "span-22", :style => "height: 50px" %>
     </p>
-    <%= f.submit "Publikuj" %>
+    <%= f.submit t("general.send") %>
   <% end %>
 </div>

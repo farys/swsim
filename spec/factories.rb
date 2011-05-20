@@ -29,6 +29,7 @@ Factory.define :user do |u|
   u.status 1
   u.country "pl"
   u.email {Factory.next(:email)}
+  u.description "sssas saddasdas"
 end
 
 Factory.define :auction do |a|

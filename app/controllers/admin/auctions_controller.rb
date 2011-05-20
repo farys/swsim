@@ -23,7 +23,7 @@ class Admin::AuctionsController < Admin::ApplicationController
 
   def update
     @auction.tag_ids = (params[:tag_ids] || {}).values
-
+    @auction.highlight = params[:auction][:highlight]
     if @auction.update_attributes(params[:auction]) && @auction.update_offers(params[:offers])
       redirect_to admin_auctions_path, :notice => flash_t
     else
@@ -42,6 +42,8 @@ class Admin::AuctionsController < Admin::ApplicationController
   def form_data
     @groups = Group.all
     @offers = @auction.offers
+    @auction.invited_user_ids = params[:invitations_ids].values unless params[:invitations_ids].nil?
+    @invited_users = @auction.invited_users
     @communications = @auction.communications
   end
 

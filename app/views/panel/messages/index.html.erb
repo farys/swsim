@@ -1,1 +1,34 @@
-<%= render :partial => "list", :locals => {:messages => @messages} %>
+<% unless @messages.empty? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>temat</td>
+        <td>status</td>
+        <td>od</td>
+        <td>otrzymano</td>
+        <td>opcje</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @messages.each do |msg| %>
+        <tr id="msg_<%= msg.id %>">
+          <td><%= link_to msg.topic, get_message_path("message_path", msg) %></td>
+          <td><%=
+            s = escape_status(msg)
+            s = content_tag(:span, s, :class => "bold") if msg.status == Message::STATUSES[:unread]
+            s
+          %></td>
+          <td><%= msg.author %></td>
+          <td><%= raw escape_time(msg.created_at) %></td>
+          <td>
+            <%= link_to 'odpisz', get_message_path("reply_message_path", msg) %><br/>
+            <%= link_to 'usuń', get_message_path("message_path", msg), :method => :delete, :remote => true %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate %>
+<% else %>
+  <section class="notice">Nie znaleziono żadnych wiadomości.</section>
+<% end %>

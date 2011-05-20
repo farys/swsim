@@ -31,7 +31,7 @@
 </div>
 <div style="clear: both"> </div>
 <h2 class="box">Opis zlecenia</h2>
-<section class="prepend-1 append-1 auctionDescription"><%= @auction.description %></section>
+<section class="prepend-1 append-1 auctionDescription"><%=raw @auction.description %></section>
 
 <% if @auction.communications.size > 0 %>
   <h2 class="box">Komunikaty</h2>
@@ -83,17 +83,24 @@
     </table>
   </div>
 <% end %>
-<div class="prepend-17 right">
-  <%= link_to "Zgłoś nieprawidłowość", '#', :onclick => '$("#alertDiv").toggle("fast"); return false' %>
-</div>
-<%#TODO %>
-<div id="alertDiv" class="hide prepend-5 append-5 append-bottom">
-  <% alert_pre_text = 'Nieprawidłowość dotyczy aukcji o numerze '+@auction.id.to_s+' z następującym problemem' %>
-  <% form_for @alert do |f|%>
-    <p style="color: red"><%= alert_pre_text %>, w skrócie opisz go:</p>
-    <%= hidden_field_tag :pre_text, alert_pre_text+': ' %>
-    <%= f.hidden_field :author_id %>
-    <p><%= f.text_area :text, :class => "span-8 last" %></p>
-    <p><%= f.submit 'Wyślij zgłoszenie' %></p>
-  <% end %>
-</div>
+
+<% unless @auction.owner?(current_user) %>
+  <div class="prepend-17 right">
+    <%= link_to "Zgłoś nieprawidłowość", '#', :onclick => '$("#alertDiv").toggle("fast"); return false' %>
+  </div>
+
+  <div id="alertDiv" class="hide prepend-5 append-5 append-bottom">
+    <% alert_pre_text = 'Nieprawidłowość dotyczy aukcji o numerze '+@auction.id.to_s+' z następującym problemem' %>
+    <% form_for @alert do |f|%>
+      <p style="color: red"><%= alert_pre_text %>, w skrócie opisz go:</p>
+      <%= hidden_field_tag :pre_text, alert_pre_text+': ' %>
+      <p><%= f.text_area :text, :class => "span-8 last" %></p>
+
+      <% unless signed_in? %>
+        <%= render :partial => "shared/captcha", :locals => {:f => f} %>
+      <% end %>
+
+      <p><%= f.submit 'Wyślij zgłoszenie' %></p>
+    <% end %>
+  </div>
+<% end %>

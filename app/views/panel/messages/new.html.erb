@@ -1,6 +1,7 @@
+<% include_wysiwyg %>
 <% content_for :title, "Nowa wiadomość" %>
 <div class="prepend-1 append-1">
-  <% form_for [:panel, @message] do |f| %>
+  <% form_for [@module, @message] do |f| %>
 
     <% unless @old_message.nil? %><%= hidden_field_tag :reply_message_id, @old_message.id %><% end %>
     <%= render "layouts/error_messages", :target => @message %>

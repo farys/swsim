@@ -11,9 +11,9 @@
   </div>
   <div class="span-9 last">Opcje:
     <% if @message.receiver_id.eql?(@current_user.id) %>
-      <%= link_to 'Odpisz', reply_panel_message_path(@message) %>,
+      <%= link_to 'Odpisz', get_message_path("reply_message_path", @message) %>,
     <% end %>
-    <%= link_to 'Usuń wiadomość', panel_message_path(@message), :method => :delete, :confirm => 'Czy na pewno?' %>
+    <%= link_to 'Usuń wiadomość', get_message_path("message_path", @message), :method => :delete, :confirm => 'Czy na pewno?' %>
   </div>
 
   <div class="span-20 top-1">

@@ -8,7 +8,7 @@ class Bonuspoint < ActiveRecord::Base
 	
 	default_scope :order => 'bonuspoints.created_at DESC'
 	
-	#for_what: 1 - bought, 2 - for blogpost, 3 - for reference user, 4 - admin
+	#for_what: 0 - bought, 1 - for blogpost, 2 - for reference user, 3 - admin, 4 - from auctions
 	def self.use!(points, user_id, for_what)
 		create!(:points => points, :user_id => user_id, :for_what => for_what)
 	end

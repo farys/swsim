@@ -33,6 +33,7 @@ namespace :db do
     make_blogcomments
     make_roles
     make_groups_and_tags
+    make_budgets
     make_auctions
     make_projects
     make_tickets
@@ -177,20 +178,20 @@ def make_roles
 end
 
 def make_auctions
-  100.times do
+  50.times do
     name = "Aukcja " + Faker::Company.name
     description = Faker::Lorem.sentence(12)
-    Auction.create!(
-      :title => name, :budget_id => 1+rand(Budget.ids.size-1),
-      :owner_id => 1+rand(User.count-1), :expired_after => 1+rand(13),
-      :description => description
+    a = Auction.new(
+      :title => name, :budget_id => 1+rand(Budget.count-1),
+      :expired_after => 1+rand(13), :description => description
     )
-    
+    a.owner_id = 1+rand(USERS-1)
+    a.save!
   end
 end
 
 def make_offers
-  100.times do
+  50.times do
     Offer.create!(
       :price => 1+rand(10000),
       :days => 1+rand(31),
@@ -240,4 +241,14 @@ def make_tickets
 									 :duration => rand(23)+1,
 									 :status => Ticket::STATUSES[:free])
   end
+end
+
+def make_budgets
+  Budget.create([
+    {:title => "< 500 zł"},
+    {:title => "500 - 1000 zł"},
+    {:title => "1000 - 2500 zł"},
+    {:title => "2500 - 5000 zł"},
+    {:title => "> 5000 zł"}
+    ])
 end

@@ -4,7 +4,7 @@
     Wyrażenie: <%= text_field_tag :query, @query, :onkeyup => 'searchForTags(this.value)' %>
     <%= check_box_tag :search_in_description, true, search_in_description %> <%= label_tag :search_in_description, 'Szukaj również w opisie'%>
 
-     <%= check_box_tag :show_tags, true, show_tags, :onclick => '$("#advanced").toggle("fast")' %> <%= label_tag :show_tags, 'wyświetl zaawansowane' %>
+    <%= check_box_tag :show_tags, true, show_tags, :onclick => '$("#advanced").toggle("fast")' %> <%= label_tag :show_tags, 'wyświetl zaawansowane' %>
 
     <%= submit_tag 'Szukaj' %>
   </div>
@@ -23,3 +23,8 @@
     </div>
   </div>
 <% end %>
+
+<h2 class="box">Wyszukaj użytkowników</h2>
+<div class="prepend-1">
+  <%= render :partial => "users/find_user" %>
+</div>

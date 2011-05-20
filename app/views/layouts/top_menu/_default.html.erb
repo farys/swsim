@@ -45,7 +45,6 @@
         <li><p>przeglądaj</p>
           <ul>
             <li><%= raw link_to 'biorące udział', panel_offers_path(:status => :active) %></li>
-            <li><%= raw link_to 'odrzucone', panel_offers_path(:status => :rejected) %></li>
             <li><%= raw link_to 'wygrane', panel_offers_path(:status => :won) %></li>
           </ul>
         </li>

@@ -1,9 +1,10 @@
 #encoding: utf-8
 class AuctionsController < ApplicationController
   before_filter :to_search_event, :only => [:search, :result]
+  skip_before_filter :authenticate
 
   def index
-    @auctions = Auction.with_status(:active).order("id DESC").limit(18)
+    @auctions = Auction.public_auctions.includes(:budget).with_status(:active).order("id DESC").limit(18)
     @users = User.count
     @blogs = Blogpost.order("id DESC").limit(18).includes(:user)
     @projects = Project.where(:status => Project::STATUSES[:active]).count
@@ -20,19 +21,19 @@ class AuctionsController < ApplicationController
       @auction.status = Auction::STATUSES[:finished]
     end
 
-    @offers = @auction.offers
-    @tags = @auction.tags
-    
     unless (@auction.allowed_to_see?(current_user))
-      render :text => flash_t, :status => :forbidden
+      render :text => t("flash.general.error.privileges"), :status => :forbidden
       return
     end
-    
+
+    @offers = @auction.offers
+    @tags = @auction.tags
+
     @alert = Alert.new
     @auction.increment! :visits
     
     unless current_user.nil?
-    	@rated = @auction.rated_by?(current_user)
+    	@rated = @auction.rated_by?(current_user) || @auction.owner?(current_user)
     end
     title_t
   end

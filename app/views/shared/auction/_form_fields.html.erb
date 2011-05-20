@@ -1,10 +1,10 @@
 <p>
-  <%= f.label :title, "Tytuł aukcji" %><br />
+  <%= f.label :title %><br />
   <%= f.text_field :title, :class => "title span-22" %>
 </p>
 
 <p>
-  <%= f.label :description, "Opis zlecenia" %><br />
+  <%= f.label :description %><br />
   <%= f.text_area :description, :class => "mceEditor span-22" %>
 </p>
 
@@ -14,24 +14,53 @@
 </p>
 
 <% if @auction.new_record? %>
-<p>
-  <%= f.label :expired_after, "Czas trwania aukcji" %>
-  <%= f.text_field :expired_after, :size => 2 %> dni (1-14 dni)
-</p>
+  <p>
+    <%= f.label :expired_after, "Czas trwania aukcji" %>
+    <%= f.text_field :expired_after, :size => 2 %> dni (1-14 dni)
+  </p>
 <% end %>
 
 <p>
   <%= f.label :private, "Charakter aukcji:" %>
-  <%= f.check_box :private, :onclick => "$('#stageDiv').children().toggle()" %><%= f.label :private, "Aukcja prywatna" %>
+  <%= f.check_box :private, :onclick => "change_stage(this.checked)" %><%= f.label :private, "Aukcja prywatna" %>
 </p>
+
+<p>
+  <%= f.label :highlight %>
+  <%= f.check_box :highlight %><%= f.label :highlight, "Włącz (koszt 10 punktów)" %>
+</p>
+
 <div id="stageDiv" style="margin-top: 20px;margin-bottom: 20px">
+
   <div id="publicDiv">
     <h2 class="box">Tagi</h2>
     <%= render :partial => "shared/clickable_tags", :locals => {:groups => @groups, :selected_tag_ids => @auction.tag_ids, :fieldset_width => 11} %>
     <p style="font-size: 85%">Wybranie niepasujących tagów może zaważyć na niekorzystnej ocenie aukcji.</p>
   </div>
-  <div id="privateDiv" style="display: none">
-    Wybierz teraz użytkowników którzy mają zostać zaproszeni do licytacji.
-    <% #TODO dopisac szukanie uzytkownikow %>
+
+  <div id="privateDiv">
+    <h2 class="box">Zaproszeni użytkownicy</h2>
+    <iframe src="<%= user_form_panel_auctions_path %>" style="text-align: left;width:500px;height:80px">Twoja przeglądarka musi obsługiwać pływające ramki. Zaktualizuj przeglądarkę bądź włącz obsługę pływających ramek!</iframe>
+<% @invited_users.each do |user| %>
+  <%= content_tag(
+    :div,
+    check_box_tag("invitations_ids[#{user.id}]", user.id, true) +
+      label_tag("invitations_ids[#{user.id}]", user.login)
+  ) %>
+<% end %>
   </div>
 </div>
+<%= javascript_tag do -%>
+  function change_stage(private){
+  var pub = $("#publicDiv");
+  var priv = $("#privateDiv");
+  if(private){
+    pub.hide();
+    priv.show();
+  }else{
+    pub.show();
+    priv.hide();
+  }
+  }
+  change_stage($("#auction_private:checked").size() > 0);
+<% end -%>

@@ -12,6 +12,8 @@ pl:
       membership: Członkostwo
       invitation: Zaproszenie
     attributes:
+      alert:
+        text: Treść zgłoszenia
       user:
         login: Login
         name: Imię
@@ -21,9 +23,15 @@ pl:
         country: Kraj
       auction:
         title: Tytuł
+        description: Opis
+        budget_id: Budżet
+        expired_after: Czas trwania aukcji
         expired_at: "Zakończenie aukcji w "
         created_at: "Rozpoczęta: "
         won_offer_id: Która oferta zwycięża ?
+        highlight: Wyróżnienie aukcji
+      communication:
+        body: Treść komunikatu
       group:
         name: Nazwa
         tag_ids: Powiązania z tagami
@@ -78,12 +86,35 @@ pl:
         status: Status
       blogcomment:
         content: Treść
+      offer:
+        days: Czas wykonania usługi
+        price: Kwota
     errors:
       models:
         auction:
           attributes:
             title:
               blank: nie może byc pusty
+            budget_id:
+              inclusion: musi zostać sprecyzowany
+            expired_after:
+              inclusion: musi być podany w przedziale od 1 do 14
+            highlight:
+              not_enought_points: nie może zostać wybrane. Masz za mało punktów.
+        communication:
+          attributes:
+            body:
+              too_short: jest za krótka (przynajmniej %{count} znaków)
+        offer:
+          attributes:
+            price:
+              greater_than: musi być większa od %{count}.00 PLN
+            days:
+              greater_than: musi być większy od %{count}
+        message:
+          attributes:
+            body:
+              too_short: jest za krótka (przynajmniej %{count} znaków)
         project:
           attributes:
             description:
@@ -105,6 +136,10 @@ pl:
             email:
               taken: Taki adres e-mail jest już zarejestrowany w serwisie
 #MODELE
+  alert:
+    statuses:
+      read: przeczytane
+      unread: nieprzeczytane
   tag:
     statuses:
       active: aktywny
@@ -114,7 +149,11 @@ pl:
     statuses:
       active: aktywna
       hidden: ukryta
-
+  message:
+    statuses:
+      unread: nieprzeczytana
+      read: przeczytana
+      replied: odpowiedziano
   comment:
     statuses:
       pending: oczekujący na wystawienie
@@ -123,7 +162,6 @@ pl:
   offer:
     statuses:
       active: aktywna
-      rejected: odrzucona
       won: zwycięska
 
   auction:

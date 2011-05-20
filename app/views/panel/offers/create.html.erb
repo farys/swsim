@@ -4,11 +4,6 @@
   <% form_for [:panel, @offer.auction, @offer] do |f| %>
 
     <%= render "layouts/error_messages", :target => @offer %>
-    <style type="text/css">
-      input {
-        width:30px
-      }
-    </style>
 
     <p>
       <%= f.label :price, 'Kwota' %>

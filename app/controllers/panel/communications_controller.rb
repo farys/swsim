@@ -10,7 +10,7 @@ class Panel::CommunicationsController < Panel::ApplicationController
       flash_t :notice
       redirect_to auction_path(@auction)
     else
-      title_t
+      title_t :new
       render :new
     end
   end
