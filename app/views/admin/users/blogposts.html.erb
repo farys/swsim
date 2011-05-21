@@ -17,8 +17,9 @@
           <td><%= link_to blog.title, :action => "blogpostedit", :id => blog.id %></td>
           <td><%= User.find(blog.user_id) %></td>
           <td><%= blog.updated_at %></td>
-          <td><%= link_to "Usun", :action => "deleteblogpost", :blogpost => blog %><br />
-          	<%= link_to "Poprawny", :action => "blogpostok", :id => blog.id %>
+          <td><%= link_to "Usuń", :action => "deleteblogpost", :blogpost => blog %><br />
+          	<%= link_to "Poprawny", :action => "blogpostok", :id => blog.id %><br />
+          	<%= link_to "Edytuj", :action => "blogpostedit", :id => blog.id %>
           </td>
         </tr>
       <% end %>

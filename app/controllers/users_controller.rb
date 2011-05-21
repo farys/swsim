@@ -113,7 +113,7 @@ class UsersController < ApplicationController
   end
     
   def find
-    @title = "Find"
+    @title = "Szukaj"
     @fraza = params[:find][:text]
     @value = params[:szukaj][:user]
     if @value == "id"

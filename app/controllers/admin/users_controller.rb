@@ -22,9 +22,14 @@ class Admin::UsersController < Admin::ApplicationController
 	
 	def editpoints
 		@title = "Panel administratora: punkty"
-		Bonuspoint.use!(params[:addorremove][:points], params[:id], 4)
+		@value = params[:addorremove][:points]
+		if @value != ""
+		Bonuspoint.use!(params[:addorremove][:points], params[:id], 3)
 		flash[:success] = "Dodano #{params[:addorremove][:points]} punkty"
 		redirect_to :action => :points
+		else
+		redirect_to :action => :points
+		end
 	end
 	
 	def destroy

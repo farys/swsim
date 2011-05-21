@@ -16,7 +16,7 @@
           <td><%= comm.content %></td>
           <td><%= User.find(comm.user_id) %></td>
           <td><%= comm.updated_at %></td>
-          <td><%= link_to "Usun", :action => "deleteblogcomment", :blogcomment => comm %><br />
+          <td><%= link_to "Usuń", :action => "deleteblogcomment", :blogcomment => comm %><br />
           	<%= link_to "Poprawny", :action => "blogcommentok", :id => comm.id %>
           </td>
         </tr>

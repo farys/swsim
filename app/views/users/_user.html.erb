@@ -1,15 +1,19 @@
+<div class="right"><%= render 'users/find_user' %></div><br />
 <div class="prepend-1">
 <table>
 	<tr style="background-color: cyan;">
-		<td class="bold">Login</td><td class="bold">Imie i Nazwisko</td><td class="bold">Email</td>
+		<td class="bold">Login</td><td class="bold">Imię i Nazwisko</td><td class="bold">Wyślij e-mail</td><td class="bold">Wyślij PW</td>
 	</tr>
   	<% @findusers.each do |fusers| %>
 	        <tr>
 	          <td><%= link_to fusers.login, user_path(fusers.id) %></td>
 	          <td><%= fusers.name %> <%= fusers.lastname %></td>
 	          <td>
-	            <%= fusers.email %>
-	          </td>
+          		<%= mail_to fusers.email %>
+        		</td>
+        	  <td>
+          		<%= link_to "Prywatna wiadomość", :controller => 'panel/messages', :action => :new, :receiver_login => fusers.login %>
+        	  </td>
 	        </tr>
 	 <% end %>
 </table>
