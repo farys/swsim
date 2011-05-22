@@ -1,0 +1,29 @@
+<% content_for :title, t("title.messages.#{@status}") %>
+
+<% unless @messages.empty? %>
+<table class="list">
+  <thead>
+    <tr>
+      <td>temat</td>
+      <td>do</td>
+      <td>wysłano</td>
+      <td>opcje</td>
+    </tr>
+  </thead>
+    <tbody>
+    <% @messages.each do |msg| %>
+    <tr>
+      <td><%= link_to msg.topic, get_message_path("message_path", msg) %></td>
+      <td><%= msg.receiver %></td>
+      <td><%= raw escape_time(msg.created_at) %></td>
+      <td>
+        <%= link_to 'usuń', get_message_path("message_path", msg), :method => :delete, :remote => true %>
+      </td>
+    </tr>
+    <% end %>
+    </tbody>
+</table>
+<%= will_paginate %>
+<% else %>
+<section class="notice">Nie znaleziono żadnych wiadomości.</section>
+<% end %>

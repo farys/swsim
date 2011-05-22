@@ -6,7 +6,7 @@ class Blogpost < ActiveRecord::Base
 	has_many :usefuls, :dependent => :destroy
 	
 	validates :title, :presence => true, :length => {:within => 5..100}
-	validates :content, :presence => true, :length => {:within => 20..5000}
+	validates :content, :presence => true, :length => {:within => 10..5000}
   	validates :user_id, :presence => true
 	
 	default_scope :order => 'blogposts.created_at DESC'

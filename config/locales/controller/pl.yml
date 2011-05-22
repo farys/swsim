@@ -67,7 +67,7 @@ pl:
       comments:
         update: Komentarz został wystawiony
       communications:
-        create: Komunikat zostal opublikowany
+        create: Komunikat został opublikowany
       offers:
         create: Oferta została złożona
       messages:
@@ -77,6 +77,11 @@ pl:
         index: Obecnie nie uczestniczysz w żadnych projektach
 
     admin:
+      alerts:
+        destroy: Zgłoszenie zostało usunięte
+      messages:
+        destroy: Wiadomość została usunięta
+        create: Wiadomość została wysłana
       auctions:
         update: Aukcja została zaktualizowana
         destroy: Aukcja została anulowana
@@ -144,7 +149,7 @@ pl:
     auctions:
       index: Witamy !
       show: "{@auction.title} (id {@auction.id})"
-      search: Wyszukaj zlecenie!
+      search: Wyszukaj aukcję!
       result: Wynik zapytania {@query}
     blogcomments:
       new: Napisz komentarz
@@ -176,6 +181,9 @@ pl:
         index: Projekty
         
     admin:
+      alerts:
+        index: Lista zgłoszeń
+        show: Zgłoszenie nr {@alert.id}
       messages:
         new: Nowa wiadomość
         received: Odebrane wiadomości

@@ -21,8 +21,11 @@
           <td>
           	<%= link_to "Edytuj profil", edit_user_path(user) %><br />
           	<%= link_to "Edytuj punkty", :action => "points", :id => user.id %><br />
-          	<% if user.status == 1 || user.status == 2 %>
+          	<% if user.status == 2 %>
           		<%= link_to "Zbanuj", admin_user_path(user, :status => 3), :method => "delete", :confirm => t('general.confirm') %>
+          	<% elsif user.status == 1  %>
+          		<%= link_to "Zbanuj", admin_user_path(user, :status => 3), :method => "delete", :confirm => t('general.confirm') %><br />
+          		<%= link_to "Weryfikuj", admin_user_path(user, :status => 2), :method => "delete", :confirm => t('general.confirm') %>
           	<% elsif user.status == 0 %>
           		<%= link_to "Aktywuj", admin_user_path(user, :status => 2), :method => "delete", :confirm => t('general.confirm') %>
           	<% else %>

@@ -5,7 +5,7 @@ class Admin::UsersController < Admin::ApplicationController
 	
 	def index
 		@title = "Panel administratora: uzytkownicy"
-		@users = User.find(:all, :order => "lastname").paginate :per_page => 15, :page => params[:page]	    	
+		@users = User.find(:all, :conditions => ["role NOT IN (?)", "administrator"], :order => "lastname").paginate :per_page => 15, :page => params[:page]	    	
 	end
 	
 	def points
@@ -22,9 +22,14 @@ class Admin::UsersController < Admin::ApplicationController
 	
 	def editpoints
 		@title = "Panel administratora: punkty"
-		Bonuspoint.use!(params[:addorremove][:points], params[:id], 4)
+		@value = params[:addorremove][:points]
+		if @value != ""
+		Bonuspoint.use!(params[:addorremove][:points], params[:id], 3)
 		flash[:success] = "Dodano #{params[:addorremove][:points]} punkty"
 		redirect_to :action => :points
+		else
+		redirect_to :action => :points
+		end
 	end
 	
 	def destroy
@@ -51,6 +56,7 @@ class Admin::UsersController < Admin::ApplicationController
     	@title = "Panel administratora: blog"
     	@blogpost = Blogpost.find(params[:id])
     	@blogpost.update_attributes(:title => params[:title][:title], :content => params[:content][:content])
+    	flash[:success] = "Post wyedytowany"
     	redirect_to :action => :blogposts
     end
     
@@ -60,6 +66,17 @@ class Admin::UsersController < Admin::ApplicationController
     	@blogpost.destroy
     	redirect_to :action => :blogposts
     	flash[:success] = "Usunieto posta: #{@blogpost.title}"
+    end
+    
+    def blogpostok
+    	@blogpost = Blogpost.find(params[:id])
+  		if @blogpost.update_attribute(:admin, 0)
+  			flash[:success] = "Usunieto posta z listy"
+  			redirect_to :action => :blogposts
+  		else
+  			flash[:error] = "Wystapil jakis super powazny blad!"
+  			redirect_to :action => :blogposts
+  		end
     end
     
     def blogcomments
@@ -73,6 +90,17 @@ class Admin::UsersController < Admin::ApplicationController
     	@blogcomment.destroy
     	redirect_to :action => :blogcomments
     	flash[:success] = "Usunieto komentarz o id: #{@blogcomment.id}"
+    end
+    
+    def blogcommentok
+    	@blogcomment = Blogcomment.find(params[:id])
+  		if @blogcomment.update_attribute(:admin, 0)
+  			flash[:success] = "Usunieto komentarz z listy"
+  			redirect_to :action => :blogcomments
+  		else
+  			flash[:error] = "Wystapil jakis super powazny blad!"
+  			redirect_to :action => :blogcomments
+  		end
     end
     
     private

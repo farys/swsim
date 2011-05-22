@@ -1,3 +1,4 @@
+<% include_wysiwyg %>
 <div class="center">
 		<% form_tag({:action => "blogpostedit2"}) do %>
 		  <div class="field">
@@ -6,10 +7,10 @@
 		  </div>
 		  <div class="field">
 		  	Treść<br />
-		    <%= text_area "content", :content, :value => @blogpost.content, :class => "mceEditor span-10" %>
+		    <center><%= text_area "content", :content, :value => @blogpost.content, :class => "mceEditor span-10" %></center>
 		  </div>
 		  <div class="actions">
-		    <%= submit_tag "Submit" %>
+		    <%= submit_tag "Edytuj" %>
 		  </div>
 		<% end %>
 </div>

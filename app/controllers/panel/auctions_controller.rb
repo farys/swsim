@@ -1,7 +1,8 @@
 class Panel::AuctionsController < Panel::ApplicationController
-  before_filter :load_auction, :except => [:index, :new, :create]
+  before_filter :load_auction, :except => [:index, :new, :create, :user_form]
   before_filter :new_auction_and_form_data, :only => [:new, :create]
-  
+  skip_before_filter :authenticate, :only => [:user_form]
+
   def index	
     @status = params[:status] || :active
     title_t @status
@@ -22,8 +23,8 @@ class Panel::AuctionsController < Panel::ApplicationController
     if @auction.save
       Sender.auction_created(@auction).deliver
 
-      unless @auction.invitations.empty?
-        @auction.invitations.each do |inv|
+      unless @auction.invited_users.empty?
+        @auction.invited_users.each do |inv|
           Sender.auction_invited_user(@auction, inv.user).deliver
         end
       end
@@ -71,17 +72,23 @@ class Panel::AuctionsController < Panel::ApplicationController
     Sender.auction_canceled(@auction).deliver
     redirect_to panel_auctions_path, :notice => flash_t
   end
+
+  def user_form
+    render :layout => false
+  end
   
   private
   def new_auction_and_form_data
     @auction = current_user.auctions.new(params[:auction])
     @auction.tag_ids = params[:tag_ids].values unless params[:tag_ids].nil?
+    @auction.invited_user_ids = params[:invitations_ids].values unless params[:invitations_ids].nil?
+    @invited_users = @auction.invited_users
     @groups = Group.all
   end
 
   def load_auction
     options = nil
-    options = {:include => [:owner, {:offers => :offerer}, :communications]} if params[:action].eql?('show')
+    options = {:include => [:owner, {:offers => :offerer}, :communications, :invited_users]} if params[:action].eql?('show')
     @auction = current_user.auctions.find(params[:id], options)
     @offers = @auction.offers
   end

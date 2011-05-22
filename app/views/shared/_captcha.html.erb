@@ -1,0 +1,4 @@
+<div class="field">
+  <%= f.label :recaptcha, "Przepisz koda z obrazka" %><br />
+  <%= raw(get_captcha(:options => {:theme => 'white', :tabindex => 10})) %>
+</div>

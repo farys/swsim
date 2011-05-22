@@ -1,12 +1,13 @@
+<% include_wysiwyg %>
 <div class="left prepend-1">
 <%= form_for @blogpost do |f| -%>
   <%= render "layouts/error_messages", :target => @blogpost %>
   <div class="field">
-  	<%= f.label :title %><br />
+  	<%= f.label "Tytuł" %><br />
     <%= f.text_field :title, :class => 'span-10' %>
   </div>
   <div class="field">
-  	<%= f.label :content %><br />
+  	<%= f.label "Treść" %><br />
     <%= f.text_area :content, :class => 'span-10' %>
   </div>
   <div class="field">
@@ -14,7 +15,7 @@
   <%= raw(get_captcha(:options => {:theme => 'white', :tabindex => 10})) %>
 </div>
   <div class="actions">
-    <%= f.submit "Submit" %>
+    <%= f.submit "Wyślij" %>
   </div>
   </div>
 <% end %>

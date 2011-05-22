@@ -1,5 +1,5 @@
 class Auction < ActiveRecord::Base
-  attr_protected :status
+  attr_protected :status, :expired_at, :owner_id, :hightlight
   
   STATUSES = {:active => 0, :finished => 1, :canceled => 2, :waiting_for_offer => 3}
   MAX_EXPIRED_AFTER = 14
@@ -19,11 +19,12 @@ class Auction < ActiveRecord::Base
   has_and_belongs_to_many :tags, 
     :after_add => :tag_counter_up,
     :after_remove => :tag_counter_down
-  has_many :invitations, :class_name => "AuctionInvitation", :dependent => :delete_all
+  has_and_belongs_to_many :invited_users, :class_name => "User"
   has_many :rating_values, :class_name => 'AuctionRating', :dependent => :delete_all,
     :after_add => :calculate_rating,
     :after_remove => :calculate_rating
   has_one :project
+  belongs_to :budget
   
   define_index do
     indexes :title
@@ -47,7 +48,9 @@ class Auction < ActiveRecord::Base
   before_validation :init_auction_row, :on => :create
   before_update :won_offer_choosed, :if => :won_offer_id_changed?
   before_update :status_changed, :if => :down?
-
+  before_validation :check_points, :on => :create, :if => :highlight
+  after_create :use_points, :if => :highlight
+  
   #create form
   attr_accessor :expired_after
   validates_inclusion_of :expired_after, :in => (1..MAX_EXPIRED_AFTER).to_a.collect{|d| d}, :on => :create
@@ -110,11 +113,12 @@ class Auction < ActiveRecord::Base
 
   #czy uzytkownik jest wlascicielem aukcji
   def owner? user
-    self.owner.eql?(user)
+    return false if user.nil?
+    self.owner_id == user.id
   end
 
   def invited? user
-    self.invitations.exists?(:user_id => user.id)
+    self.invited_users.exists?(:id => user.id)
   end
 
   #czy aukcja jest publiczna
@@ -194,6 +198,7 @@ class Auction < ActiveRecord::Base
   def update_offers params
     return true if params.nil?
     
+    status_won = Offer::STATUSES[:won]
     saved = true
     self.offers.each do |offer|
       offer_id = offer.id.to_s
@@ -238,5 +243,16 @@ class Auction < ActiveRecord::Base
 
   def calculate_rating(v1)
     self.update_attribute(:rating, self.rating_values.sum(:value) / self.rating_values.count)
+  end
+
+  def use_points
+    self.owner.bonuspoints.use!(-10, self.owner_id, 4) if self.highlight
+  end
+
+  def check_points
+    points = self.owner.bonuspoints.sum(:points)
+    if points-10 < 0
+      self.errors.add(:highlight, I18n.t("activerecord.errors.models.auction.attributes.highlight.not_enought_points"))
+    end
   end
 end

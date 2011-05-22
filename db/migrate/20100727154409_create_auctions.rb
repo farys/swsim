@@ -8,7 +8,8 @@ class CreateAuctions < ActiveRecord::Migration
       t.references :won_offer
       t.string :title, :length => 50, :null => false
       t.text :description, :length => 2000, :null => false
-      
+      t.boolean :highlight, :default => 0
+
       t.timestamp :expired_at, :null => false
       t.integer :offers_count, :default => 0
       t.integer :visits, :default => 0, :null => false

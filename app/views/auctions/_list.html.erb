@@ -20,7 +20,7 @@ $(document).ready(function(){
   </thead>
 <tbody>
 <% auctions.each do |auction| %>
-  <tr>
+  <tr<%= " class='highlight'" if auction.highlight %>>
     <td><%= link_to escape_auction(auction), auction_path(auction) %><% unless auction.rating.nil? %> <div style="display: inline-block"><% for i in 1..15 do %><%= radio_button_tag("star#{auction.id}", i, i == auction.rating, :class => "star", :title => "ocena") %><% end %></div><% end %></td>
     <td><%= Budget.find(auction.budget_id) %></td>
     <td><%= auction.offers_count %></td>

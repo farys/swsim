@@ -1,0 +1,29 @@
+<% unless @alerts.empty? %>
+  <table class="list">
+    <thead>
+      <tr>
+        <td>od</td>
+        <td>treść</td>
+        <td>status</td>
+        <td>opcje</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @alerts.each do |alert| %>
+        <tr>
+          <td><%= link_to alert.author, users_path(alert.author) unless alert.author.nil? %></td>
+          <td><%= link_to truncate(alert.text, :length => 100, :omission => " ..."), admin_alert_path(alert) %></td>
+          <td><%=
+            s = escape_status(alert)
+            s = content_tag(:span, s, :class => "bold") if alert.status == Alert::STATUSES[:unread]
+            s
+          %></td>
+          <td><%= link_to "usuń", admin_alert_path(alert), :method => :delete, :remote => :true %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate %>
+<% else %>
+  <div class="clear notice">Nie znaleziono żadnych aukcji.</div>
+<% end %>

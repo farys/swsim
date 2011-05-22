@@ -1,0 +1,12 @@
+inputs = @findusers.collect do |user|
+  content_tag(
+    :div,
+    check_box_tag("invitations_ids[#{user.id}]", user.id) +
+      label_tag("invitations_ids[#{user.id}]", user.login)
+  )
+end
+page << "$('#privateDiv input[type=checkbox]', parent.document).not(':checked').each(function(){$(this).parent().remove();})"
+page << "$('#privateDiv', parent.document).append('#{inputs.join("")}')"
+
+page.alert("Nie odnaleziono żadnego użytkownika o podanych kryteriach") if @findusers.empty?
+

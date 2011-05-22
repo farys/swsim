@@ -1,24 +1,25 @@
-class AlertsController < ApplicationController
+class Admin::AlertsController < Admin::ApplicationController
   before_filter :load_alert, :only => [:show, :destroy]
 
   def index
-    @alerts = Alert.all
-  end
-
-  def received
-    @alerts = @current_user.received_alerts
+    title_t
+    @alerts = Alert.order("id DESC").paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
-    if @alert.author.eql(@current_user)
+    title_t
+    if @alert.status == Alert::STATUSES[:unread]
       @alert.read!
     end
   end
 
   def destroy
     @alert.destroy
-    flash[:notice] = "Powiadomienie zostalo usuniete"
-    redirect_to :back
+    flash_t :notice
+    respond_to do |format|
+      format.html { redirect_to admin_alerts_path }
+      format.js
+    end
   end
 
   private

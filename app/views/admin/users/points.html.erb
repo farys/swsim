@@ -10,7 +10,7 @@
 		    <%= text_field "addorremove", :points %>
 		  </div>
 		  <div class="actions">
-		    <%= submit_tag "Submit" %>
+		    <%= submit_tag "Akceptuj" %>
 		  </div>
 		<% end %>
 </div>
@@ -36,9 +36,11 @@
     			<span>Punkty za blogposta</span>
     		<% elsif points.for_what == 2 %>
     			<span>Punkty za poleconego</span>
-    		<% else %>
+    		<% elsif points.for_what == 3 %>
     			<span>Interwencja administratora</span>
-    		<% end %>      	
+    		<% else %>
+    			<span>Punkty za podświetlenie aukcji</span>
+    		<% end %>
           </td>
           <td><%= escape_time(points.created_at) %></td>
           <td><%= points.points %></td>

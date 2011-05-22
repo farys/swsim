@@ -83,34 +83,12 @@ include ReCaptcha::ViewHelper #wazne dla recaptcha
   							name,
   							:onclick => "window.location.href=\"#{url_for(url)}\"")
   end
-  
-  def include_active_link_mechanism urls=Array.new
-    current_path = request.fullpath
-    current_path += "/new" if params[:action].eql?("create")
-    
-    urls = [urls] unless urls.instance_of?(Array)
-    update_page_tag do |page|
-      page.call("$().ready") do |p|
-        p.assign :uri, [current_path]+urls
-        p << "
-          $('a[href=\"'+uri[0]+'\"]').addClass('active');
-          for(var i=1; i < uri.length; i++){
-            $('ul a[href=\"'+uri[i]+'\"]:first').addClass('active');
-          }
-        "
 
-        #        p[:a].each do |a|
-        #          a << "
-        #link = $(this).attr('href');
-        # var active_links_on_menu = $('.activeLink', $(this).parent().parent()).size();
-        #
-        #  if(uri[i] == link && active_links_on_menu == 0){
-        #    $(this).addClass('activeLink')
-        #  }
-        # }#"
-        #        end
-      end
+  def include_wysiwyg
+    tinymce_init = javascript_tag do
+      "tinyMCE.init({theme: 'advanced', mode: 'textareas'});"
     end
+    content_for :head, javascript_include_tag("tiny_mce/tiny_mce")+tinymce_init
   end
 
 end

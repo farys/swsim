@@ -53,7 +53,6 @@ class SessionsController < ApplicationController
       @auctionsratings2.each do |sum|
       	@suma += sum.rating
       end
-      @suma = @suma.round
       
       #suma punktow za projekty
       @commentsratings = Comment.find_all_by_receiver_id_and_status_and_level(current_user, 0, 1, :select => "id")
@@ -104,15 +103,15 @@ class SessionsController < ApplicationController
       	@suma6 = ((@suma2/(5*(@commentsratings2.count)).to_f)*100).round(2) #srednia z ocen czastkowych
       end
       
-      if @how_many_auctions == 0
+      if @auctionsratings2.count == 0
       	@suma7 = 0
       elsif
-      	@suma7 = ((@suma/(5*@how_many_auctions).to_f)*100).round(2)
+      	@suma7 = ((@suma/(5*(@auctionsratings2.count)).to_f)*100).round(2)
       end
       
-      if @commentsratings2.count == 0 && @how_many_auctions == 0
+      if @commentsratings2.count == 0 && @auctionsratings2.count == 0
       	@reputation = 0
-      elsif (@commentsratings2.count != 0 && @how_many_auctions == 0) || (@commentsratings2.count == 0 && @how_many_auctions != 0)
+      elsif (@commentsratings2.count != 0 && @auctionsratings2.count == 0) || (@commentsratings2.count == 0 && @auctionsratings2.count != 0)
       	@reputation = @suma6+@suma7
       else
       	@reputation = ((@suma7+@suma6)/2).round(2)

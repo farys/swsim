@@ -1,0 +1,23 @@
+<div class="prepend-1 span-20 append-1">
+
+  <% unless @alert.author.nil? %>
+    <div class="span-3">
+      Od: <%= link_to escape_user(@alert.author), @alert.author %>
+    </div>
+  <% end %>
+
+  <div class="span-5">
+    Wysłano: <%= escape_time(@alert.created_at) %>
+  </div>
+
+  <div class="span-9 last">Opcje:
+    <%= link_to "usuń", admin_alert_path(alert), :method => :delete %>
+  </div>
+
+  <div class="span-20 top-1">
+    <%= raw @alert.text %>
+  </div>
+  <div class="clear top-1"></div>
+</div>
+
+

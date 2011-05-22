@@ -34,9 +34,10 @@
   <% unless @auctions.empty? %>
     <div class="span-11"><div class="box">
         <% @auctions.shift(@auctions.length/2).each do |auction| %>
-          <%= link_to escape_auction(auction), auction_path(auction) %>
-          <span style="float: right;">
-            tu je budzet
+        <% highlight = (auction.highlight)? :highlight : nil %>
+          <%= link_to escape_auction(auction), auction_path(auction), :class => highlight %>
+          <span style="float: right;font-size: 90%">
+            <%= auction.budget %>
           </span>
           <br />
         <% end %>
@@ -44,8 +45,8 @@
     <div class="span-11 last"><div class="box">
         <% @auctions.each do |auction| %>
           <%= link_to escape_auction(auction), auction_path(auction) %>
-          <span style="float: right;">
-            tu je budzet
+          <span style="float: right;font-size: 90%">
+            <%= auction.budget %>
           </span>
           <br />
         <% end %>

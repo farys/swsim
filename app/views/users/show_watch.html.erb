@@ -1,27 +1,33 @@
 <%= render 'users/user_menu' %>
-<table summary="Information about watching/watchers">
-  <tr>
-    <td style="width: 500px;">
+<table class="span-12 prepend-1">
+  <tr style="background-color: cyan;">
+	<td class="bold">Login</td><td class="bold">Wyślij e-mail</td><td class="bold">Wyślij PW</td>
+	<% if params[:action] == 'watching' && current_user?(@user) %>
+	<td class="bold">Wyrzuć z zaufanych</td>
+	<% end %>
+  </tr>
       <% unless @users.empty? %>
-        <ul class="users">
         <% @users.each do |user| %>
         <tr>
         <td>
-          <%= link_to user.login, user %> <%= user.email %>
+          <%= link_to user.login, user %>
+        </td>
+        <td>
+          <%= mail_to user.email %>
+        </td>
+        <td>
+          <%= link_to "Prywatna wiadomość", :controller => 'panel/messages', :action => :new, :receiver_login => user.login %>
         </td>
         <% if params[:action] == 'watching' && current_user?(@user) %>
         <td>
         <%= form_for @user.relationships.find_by_watched_id(user.id), :html => { :method => :delete } do |f| %>
-  			<div style="float: right;"><%= f.submit "Wyrzuć z zaufanych" %></div>
+  			<%= f.submit "Wyrzuć z zaufanych" %>
 		<% end %>
         </td>
         <% end %>
-        </tr>
+         </tr>
         <% end %>
-        </ul>
-        <%= will_paginate @users %>
       <% end %>
-    </td>
-  </tr>
 </table>
+<%= will_paginate @users %>
 

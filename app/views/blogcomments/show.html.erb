@@ -7,7 +7,7 @@
 		<% if @comment.user_id == current_user.id %>
 			<%= link_to "Zgłoś administratorowi", :action => "admin", :id => @comment%>
 		<% end %>
-		<%= time_ago_in_words(@comment.created_at) %> ago.
+		Utworzony <%= time_ago_in_words(@comment.created_at) %> temu.
     </div>
   </td>
 </tr>

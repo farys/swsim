@@ -47,6 +47,7 @@ Inz::Application.routes.draw do
     resources :auctions, :except => [:show] do
       resources :communications, :only => [:new, :create]
       get :offers, :on => :member # offers#index dla wlasnych ofert zarezerwowane
+      get :user_form, :on => :collection
       resources :offers, :only => [:destroy, :new, :create] do
         #get :to_reject, :on => :member
       end
@@ -73,6 +74,7 @@ Inz::Application.routes.draw do
 
   #ADMIN
   namespace :admin do
+    resources :alerts, :only => [:index, :show, :destroy]
     resources :auctions, :except => [:show] do
       resources :offers, :only => [:destroy] do
         get :recovery, :on => :member
@@ -94,10 +96,12 @@ Inz::Application.routes.draw do
   match 'admin/users/:id/editpoints', :to => 'admin/users#editpoints'
   match 'admin/users/:id/status/:status/delete', :to => 'admin/users#delete'
   match 'admin/blogposts', :to => 'admin/users#blogposts'
+  match 'admin/blogposts/:id', :to => 'admin/users#blogpostok'
   match 'admin/blogpost/:id', :to => 'admin/users#blogpostedit'
   match 'admin/blogpost/:id/edit', :to => 'admin/users#blogpostedit2'
   match 'admin/blogposts/delete/:blogpost', :to => 'admin/users#deleteblogpost'
   match 'admin/blogcomments', :to => 'admin/users#blogcomments'
+  match 'admin/blogcomments/:id', :to => 'admin/users#blogcommentok'
   match 'admin/blogcomments/delete/:blogcomment', :to => 'admin/users#deleteblogcomment'
   
   #PROJECT
