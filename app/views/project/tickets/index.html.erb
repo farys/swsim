@@ -21,7 +21,7 @@
     </thead>
     <tbody>
       <% @tickets.each do |ticket| %>
-        <% if ticket.user_id.eql?(current_user.id) -%>
+        <% if ticket.user_id.eql?(current_user.id) && ticket.status == Ticket::STATUSES[:implementation]-%>
           <tr style="background:#C9E1B4">
         <% else -%>
           <tr>

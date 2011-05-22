@@ -10,4 +10,6 @@ class Ticket < ActiveRecord::Base
   validates_numericality_of :duration, :only_integer => true,
                                        :greater_than => 0
   validates :status, :inclusion => { :in => STATUSES.values }
+  
+  default_scope :order => 'tickets.status ASC'
 end
