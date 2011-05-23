@@ -10,7 +10,7 @@
   <tbody>
     <% @members.each do |user| %>
       <tr>
-        <td><%= link_to user.login, user_path(user), :target => '_blank' %></td>
+        <td><%= link_to user.login, user_path(user) %></td>
         <td>
         	<%= link_to t('general.pm'),
         	            :controller => 'panel/messages',

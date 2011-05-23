@@ -1,4 +1,5 @@
 <%= render 'project/shared/menu' %>
+<% include_wysiwyg %>
 <div class="span-10 prepend-1">
 	<%= form_for @topic, :url => project_topics_path(@project, @topic) do |f| %>
 		<%= render "layouts/error_messages", :target => @topic %>

@@ -5,7 +5,7 @@
 	  <tr>
 		  <td class="span-3">
 			  <p><%= image_tag user.avatar.url(:thumb) %></p>
-			  <p><%= link_to user.login, user_path(user.id), :target => '_blank' %></p>
+			  <p><%= link_to user.login, user_path(user.id) %></p>
 			  <p>
 				  <%= link_to t('general.pm'),
 				              :controller => 'panel/messages',
@@ -15,7 +15,7 @@
 			  </p>
 		  </td>
 		  <td>
-		    <p><%= @topic.content %></p>
+		    <p><%= raw @topic.content %></p>
 		    <% if edit_topic?(@topic.id) -%>
 		      <p align="right">
 		        <%= link_to t('general.edit'),
@@ -30,7 +30,7 @@
 		<tr>
 			<td class="span-3">
 				<p><%= image_tag user.avatar.url(:thumb) %></p>
-				<p><%= link_to user.login, user_path(user.id), :target => '_blank' %></p>
+				<p><%= link_to user.login, user_path(user.id) %></p>
 				<p>
 					<%= link_to t('general.pm'),
 					            :controller => 'panel/messages',
@@ -40,7 +40,7 @@
 				</p>
 			</td>
 			<td>
-			  <p><%= post.content %></p>
+			  <p><%= raw post.content %></p>
 			  <% if edit_post?(post.id) -%>
 			    <p align="right">
 			      <%= link_to t('general.edit'), 

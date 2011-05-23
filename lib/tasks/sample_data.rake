@@ -121,7 +121,7 @@ end
 def make_projects
   PROJECTS.times do
     name = Faker::Company.name
-    description = Faker::Lorem.sentences(12)
+    description = Faker::Lorem.sentences(12).join(' ')
     Project.create!(
     	:name => name,
     	:owner_id => rand(User.count-1)+1,
@@ -214,7 +214,7 @@ end
 def make_topics
 	TOPICS.times do
 		title = Faker::Lorem.words(3).join(' ')
-		content = Faker::Lorem.sentences(12)
+		content = Faker::Lorem.sentences(12).join(' ')
 		topic = Topic.create!(:project_id => rand(Project.count-1)+1,
 													:user_id => rand(User.count-1)+1,
 													:title => title,
@@ -224,7 +224,7 @@ end
 
 def make_posts
 	POSTS.times do
-		content = Faker::Lorem.sentences(12)
+		content = Faker::Lorem.sentences(12).join(' ')
 		Post.create!(:topic_id => rand(Topic.count-1)+1,
 								 :user_id => rand(User.count-1)+1,
 								 :content => content)
@@ -234,7 +234,7 @@ end
 def make_tickets
   TICKETS.times do
     title = Faker::Lorem.words(3).join(' ')
-		content = Faker::Lorem.sentences(12)
+		content = Faker::Lorem.sentences(12).join(' ')
     Ticket.create!(:project_id => rand(Project.count-1)+1,
                    :title => title,
 									 :description => content,

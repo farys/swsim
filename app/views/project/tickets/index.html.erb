@@ -40,8 +40,7 @@
             <% else -%>
               <% user = User.find(ticket.user_id) -%>
               <%= link_to user.login,
-                          user_path(user),
-                          :target => '_blank' %>
+                          user_path(user) %>
             <% end -%>
           </td>
           <td><%= escape_status ticket %></td>

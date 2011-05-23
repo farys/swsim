@@ -1,5 +1,5 @@
 <%= render 'project/shared/menu' %>
-
+<% include_wysiwyg %>
 <div class="span-7 prepend-1">
 	<%= form_for @file, :url => project_files_path(@project, @file),
 											:html => {:multipart => true} do |f| %>

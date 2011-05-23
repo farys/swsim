@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
 	validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png', 'image/gif']
 
 	before_create :encrypt_password
-	before_create :default_data
+	#before_create :default_data
 	before_update :encrypt_password, :if => ->{ self.password_changed? }
 
   def default_data

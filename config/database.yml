@@ -11,7 +11,7 @@ development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: inz_app
+  database: app_dev
   pool: 5
   username: root
   password: Rot192
@@ -24,7 +24,7 @@ test:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: inz_app
+  database: app_dev
   pool: 5
   username: root
   password: Rot192
@@ -34,7 +34,7 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: inz_app
+  database: app_dev
   pool: 5
   username: root
   password: Rot192

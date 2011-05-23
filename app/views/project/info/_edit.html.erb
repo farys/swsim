@@ -1,4 +1,5 @@
 <% if can_edit?('info') %>
+  <% include_wysiwyg %>
 	<table>
 	  <%= form_for @project, :url => project_info_path(@project) do |f| %>
 	  <%= render "layouts/error_messages", :target => @project %>
@@ -10,7 +11,7 @@
 	  </tr>
 	  <tr style="background:none">
 	    <td>
-	      <%= f.text_area :description, :class => "span-14", :style => "height: 150px" %><br />
+	      <%= f.text_area :description, :class => "span-14", :style => "height: 250px" %><br />
 	    </td>
 	  </tr>
 	  <% end %>

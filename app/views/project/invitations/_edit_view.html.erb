@@ -20,7 +20,7 @@
         <% @invitations.each do |inv| %>
         <% user = User.find(inv.user_id) -%>
           <tr>
-            <td><%= link_to user.login, user_path(user), :target => '_blank' %></td>
+            <td><%= link_to user.login, user_path(user), %></td>
             <td><%= escape_column(Role.find(inv.role_id), 'name') %></td>
           	<td><%= escape_status inv %></td>
           	<td>

@@ -1,4 +1,5 @@
 <% if can_edit?('file') %>
+<% include_wysiwyg %>
 	<table>
 	  <%= form_for @file, :url => project_file_path(@project, @file) do |f| %>
 	  <%= render "layouts/error_messages", :target => @file %>
