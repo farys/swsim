@@ -21,13 +21,13 @@
 <% end %>
 
 <p>
-  <%= f.label :private, "Charakter aukcji:" %>
-  <%= f.check_box :private, :onclick => "change_stage(this.checked)" %><%= f.label :private, "Aukcja prywatna" %>
+  <%= f.label :highlight %>
+  <%= f.check_box :highlight %><%= f.label :highlight, "Włącz (koszt 10 punktów)" %>
 </p>
 
 <p>
-  <%= f.label :highlight %>
-  <%= f.check_box :highlight %><%= f.label :highlight, "Włącz (koszt 10 punktów)" %>
+  <%= f.label :private, "Charakter aukcji:" %>
+  <%= f.check_box :private, :onclick => "change_stage(this.checked)" %><%= f.label :private, "Aukcja prywatna" %>
 </p>
 
 <div id="stageDiv" style="margin-top: 20px;margin-bottom: 20px">
@@ -41,13 +41,13 @@
   <div id="privateDiv">
     <h2 class="box">Zaproszeni użytkownicy</h2>
     <iframe src="<%= user_form_panel_auctions_path %>" style="text-align: left;width:500px;height:80px">Twoja przeglądarka musi obsługiwać pływające ramki. Zaktualizuj przeglądarkę bądź włącz obsługę pływających ramek!</iframe>
-<% @invited_users.each do |user| %>
-  <%= content_tag(
-    :div,
-    check_box_tag("invitations_ids[#{user.id}]", user.id, true) +
-      label_tag("invitations_ids[#{user.id}]", user.login)
-  ) %>
-<% end %>
+    <% @invited_users.each do |user| %>
+      <%= content_tag(
+        :div,
+        check_box_tag("invitations_ids[#{user.id}]", user.id, true) +
+          label_tag("invitations_ids[#{user.id}]", user.login)
+      ) %>
+    <% end %>
   </div>
 </div>
 <%= javascript_tag do -%>
@@ -55,11 +55,11 @@
   var pub = $("#publicDiv");
   var priv = $("#privateDiv");
   if(private){
-    pub.hide();
-    priv.show();
+  pub.hide();
+  priv.show();
   }else{
-    pub.show();
-    priv.hide();
+  pub.show();
+  priv.hide();
   }
   }
   change_stage($("#auction_private:checked").size() > 0);

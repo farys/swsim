@@ -3,7 +3,7 @@ class AlertsController < ApplicationController
 
   def create
     session[:back] = request.referer if session[:back].nil?
-    params[:alert][:text] = params[:alert][:pre_text] + params[:alert][:text]
+    params[:alert][:text] = params[:pre_text] + params[:alert][:text]
     @alert = Alert.new params[:alert]
     @alert.author = current_user
     

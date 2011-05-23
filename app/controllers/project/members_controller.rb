@@ -72,12 +72,13 @@ class Project::MembersController < Project::ApplicationController
       @message[var] = eval("->"+var+".call").to_s
     end
       
-    msg = Message.create(:receiver_id => memb.user_id,
-                         :owner_id => memb.user_id,
-                         :author_id => current_user.id,
+    msg = Message.new(:receiver_id => memb.user_id,
                          :topic => t('general.project.members.message_topic'),
                          :body => @message)
-	  
+	  msg.owner_id = memb.user_id
+    msg.author_id = current_user.id
+    msg.save
+
 	  #usuwanie uzytkownika
     if memb.destroy
       msg.save

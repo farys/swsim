@@ -72,10 +72,10 @@ class Project::InvitationsController < Project::ApplicationController
       @body = body
       
       msg = Message.new(:receiver_id => @invitation.user_id,
-                        :owner_id => @invitation.user_id,
-                        :author_id => current_user.id,
                         :topic => t('general.project.invitation.topic'),
                         :body => @body)
+      msg.owner_id = @invitation.user_id
+      msg.author_id = current_user.id
       
       if msg.save
         flash_t :success
