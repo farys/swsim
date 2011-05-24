@@ -9,8 +9,10 @@
       <% if signed_in? %>
       <% if current_user?(@user) && current_user.role != "administrator"%>
       <li><%= link_to "Dezaktywuj konto", user_path(current_user, :status => 0), :method => "delete", :confirm => t('general.deactivate') %></li>
-      <% elsif !current_user?(@user) && current_user.role == "administrator" && @user.status != 0 && @user.status != 3%>
-      <li><%= link_to "Zbanuj konto", user_path(current_user, :status => 3), :method => "delete", :confirm => t('general.ban') %></li>
+      <% elsif !current_user?(@user) && current_user.role == "administrator" && @user.status != 0 && @user.status != 3 %>
+      <li><%= link_to "Zbanuj konto", user_path(@user, :status => 3), :method => "delete", :confirm => t('general.ban') %></li>
+      <% elsif !current_user?(@user) && current_user.role == "administrator" && @user.status != 2 && @user.status != 1 %>
+      <li><%= link_to "Aktywuj konto", user_path(@user, :status => 3), :method => "delete", :confirm => t('general.activate') %></li>
       <% end %>
       <% end %>
   </ul>

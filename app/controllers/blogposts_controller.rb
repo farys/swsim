@@ -1,5 +1,6 @@
 class BlogpostsController < ApplicationController
   before_filter :authorized_user, :only => :destroy
+  before_filter :right_user, :only => :new
   
   def index
   	@user = User.find(params[:user_id])
@@ -83,4 +84,10 @@ class BlogpostsController < ApplicationController
       @blogpost = Blogpost.find(params[:id])
       redirect_to root_path unless current_user?(@blogpost.user)
     end
+    
+    def right_user
+  	if !current_user?(@user)
+  		redirect_to user_blogposts_path(@user)
+  	end
+  end
 end

@@ -8,14 +8,14 @@
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
 # Users
-admin =  User.new(
+admin =  User.create!(
   :login => "admin",
   :password => 'password',
   :name => "Jan",
   :lastname => "Kowalski",
-  :country => "pol",
-  :email => "admin@inz.pl",
-  :description => "Administrator też człowiek"
+  :country => "pl",
+  :email => "admin@example.com",
+  :description => "Witam. Jestem administratorem w naszym portalu. Z wszelkimi problemami zgłaszaj się do mnie :)"
 )
 admin.status = 2
 admin.role = "administrator"

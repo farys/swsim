@@ -77,10 +77,12 @@ class UsersController < ApplicationController
     
   def destroy
     @user = User.find_by_id(params[:id])
-		if @user.update_attribute(:status, params[:status])
+	if @user.update_attribute(:status, params[:status]) && current_user.role != "administrator"
       sign_out
       redirect_to root_path
       flash[:success] = "Usunieto uzytkownika"
+    else
+    redirect_to :back
     end
   end
     

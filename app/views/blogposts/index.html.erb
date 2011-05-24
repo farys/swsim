@@ -1,6 +1,8 @@
 <%= render 'users/user_menu' %>
 <div class="prepend-1 left">
+	<% if current_user?(@user) %>
 	<h3><%= link_to "Dodaj wpis", new_user_blogpost_path(current_user) %></h3>
+	<% end %>
 <% unless @user.blogposts.empty? %>
         <table summary="User blogposts">
           <%= render @blogposts %>

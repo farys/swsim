@@ -36,10 +36,11 @@ class User < ActiveRecord::Base
   
   email_regex = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃ\-.]+@[a-zżźćńółęąś\d\-.]+\.[a-z]+\z/i
   string = /\A[\w+żźćńółęąśŻŹĆĄŚĘŁÓŃß\-.]+\z/
+  string2 = /\A[a-zA-ZżźćńółęąśŻŹĆĄŚĘŁÓŃ\- ']+\z/
 	
-	validates :login, :presence => true, :format => {:with => string}, :length => {:within => 1..40}, :uniqueness => true
-	validates :name, :presence => true, :format => {:with => string}, :length => {:within => 1..40} #zmienilem od 1 bo Faker mi generowal first_name < 3 znakow
-	validates :lastname, :presence => true, :format => {:with => string}, :length => {:within => 1..40}
+	validates :login, :presence => true, :format => {:with => string}, :length => {:within => 3..40}, :uniqueness => true
+	validates :name, :presence => true, :format => {:with => string2}, :length => {:within => 2..40}
+	validates :lastname, :presence => true, :format => {:with => string2}, :length => {:within => 3..40}
 	validates :country, :presence => true
 	validates :email, :presence => true, :format => {:with => email_regex}, :uniqueness => { :case_sensitive => false }, :length => {:within => 6..50}
 	validates :password, :presence => true, :confirmation => true, :length => { :within => 5..100 }
@@ -49,7 +50,7 @@ class User < ActiveRecord::Base
 	validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png', 'image/gif']
 
 	before_create :encrypt_password
-	#before_create :default_data
+	before_create :default_data
 	before_update :encrypt_password, :if => ->{ self.password_changed? }
 
   def default_data

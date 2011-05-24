@@ -46,39 +46,52 @@ end
 
 def make_users #zmieniony format emailu dla latwiejszego logowania
   USERS.times do |i|
+  	login = Faker::Internet.user_name
   	description = Faker::Lorem.sentence(12)
     firstname = Faker::Name.first_name
+    lastname = Faker::Name.last_name
     country = Carmen.default_country
-    User.create!(
-      :login => "Login_#{i+1}",
+    user = User.create!(
+      :login => login,
       :password => 'password',
       :name => firstname,
-      :lastname => "Kowalski_#{i+1}",
+      :lastname => lastname,
       :role => 'user',
       :status => 2,
       :country => country,
-      :email => "#{i+1}@inz.pl",
+      :email => "#{i+1}@example.com",
       :description => description
     )
+    user.status = 2
+	user.role = "user"
+	user.save
   end
-     mav =  User.create!(
-      :login => "Maveral2",
+  USERS.times do |i|
+  	login = Faker::Internet.user_name
+  	description = Faker::Lorem.sentence(12)
+    firstname = Faker::Name.first_name
+    lastname = Faker::Name.last_name
+    country = Carmen.default_country
+    user = User.create!(
+      :login => login,
       :password => 'password',
-      :name => "Mariusz",
-      :lastname => "Franke",
-      :role => 'administrator',
-      :status => 2,
-      :country => "pol",
-      :email => "mav@inz.pl",
-      :description => "To ja :)"
+      :name => firstname,
+      :lastname => lastname,
+      :role => 'user',
+      :status => 1,
+      :country => country,
+      :email => "#{i+6}@example.com",
+      :description => description
     )
-    mav.status = 2
-    mav.role = "administrator"
-    mav.save
+    user.status = rand(3)
+	user.role = "user"
+	user.save
+  end
 end
 
 def make_reputations
-   USERS.times do |i|
+	zmienna = 2*USERS+1
+   	zmienna.times do |i|
    	Reputation.create!(
       :user_id => i+1,
       :reputation => 0
@@ -88,15 +101,15 @@ end
 
 def make_relationships
   users = User.all
-  user  = users.first
-  watching = users[1..User.count-1]
-  watchers = users[1..User.count-1]
+  user = User.find(2)
+  watching = users[3..User.count-1]
+  watchers = users[3..User.count-1]
   watching.each { |watched| user.watch!(watched) }
   watchers.each { |watcher| watcher.watch!(user) }
 end
 
 def make_blogposts
-	User.all(:limit => 4).each do |user|
+	User.all(:limit => 11).each do |user|
       50.times do
         user.blogposts.create!(:title => Faker::Lorem.sentence(2), :content => Faker::Lorem.sentence(5))
       end
@@ -104,7 +117,7 @@ def make_blogposts
 end
 
 def make_blogcomments
-	Blogpost.all(:limit => 4).each do |blogpost|
+	Blogpost.all(:limit => 11).each do |blogpost|
       50.times do
         blogpost.blogcomments.create!(:content => Faker::Lorem.sentence(5))
       end
@@ -112,10 +125,10 @@ def make_blogcomments
 end
 
 def make_points
-	50.times do
+	11.times do |i|		
 		Bonuspoint.create!(
 		:points => rand(100),
-		:user_id => 1,
+		:user_id => i+1,
 		:for_what => rand(3)
 		)
 	end

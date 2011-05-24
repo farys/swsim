@@ -16,6 +16,7 @@ pl:
     confirm: Jesteś pewien ?
     invite: Zaproś
     ban: Czy na pewno chcesz zbanować to konto?
+    activate: Czy na pewno chcesz aktywować to konto?
     deactivate: Czy na pewno chcesz dezaktywować to konto? Pamiętaj, że tylko administrator portalu będzie mógł je przywrócić spowrotem
 
     project:
