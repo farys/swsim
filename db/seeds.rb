@@ -20,3 +20,17 @@ admin =  User.new(
 admin.status = 2
 admin.role = "administrator"
 admin.save
+
+CommentKeyword.create!(
+  [{ :name => "Kontakt" },
+    { :name => "Realizacja" },
+    { :name => "Stosunek do użytkownika" }
+  ])
+
+Budget.create([
+    {:title => "< 500 zł"},
+    {:title => "500 - 1000 zł"},
+    {:title => "1000 - 2500 zł"},
+    {:title => "2500 - 5000 zł"},
+    {:title => "> 5000 zł"}
+  ])
