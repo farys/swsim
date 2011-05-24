@@ -33,12 +33,10 @@ namespace :db do
     make_blogcomments
     make_roles
     make_groups_and_tags
-    make_budgets
     make_auctions
     make_projects
     make_tickets
     make_offers
-    make_comments_keywords
     make_topics
     make_posts
   end
@@ -218,14 +216,6 @@ def make_offers
   end
 end
 
-def make_comments_keywords
-  CommentKeyword.create!(
-    [{ :name => "Kontakt" },
-    { :name => "Realizacja" },
-    { :name => "Stosunek do użytkownika" }
-    ])
-
-end
 
 def make_topics
 	TOPICS.times do
@@ -257,14 +247,4 @@ def make_tickets
 									 :duration => rand(23)+1,
 									 :status => Ticket::STATUSES[:free])
   end
-end
-
-def make_budgets
-  Budget.create([
-    {:title => "< 500 zł"},
-    {:title => "500 - 1000 zł"},
-    {:title => "1000 - 2500 zł"},
-    {:title => "2500 - 5000 zł"},
-    {:title => "> 5000 zł"}
-    ])
 end

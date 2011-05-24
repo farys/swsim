@@ -33,6 +33,7 @@ class Auction < ActiveRecord::Base
     indexes tags(:id), :as => :tags_ids
     has :expired_at
     where 'auctions.private = 0 AND auctions.expired_at > NOW()'
+    #set_property :delta => true
   end
 
   validates :title, :presence => true, :length => { :within => 8..50}
@@ -50,7 +51,7 @@ class Auction < ActiveRecord::Base
   before_update :status_changed, :if => :down?
   before_validation :check_points, :on => :create, :if => :highlight
   after_create :use_points, :if => :highlight
-  
+
   #create form
   attr_accessor :expired_after
   validates_inclusion_of :expired_after, :in => (1..MAX_EXPIRED_AFTER).to_a.collect{|d| d}, :on => :create
