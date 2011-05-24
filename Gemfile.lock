@@ -31,10 +31,8 @@ GEM
     arel (2.0.9)
     builder (2.1.2)
     carmen (0.2.7)
-    diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
-    factory_girl (1.3.3)
     faker (0.9.5)
       i18n (~> 0.4)
     i18n (0.5.0)
@@ -73,19 +71,6 @@ GEM
       thor (~> 0.14.4)
     rake (0.8.7)
     riddle (1.3.2)
-    rspec (2.5.0)
-      rspec-core (~> 2.5.0)
-      rspec-expectations (~> 2.5.0)
-      rspec-mocks (~> 2.5.0)
-    rspec-core (2.5.1)
-    rspec-expectations (2.5.0)
-      diff-lcs (~> 1.1.2)
-    rspec-mocks (2.5.0)
-    rspec-rails (2.5.0)
-      actionpack (~> 3.0)
-      activesupport (~> 3.0)
-      railties (~> 3.0)
-      rspec (~> 2.5.0)
     ruby-recaptcha (1.0.2)
     thinking-sphinx (2.0.3)
       activerecord (>= 3.0.3)
@@ -102,7 +87,6 @@ PLATFORMS
 
 DEPENDENCIES
   carmen
-  factory_girl
   faker
   jquery-rails
   mail
@@ -110,7 +94,6 @@ DEPENDENCIES
   paperclip (~> 2.3)
   rails (= 3.0.3)
   riddle
-  rspec-rails
   ruby-recaptcha
   thinking-sphinx (= 2.0.3)
   will_paginate (~> 3.0.pre2)
