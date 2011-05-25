@@ -76,7 +76,7 @@ pl:
         content: Treść
       invitation:
         status: Status
-        user_id: Użytkownik
+        user_id: Login użytkownika
         role_id: Rola
       ticket:
         user_id: Wykonawca
@@ -183,7 +183,6 @@ pl:
       owner: Właściciel
       leader: Lider
       info_mod: Moderator informacji
-      inv_mod: Moderator zaproszeń
       ticket_mod: Moderator zadań
       file_mod: Moderator plików
       forum_mod: Moderator forum

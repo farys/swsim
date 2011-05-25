@@ -3,7 +3,7 @@
   <% if params[:page].nil? || params[:page].to_i == 1 -%>
 	  <% user = User.find(@topic.user_id) %>
 	  <tr>
-		  <td class="span-3">
+		  <td class="span-4">
 			  <p><%= image_tag user.avatar.url(:thumb) %></p>
 			  <p><%= link_to user.login, user_path(user.id) %></p>
 			  <p>
@@ -28,7 +28,7 @@
 	<% @posts.each do |post| %>
 		<% user = User.find(post.user_id) %>
 		<tr>
-			<td class="span-3">
+			<td class="span-4">
 				<p><%= image_tag user.avatar.url(:thumb) %></p>
 				<p><%= link_to user.login, user_path(user.id) %></p>
 				<p>

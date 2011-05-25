@@ -17,6 +17,8 @@ class Project::InvitationsController < Project::ApplicationController
   def create
     @invitation = Invitation.new(params[:invitation])
     @invitation.project_id = @project.id
+    user = User.find_by_login("#{params[:invitation][:user_id]}")
+    @invitation.user_id = user.nil? ? 0 : user.id
     
   	#weryfikacja uzytkownika
   	unless User.exists? @invitation.user_id
@@ -185,12 +187,11 @@ class Project::InvitationsController < Project::ApplicationController
     if @invitation.status == Invitation::STATUSES[:rejected]
       redirect_to panel_messages_path
       return
-    end
-    
+    end  
   end
-  
+    
   def check_privileges
-    unless can_edit?('invitation')
+    unless can_edit?('member')
   	  flash_t_general :errors, 'error.privileges'
   		redirect_to project_invitations_path
   	end

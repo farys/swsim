@@ -3,7 +3,6 @@ class CreateRoles < ActiveRecord::Migration
     create_table :roles do |t|
       t.string :name, :null => false, :lenght => 30
       t.boolean  :info, :null => false, :default => false
-      t.boolean  :invitation, :null => false, :default => false
       t.boolean  :member, :null => false, :default => false
       t.boolean  :ticket, :null => false, :default => false
       t.boolean  :file, :null => false, :default => false

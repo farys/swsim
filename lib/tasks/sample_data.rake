@@ -3,13 +3,9 @@ require 'faker'
 I18n.locale = :en
 #wypelnianie bazy development danymi => rake db:populate
 
-#ilosc generowoanych danych
-USERS = 5
-PROJECTS = USERS*5
-INVITATIONS = PROJECTS*5
-TOPICS = PROJECTS*5
-POSTS = TOPICS*5
-TICKETS = PROJECTS*5
+#ilosc generowanych danych
+
+USERS = 10 #UWAGA kazdy uzytkownik to dodatkowe 40 rekordow
 
 namespace :db do
 
@@ -34,16 +30,13 @@ namespace :db do
     make_roles
     make_groups_and_tags
     make_auctions
-    make_projects
-    make_tickets
     make_offers
-    make_topics
-    make_posts
+    make_projects
   end
 end
 
 def make_users #zmieniony format emailu dla latwiejszego logowania
-  USERS.times do |i|
+  5.times do |i|
   	login = Faker::Internet.user_name
   	description = Faker::Lorem.sentence(12)
     firstname = Faker::Name.first_name
@@ -61,9 +54,10 @@ def make_users #zmieniony format emailu dla latwiejszego logowania
       :description => description
     )
     user.status = 2
-	user.role = "user"
-	user.save
+	  user.role = "user"
+	  user.save
   end
+  n = User.count
   USERS.times do |i|
   	login = Faker::Internet.user_name
   	description = Faker::Lorem.sentence(12)
@@ -78,12 +72,12 @@ def make_users #zmieniony format emailu dla latwiejszego logowania
       :role => 'user',
       :status => 1,
       :country => country,
-      :email => "#{i+6}@example.com",
+      :email => "#{i+n}@example.com",
       :description => description
     )
     user.status = rand(3)
-	user.role = "user"
-	user.save
+	  user.role = "user"
+	  user.save
   end
 end
 
@@ -133,17 +127,115 @@ def make_points
 end
 
 def make_projects
-  PROJECTS.times do
-    name = Faker::Company.name
-    description = Faker::Lorem.sentences(12).join(' ')
-    Project.create!(
-    	:name => name,
-    	:owner_id => rand(User.count-1)+1,
-    	:leader_id => rand(User.count-1)+1,
-    	:auction_id => rand(Auction.count-1)+1,
-    	:duration => rand(370),
-    	:description => description
-    )
+  all_users = []
+  User.where(:status => 2, :role => 'user').each do |u|
+    all_users << u.id
+  end
+
+  avible_users = []
+  project_users = []
+  roles = []
+  
+  Role.all.each do |r|
+    unless r.name == 'owner' || r.name == 'leader'
+      roles << r.id
+      roles << Role.get_id('guest')
+    end
+  end
+  
+  all_users.each do |u|
+    avible_users = all_users - [u]
+    project_users += [u]
+    
+    #auction
+    name = Faker::Lorem.words(3).join(' ').capitalize
+    description = Faker::Lorem.sentence(12)
+    a = Auction.new(:title => name.capitalize,
+                    :budget_id => 1+rand(Budget.count-1),
+                    :expired_after => 1+rand(13),
+                    :description => description)
+    a.owner_id = u
+    a.save!
+    
+    #auction offers
+    offerers = avible_users
+    5.times do
+      offerer = offerers.rand
+      break if offerer.nil?
+      offerers -= [offerer]
+      Offer.create!(:price => 1+rand(10000),
+                    :days => 1+rand(31),
+                    :offerer_id => offerer,
+                    :auction_id => a.id)
+    end
+    
+    won_offer = a.offers.rand
+    a.set_won_offer!(won_offer)
+    a.finish!
+    avible_users -= [won_offer.offerer_id]
+    project_users += [won_offer.offerer_id]
+    
+    #project
+    p = Project.create!(:auction_id => a.id,
+                        :name => a.title,
+                        :owner_id => a.owner_id,
+                        :leader_id => won_offer.offerer_id,
+                        :duration => won_offer.days,
+                        :status => Project::STATUSES[:active],
+                        :description => a.description)                
+    
+    #project members
+    4.times do
+      new_user = avible_users.rand
+      break if new_user.nil?
+      avible_users -= [new_user]
+      project_users += [new_user]
+      
+      i = Invitation.new(:project_id => p.id,
+                         :user_id => new_user,
+                         :role_id => roles.rand,
+                         :status => Invitation::STATUSES[:accepted])
+      i.save!
+                         
+      Membership.create!(:user_id => i.user_id,
+                         :project_id => i.project_id,
+                         :role_id => i.role_id)
+    end
+    
+    ticket_users = project_users - [p.leader_id, p.owner_id]
+
+    #projec tickets
+    10.times do
+      break if ticket_users.empty?
+      title = Faker::Lorem.words(3).join(' ').capitalize
+      description = Faker::Lorem.sentences(12).join(' ')
+      taken = 50 < rand(100) ? true : false
+      finished = 50 < rand(100) ? true : false
+      Ticket.create!(:project_id => p.id,
+                     :user_id => taken ? ticket_users.rand : nil,
+                     :title => title,
+                     :description => description,
+                     :duration => rand(40)+1,
+                     :status => taken ? (finished ? Ticket::STATUSES[:finished] : Ticket::STATUSES[:implementation]) : Ticket::STATUSES[:free])
+    end
+    
+    #project topics
+    3.times do
+      title = Faker::Lorem.words(3).join(' ').capitalize
+      content = Faker::Lorem.sentences(12).join(' ')
+      t = Topic.new(:project_id => p.id,
+                    :user_id => project_users.rand,
+                    :title => title,
+                    :content => content)
+      t.save!
+      #topic posts
+      5.times do
+        content = Faker::Lorem.sentences(12).join(' ')
+        Post.create!(:topic_id => t.id,
+                     :user_id => project_users.rand,
+                     :content => content)
+      end
+    end 
   end
 end
 
@@ -179,11 +271,9 @@ def make_roles
                                   :forum => true,
                                   :member => true,
                                   :info => true,
-                                  :invitation => true,
                                   :ticket => true)
   Role.create!(:name => 'owner', :info => true)
   Role.create!(:name => 'info_mod', :info => true)
-  Role.create!(:name => 'inv_mod', :invitation => true)
   Role.create!(:name => 'member_mod', :member => true)
   Role.create!(:name => 'ticket_mod', :ticket => true)
   Role.create!(:name => 'file_mod', :file => true)
@@ -213,38 +303,5 @@ def make_offers
       :auction_id => 1+rand(Auction.count-1)
     )
     
-  end
-end
-
-
-def make_topics
-	TOPICS.times do
-		title = Faker::Lorem.words(3).join(' ')
-		content = Faker::Lorem.sentences(12).join(' ')
-		topic = Topic.create!(:project_id => rand(Project.count-1)+1,
-													:user_id => rand(User.count-1)+1,
-													:title => title,
-													:content => content)
-	end
-end
-
-def make_posts
-	POSTS.times do
-		content = Faker::Lorem.sentences(12).join(' ')
-		Post.create!(:topic_id => rand(Topic.count-1)+1,
-								 :user_id => rand(User.count-1)+1,
-								 :content => content)
-	end
-end
-
-def make_tickets
-  TICKETS.times do
-    title = Faker::Lorem.words(3).join(' ')
-		content = Faker::Lorem.sentences(12).join(' ')
-    Ticket.create!(:project_id => rand(Project.count-1)+1,
-                   :title => title,
-									 :description => content,
-									 :duration => rand(23)+1,
-									 :status => Ticket::STATUSES[:free])
   end
 end

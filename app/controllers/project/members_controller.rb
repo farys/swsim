@@ -50,7 +50,7 @@ class Project::MembersController < Project::ApplicationController
 		#weryfikacja czlonkostwa
   	if memb.nil?
   	  flash.now[:error] = t('general.membership.dont_exists')
-  	  render_index
+  	  redirect_to project_members_path
   	  return
   	end
   	
@@ -58,7 +58,7 @@ class Project::MembersController < Project::ApplicationController
     if memb.role_id == Role.get_id('owner') ||
        memb.role_id == Role.get_id('leader')
       flash_t :notice, 'cant_delete'
-      render_index
+      redirect_to project_members_path
       return
     end 													
 	  
