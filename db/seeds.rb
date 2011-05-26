@@ -34,3 +34,16 @@ Budget.create([
     {:title => "2500 - 5000 zł"},
     {:title => "> 5000 zł"}
   ])
+  
+Role.create!(:name => 'guest')
+Role.create!(:name => 'leader', :file => true, 
+                                :forum => true,
+                                :member => true,
+                                :info => true,
+                                :ticket => true)
+Role.create!(:name => 'owner', :info => true)
+Role.create!(:name => 'info_mod', :info => true)
+Role.create!(:name => 'member_mod', :member => true)
+Role.create!(:name => 'ticket_mod', :ticket => true)
+Role.create!(:name => 'file_mod', :file => true)
+Role.create!(:name => 'forum_mod', :forum => true)

@@ -31,7 +31,7 @@ class Project < ActiveRecord::Base
 	  self.deadline - DateTime.now
 	end
 	 
-  #zwraca role uzytkownika w projekcie
+  #zwraca obiekt roli uzytkownika w projekcie
   def user_role(user_id = 0)
   		Role.find(self.find_membership(user_id).role_id)
   end

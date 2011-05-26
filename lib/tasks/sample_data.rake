@@ -27,7 +27,6 @@ namespace :db do
     make_points
     make_blogposts
     make_blogcomments
-    make_roles
     make_groups_and_tags
     make_auctions
     make_offers
@@ -263,22 +262,6 @@ def make_groups_and_tags
       Tag.create( :name => tag, :group_id => group.id, :status => Tag::STATUSES[:active])
     end
   end
-end
-
-def make_roles
-  Role.create!(:name => 'guest')
-  Role.create!(:name => 'leader', :file => true, 
-                                  :forum => true,
-                                  :member => true,
-                                  :info => true,
-                                  :ticket => true)
-  Role.create!(:name => 'owner', :info => true)
-  Role.create!(:name => 'info_mod', :info => true)
-  Role.create!(:name => 'member_mod', :member => true)
-  Role.create!(:name => 'ticket_mod', :ticket => true)
-  Role.create!(:name => 'file_mod', :file => true)
-  Role.create!(:name => 'forum_mod', :forum => true)
-  
 end
 
 def make_auctions
