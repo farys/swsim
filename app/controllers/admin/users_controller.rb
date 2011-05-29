@@ -8,6 +8,26 @@ class Admin::UsersController < Admin::ApplicationController
 		@users = User.find(:all, :conditions => ["role NOT IN (?)", "administrator"], :order => "lastname").paginate :per_page => 15, :page => params[:page]	    	
 	end
 	
+	def edit
+    @title = "Edycja danych"
+    @useradmin = User.find(params[:id])
+  end
+    
+  def update
+    @useradmin = User.find(params[:id])
+    if params[:user][:password] == ''
+      @title = "Edit user"
+      flash[:error] = "Haslo nie moze byc puste"
+      render :action => :edit
+    elsif @useradmin.update_attributes(params[:user])
+      redirect_to :action => :index
+      flash[:success] = "Edytowano profil"
+    else
+      @title = "Edit user"
+      render :action => :edit
+    end
+  end
+	
 	def points
 		@user = User.find(params[:id])
 		@pointssum = Bonuspoint.find_all_by_user_id(params[:id])
