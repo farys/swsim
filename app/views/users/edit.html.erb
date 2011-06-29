@@ -32,7 +32,7 @@ Edycja danych użytkownika
 <%= f.file_field :avatar %>
 </div>
 <div class="field">
-  <%= f.label :description %><br />
+  <%= f.label :opis %><br />
   <%= f.text_area :description, :value => @user.description.force_encoding("UTF-8"), :class => "mceEditor span-10" %>
 </div>
 <%= f.submit "Edytuj" %>
