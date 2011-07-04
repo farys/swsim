@@ -15,7 +15,7 @@ class BlogpostsController < ApplicationController
   def new
   	@user = User.find(params[:user_id])
   	@title = "#{@user.name} #{@user.lastname} || Blog || Nowy wpis"
-	@blogpost = Blogpost.new
+	  @blogpost = Blogpost.new
   end
 
   def create
@@ -86,8 +86,7 @@ class BlogpostsController < ApplicationController
     end
     
     def right_user
-  	if !current_user?(@user)
-  		redirect_to user_blogposts_path(@user)
-  	end
+      @user = User.find(params[:user_id])
+      redirect_to user_blogposts_path(@user) unless current_user?(@user)
   end
 end
