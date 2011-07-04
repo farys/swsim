@@ -136,7 +136,7 @@ a:hover {
 
 .bold {font-weight: bold}
 .rejected {background-color: #fecdc1}
-.winner {background-color: #c8e18a}
+.winner {background-color: #c8e18a !important}
 
 .center {text-align: center}
 .right {text-align: right}
