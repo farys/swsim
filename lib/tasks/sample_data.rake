@@ -84,12 +84,12 @@ end
 
 def make_reputations
 	zmienna = 2*USERS+1
-   	zmienna.times do |i|
+  zmienna.times do |i|
    	Reputation.create!(
       :user_id => i+1,
       :reputation => 0
     )
-   end
+  end
 end
 
 def make_relationships
@@ -103,26 +103,26 @@ end
 
 def make_blogposts
 	User.all(:limit => 11).each do |user|
-      50.times do
-        user.blogposts.create!(:title => Faker::Lorem.sentence(2), :content => Faker::Lorem.sentence(5))
-      end
+    50.times do
+      user.blogposts.create!(:title => Faker::Lorem.sentence(2), :content => Faker::Lorem.sentence(5))
     end
+  end
 end
 
 def make_blogcomments
 	Blogpost.all(:limit => 11).each do |blogpost|
-      50.times do
-        blogpost.blogcomments.create!(:content => Faker::Lorem.sentence(5))
-      end
+    50.times do
+      blogpost.blogcomments.create!(:content => Faker::Lorem.sentence(5))
     end
+  end
 end
 
 def make_points
 	11.times do |i|		
 		Bonuspoint.create!(
-		:points => rand(100),
-		:user_id => i+1,
-		:for_what => rand(3)
+      :points => rand(100),
+      :user_id => i+1,
+      :for_what => rand(3)
 		)
 	end
 end
@@ -150,12 +150,12 @@ def make_projects
     project_users << u
     
     #auction
-    name = Faker::Lorem.words(3).join(' ').capitalize
+    name = Faker::Lorem.words(4).join(' ').capitalize
     description = Faker::Lorem.sentence(12)
     a = Auction.new(:title => name.capitalize,
-                    :budget_id => 1+rand(Budget.count-1),
-                    :expired_after => 1+rand(13),
-                    :description => description)
+      :budget_id => 1+rand(Budget.count-1),
+      :expired_after => 1+rand(13),
+      :description => description)
     a.owner_id = u
     a.save!
     
@@ -164,13 +164,13 @@ def make_projects
     5.times do
       offerer = offerers.rand
       break if offerer.nil?
+
       offerers -= [offerer]
-      Offer.create!(:price => 1+rand(10000),
-                    :days => 1+rand(31),
-                    :offerer_id => offerer,
-                    :auction_id => a.id)
+      a.offers.create!(:price => 1+rand(10000),
+        :days => 1+rand(31),
+        :offerer_id => offerer)
     end
-    
+
     won_offer = a.offers.rand
     a.set_won_offer!(won_offer)
     a.finish!
@@ -179,12 +179,12 @@ def make_projects
     
     #project
     p = Project.create!(:auction_id => a.id,
-                        :name => a.title,
-                        :owner_id => a.owner_id,
-                        :leader_id => won_offer.offerer_id,
-                        :duration => won_offer.days,
-                        :status => Project::STATUSES[:active],
-                        :description => a.description)                
+      :name => a.title,
+      :owner_id => a.owner_id,
+      :leader_id => won_offer.offerer_id,
+      :duration => won_offer.days,
+      :status => Project::STATUSES[:active],
+      :description => a.description)
     
     #project members
     4.times do
@@ -194,14 +194,14 @@ def make_projects
       project_users += [new_user]
       
       i = Invitation.new(:project_id => p.id,
-                         :user_id => new_user,
-                         :role_id => roles.rand,
-                         :status => Invitation::STATUSES[:accepted])
+        :user_id => new_user,
+        :role_id => roles.rand,
+        :status => Invitation::STATUSES[:accepted])
       i.save!
                          
       Membership.create!(:user_id => i.user_id,
-                         :project_id => i.project_id,
-                         :role_id => i.role_id)
+        :project_id => i.project_id,
+        :role_id => i.role_id)
     end
     
     ticket_users = []
@@ -215,11 +215,11 @@ def make_projects
       taken = 50 < rand(100) ? true : false
       finished = 50 < rand(100) ? true : false
       Ticket.create!(:project_id => p.id,
-                     :user_id => taken ? ticket_users.rand : nil,
-                     :title => title,
-                     :description => description,
-                     :duration => rand(40)+1,
-                     :status => taken ? (finished ? Ticket::STATUSES[:finished] : Ticket::STATUSES[:implementation]) : Ticket::STATUSES[:free])
+        :user_id => taken ? ticket_users.rand : nil,
+        :title => title,
+        :description => description,
+        :duration => rand(40)+1,
+        :status => taken ? (finished ? Ticket::STATUSES[:finished] : Ticket::STATUSES[:implementation]) : Ticket::STATUSES[:free])
     end
     
     #project topics
@@ -227,16 +227,16 @@ def make_projects
       title = Faker::Lorem.words(3).join(' ').capitalize
       content = Faker::Lorem.sentences(12).join(' ')
       t = Topic.new(:project_id => p.id,
-                    :user_id => project_users.rand,
-                    :title => title,
-                    :content => content)
+        :user_id => project_users.rand,
+        :title => title,
+        :content => content)
       t.save!
       #topic posts
       5.times do
         content = Faker::Lorem.sentences(12).join(' ')
         Post.create!(:topic_id => t.id,
-                     :user_id => project_users.rand,
-                     :content => content)
+          :user_id => project_users.rand,
+          :content => content)
       end
     end 
   end
@@ -289,6 +289,6 @@ def make_offers
       :offerer_id => 1+rand(User.count-1),
       :auction_id => 1+rand(Auction.count-1)
     )
-    
+
   end
 end
