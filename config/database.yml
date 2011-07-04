@@ -1,17 +1,8 @@
-
-# MySQL.  Version 5.0 are recommended.
-#
-# Install the MySQL driver:
-#   gem install mysql2
-#
-# And be sure to use new-style password hashing:
-#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
-
 development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: inz_app
+  database: app_dev
   pool: 5
   username: root
   password: Rot192
@@ -24,7 +15,7 @@ test:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: inz_app
+  database: app_test
   pool: 5
   username: root
   password: Rot192
@@ -34,7 +25,7 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: inz_app
+  database: app_prod
   pool: 5
   username: root
   password: Rot192

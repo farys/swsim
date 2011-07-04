@@ -128,9 +128,9 @@ def make_points
 end
 
 def make_projects
-  all_users = []
+  all_users_src = []
   User.where(:status => 2, :role => 'user').each do |u|
-    all_users << u.id
+    all_users_src << u.id
   end
 
   roles = []
@@ -142,7 +142,9 @@ def make_projects
     end
   end
   
-  all_users.each do |u|
+  all_users_src.each do |u|
+
+    all_users = all_users_src.clone
     project_users = []
     avible_users = []
     
