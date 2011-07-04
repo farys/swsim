@@ -23,8 +23,7 @@
       	</td>
       	<td>
       	  <% memb = @project.find_membership(user.id) -%>
-      	  <% if memb.user_id == current_user.id &&
-      	     (current_user.id =! @project.owner_id || current_user.id =! @project.leader_id)-%>
+      	  <% if memb.user_id == current_user.id && @project.owner_id != current_user.id -%>
       	    <%= link_to t('general.project.members.leave'), project_member_path(@project, memb),
 		      		                                              :method =>:delete,
 		      		                                              :confirm => t('general.confirm') %>

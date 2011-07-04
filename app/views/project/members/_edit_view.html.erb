@@ -35,8 +35,9 @@
 		      	</td>
 		      	<td><%= f.select('role_id',roles_for_select(@project.user_role(user.id)))%></td>
 		      	<td>
-		      		<%= f.submit t('general.save') %>		      		
-		      		<%= link_to t('general.delete'), project_member_path(@project, membership),
+		      		<%= f.submit t('general.save') %>	      		
+		      		<%= link_to user.id == current_user.id ? t('general.project.members.leave') : t('general.delete'),
+		      		                                                     project_member_path(@project, membership),
 		      		                                                     :method =>:delete,
 		      		                                                     :confirm => t('general.confirm') %>
 		      	</td>

@@ -35,6 +35,7 @@ namespace :db do
 end
 
 def make_users #zmieniony format emailu dla latwiejszego logowania
+  n = User.count
   5.times do |i|
   	login = Faker::Internet.user_name
   	description = Faker::Lorem.sentence(12)
@@ -49,13 +50,14 @@ def make_users #zmieniony format emailu dla latwiejszego logowania
       :role => 'user',
       :status => 2,
       :country => country,
-      :email => "#{i+1}@example.com",
+      :email => "#{i+1+n}@example.com",
       :description => description
     )
     user.status = 2
 	  user.role = "user"
 	  user.save
   end
+  
   n = User.count
   USERS.times do |i|
   	login = Faker::Internet.user_name
@@ -71,7 +73,7 @@ def make_users #zmieniony format emailu dla latwiejszego logowania
       :role => 'user',
       :status => 1,
       :country => country,
-      :email => "#{i+n}@example.com",
+      :email => "#{i+1+n}@example.com",
       :description => description
     )
     user.status = rand(3)
@@ -131,20 +133,21 @@ def make_projects
     all_users << u.id
   end
 
-  avible_users = []
-  project_users = []
   roles = []
   
   Role.all.each do |r|
-    unless r.name == 'owner' || r.name == 'leader'
+    unless r.name == 'owner' || r.name == 'leader' || r.name == 'ticket_mod'
       roles << r.id
       roles << Role.get_id('guest')
     end
   end
   
   all_users.each do |u|
+    project_users = []
+    avible_users = []
+    
     avible_users = all_users - [u]
-    project_users += [u]
+    project_users << u
     
     #auction
     name = Faker::Lorem.words(3).join(' ').capitalize
@@ -201,6 +204,7 @@ def make_projects
                          :role_id => i.role_id)
     end
     
+    ticket_users = []
     ticket_users = project_users - [p.leader_id, p.owner_id]
 
     #projec tickets
